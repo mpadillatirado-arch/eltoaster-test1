@@ -79,9 +79,169 @@ function Stars({ value }) {
   );
 }
 
+/** Quick-request modal: business name, email, location. Saves to Supabase
+ *  and fires the send-lead-email Edge Function (best-effort, non-blocking
+ *  for the UI outcome). */
+function QuickModal({ open, onClose, t, lang }) {
+  const [state, setState] = useState("idle"); // idle | sending | done | error
+  const [form, setForm] = useState({ restaurant_name: "", email: "", city: "" });
+  const firstRef = useRef(null);
+  const dialogRef = useRef(null);
+
+  useEffect(() => {
+    if (open) {
+      setState("idle");
+      setForm({ restaurant_name: "", email: "", city: "" });
+      setTimeout(() => firstRef.current?.focus(), 30);
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  async function submit(e) {
+    e.preventDefault();
+    if (state === "sending") return;
+    setState("sending");
+
+    if (!supabase) {
+      setState("error");
+      return;
+    }
+
+    const payload = { ...form, preferred_language: lang, source: "quick_modal" };
+    const { error } = await supabase.from("leads").insert([payload]);
+
+    if (error) {
+      setState("error");
+      return;
+    }
+
+    setState("done");
+
+    // Best-effort notification email — never blocks or fails the UI, since
+    // the lead is already safely stored regardless of email delivery.
+    supabase.functions.invoke("send-lead-email", { body: payload }).catch(() => {});
+  }
+
+  return (
+    <div
+      className="modal-overlay"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div
+        className="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="quick-modal-title"
+        ref={dialogRef}
+      >
+        <button
+          type="button"
+          className="modal-close"
+          aria-label={t.quick.close}
+          onClick={onClose}
+        >
+          ✕
+        </button>
+
+        {state === "done" ? (
+          <div className="done">
+            <div className="ic" aria-hidden="true">
+              ✓
+            </div>
+            <h3>{t.quick.okTitle}</h3>
+            <p>{t.quick.okBody}</p>
+          </div>
+        ) : (
+          <>
+            <h3 id="quick-modal-title" style={{ fontSize: "1.6rem", fontWeight: 800 }}>
+              {t.quick.title}
+            </h3>
+            <p className="lede" style={{ marginTop: 10, fontSize: "0.98rem" }}>
+              {t.quick.lede}
+            </p>
+
+            <form onSubmit={submit} style={{ marginTop: 24 }}>
+              {state === "error" && (
+                <div className="alert err" role="alert">
+                  {t.quick.error}
+                </div>
+              )}
+
+              <div className="inp">
+                <label htmlFor="qm-biz">{t.quick.business}</label>
+                <input
+                  id="qm-biz"
+                  ref={firstRef}
+                  required
+                  autoComplete="organization"
+                  value={form.restaurant_name}
+                  onChange={set("restaurant_name")}
+                />
+              </div>
+
+              <div className="inp">
+                <label htmlFor="qm-email">{t.quick.email}</label>
+                <input
+                  id="qm-email"
+                  type="email"
+                  required
+                  autoComplete="email"
+                  value={form.email}
+                  onChange={set("email")}
+                />
+              </div>
+
+              <div className="inp">
+                <label htmlFor="qm-loc">{t.quick.location}</label>
+                <input
+                  id="qm-loc"
+                  required
+                  autoComplete="address-level2"
+                  placeholder={t.quick.locationPlaceholder}
+                  value={form.city}
+                  onChange={set("city")}
+                />
+              </div>
+
+              <button className="btn" type="submit" disabled={state === "sending"}>
+                {state === "sending" ? t.quick.sending : t.quick.submit}
+              </button>
+            </form>
+
+            <p className="formnote">
+              {t.quick.moreDetail}{" "}
+              <a href="#empezar" onClick={onClose}>
+                {t.quick.moreDetailLink}
+              </a>
+            </p>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /* ---------------- sections ---------------- */
 
-function Nav({ lang, setLang, t }) {
+function Nav({ lang, setLang, t, onQuick }) {
   const [stuck, setStuck] = useState(false);
   useEffect(() => {
     const on = () => setStuck(window.scrollY > 8);
@@ -121,15 +281,15 @@ function Nav({ lang, setLang, t }) {
           </button>
         </div>
 
-        <a className="btn" href="#empezar">
+        <button type="button" className="btn" onClick={onQuick}>
           {t.nav.cta}
-        </a>
+        </button>
       </div>
     </header>
   );
 }
 
-function Hero({ t }) {
+function Hero({ t, onQuick }) {
   return (
     <section className="hero" id="top">
       <div className="hero-glow" aria-hidden="true" />
@@ -142,9 +302,9 @@ function Hero({ t }) {
           <p className="lede">{t.hero.lede}</p>
 
           <div className="hero-cta">
-            <a className="btn" href="#empezar">
+            <button type="button" className="btn" onClick={onQuick}>
               {t.hero.cta1}
-            </a>
+            </button>
             <a className="btn ghost" href="#calculadora">
               {t.hero.cta2}
             </a>
@@ -557,15 +717,15 @@ function LeadForm({ t, lang }) {
   );
 }
 
-function Footer({ t }) {
+function Footer({ t, onQuick }) {
   return (
     <footer className="foot">
       <div className="wrap">
         <div className="foot-top">
           <h3>{t.foot.h}</h3>
-          <a className="btn" href="#empezar">
+          <button type="button" className="btn" onClick={onQuick}>
             {t.foot.cta}
-          </a>
+          </button>
         </div>
 
         <div className="foot-links" style={{ marginTop: 34 }}>
@@ -615,12 +775,13 @@ export default function App() {
   }, [lang]);
 
   const t = content[lang];
+  const [quickOpen, setQuickOpen] = useState(false);
 
   return (
     <>
-      <Nav lang={lang} setLang={setLang} t={t} />
+      <Nav lang={lang} setLang={setLang} t={t} onQuick={() => setQuickOpen(true)} />
       <main>
-        <Hero t={t} />
+        <Hero t={t} onQuick={() => setQuickOpen(true)} />
         <Stats t={t} />
         <Problem t={t} />
         <Calculator t={t} />
@@ -628,11 +789,18 @@ export default function App() {
         <Steps t={t} />
         <LeadForm t={t} lang={lang} />
       </main>
-      <Footer t={t} />
+      <Footer t={t} onQuick={() => setQuickOpen(true)} />
 
-      <a className="btn mobile-cta" href="#empezar">
+      <button type="button" className="btn mobile-cta" onClick={() => setQuickOpen(true)}>
         {t.nav.cta}
-      </a>
+      </button>
+
+      <QuickModal
+        open={quickOpen}
+        onClose={() => setQuickOpen(false)}
+        t={t}
+        lang={lang}
+      />
     </>
   );
 }

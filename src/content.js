@@ -121,6 +121,23 @@ export const content = {
       rights: "Hecho en Phoenix, Arizona.",
       disclaimer: "Sitio personal de Mario Padilla. Las estimaciones de ingresos son orientativas y no constituyen una garantía de resultados.",
     },
+
+    quick: {
+      title: "Pedir mi diagnóstico gratis",
+      lede: "Tres datos y te contacto en menos de 24 horas hábiles.",
+      business: "Nombre del restaurante",
+      email: "Correo electrónico",
+      location: "Ciudad o ubicación",
+      locationPlaceholder: "Phoenix, AZ",
+      submit: "Enviar",
+      sending: "Enviando…",
+      close: "Cerrar",
+      okTitle: "¡Listo!",
+      okBody: "Recibí tus datos y te contacto en menos de 24 horas hábiles.",
+      error: "No se pudo enviar. Inténtalo de nuevo o escríbeme a mario.padilla@toast.com.",
+      moreDetail: "¿Prefieres darme más contexto ahora?",
+      moreDetailLink: "Usa el formulario completo",
+    },
   },
 
   en: {
@@ -241,6 +258,23 @@ export const content = {
       cta: "Get a free diagnostic",
       rights: "Made in Phoenix, Arizona.",
       disclaimer: "Personal site of Mario Padilla. Revenue estimates are directional and are not a guarantee of results.",
+    },
+
+    quick: {
+      title: "Get my free diagnostic",
+      lede: "Three details and I'll be in touch within one business day.",
+      business: "Restaurant name",
+      email: "Email address",
+      location: "City or location",
+      locationPlaceholder: "Phoenix, AZ",
+      submit: "Send",
+      sending: "Sending…",
+      close: "Close",
+      okTitle: "You're set!",
+      okBody: "Got your details — I'll reach out within one business day.",
+      error: "Couldn't send that. Try again or email me at mario.padilla@toast.com.",
+      moreDetail: "Want to give me more context now?",
+      moreDetailLink: "Use the full form",
     },
   },
 };

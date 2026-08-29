@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__dee07986-c8f6-4f3f-aedd-3ea24ed096ab__list_teams",
+      "mcp__dee07986-c8f6-4f3f-aedd-3ea24ed096ab__get_project",
+      "WebFetch(domain:oichxzrvbvauazvvysll.supabase.co)",
+      "Bash(git init *)",
+      "Bash(git remote *)",
+      "mcp__613e9227-5cb9-419b-8c98-a899995dc117__list_projects",
+      "mcp__613e9227-5cb9-419b-8c98-a899995dc117__apply_migration",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "mcp__613e9227-5cb9-419b-8c98-a899995dc117__get_advisors",
+      "mcp__613e9227-5cb9-419b-8c98-a899995dc117__execute_sql",
+      "Bash(git add *)",
+      "Bash(git rm *)",
+      "Bash(git -c user.email=mpadillatirado@gmail.com -c 'user.name=Mario Padilla' commit -q -m ' *)",
+      "Bash(git branch *)"
+    ]
+  }
+}

@@ -1,8 +1,18 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { content } from "./content.js";
 import { supabase } from "./supabase.js";
+import lasCulichisLogo from "./assets/clients/las-culichis.jpg";
+import padelPalsLogo from "./assets/clients/padel-pals.jpg";
+import sushinoLogo from "./assets/clients/sushino.jpg";
 
-const EMAIL = "mario.padilla@toast.com";
+const CLIENT_LOGOS = {
+  "las-culichis": lasCulichisLogo,
+  "padel-pals": padelPalsLogo,
+  sushino: sushinoLogo,
+};
+
+const EMAIL = "mario.padilla@toasttab.com";
+const LINKEDIN = "https://www.linkedin.com/in/mario-padilla-57145839/";
 
 /* ---------------- helpers ---------------- */
 
@@ -525,6 +535,43 @@ function Steps({ t }) {
   );
 }
 
+function MidCta({ t, onQuick }) {
+  return (
+    <section className="midcta">
+      <div className="wrap midcta-in">
+        <Reveal as="h2">{t.midCta.h}</Reveal>
+        <Reveal delay={80}>
+          <button type="button" className="btn" onClick={onQuick}>
+            {t.midCta.cta}
+          </button>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function Clients({ t }) {
+  return (
+    <section id="clientes">
+      <div className="wrap">
+        <Reveal className="sec-head">
+          <p className="eyebrow">{t.clients.eyebrow}</p>
+          <h2>{t.clients.h2}</h2>
+          <p className="lede">{t.clients.lede}</p>
+        </Reveal>
+
+        <div className="clients-grid">
+          {t.clients.items.map((c, i) => (
+            <Reveal key={i} className="client-card" delay={i * 70}>
+              <img src={CLIENT_LOGOS[c.key]} alt={c.name} loading="lazy" />
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function LeadForm({ t, lang }) {
   const [state, setState] = useState("idle"); // idle | sending | done | error
   const [form, setForm] = useState({
@@ -731,7 +778,7 @@ function Footer({ t, onQuick }) {
         <div className="foot-links" style={{ marginTop: 34 }}>
           <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
           <a
-            href="https://www.linkedin.com/in/mariopadillatirado"
+            href={LINKEDIN}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -785,8 +832,10 @@ export default function App() {
         <Stats t={t} />
         <Problem t={t} />
         <Calculator t={t} />
+        <MidCta t={t} onQuick={() => setQuickOpen(true)} />
         <Diagnostic t={t} />
         <Steps t={t} />
+        <Clients t={t} />
         <LeadForm t={t} lang={lang} />
       </main>
       <Footer t={t} onQuick={() => setQuickOpen(true)} />

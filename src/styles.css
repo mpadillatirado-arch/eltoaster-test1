@@ -635,6 +635,56 @@ ul { list-style: none; padding: 0; margin: 0; }
   font-size: 0.82rem; color: #8d8781;
 }
 
+/* ---------- Mid-scroll CTA banner ---------- */
+
+.midcta {
+  padding-block: clamp(48px, 7vw, 76px);
+  background: var(--ink);
+}
+
+.midcta-in {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.midcta h2 {
+  color: #fff;
+  font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+  max-width: 34ch;
+}
+
+/* ---------- Clients ---------- */
+
+.clients-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.client-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.client-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+
+.client-card img {
+  max-width: 100%;
+  max-height: 96px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
 /* ---------- Mobile sticky CTA (thumb zone) ---------- */
 
 .mobile-cta {

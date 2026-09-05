@@ -6,7 +6,7 @@ export const content = {
     nav: { how: "Cómo funciona", calc: "Calculadora", diag: "El diagnóstico", cta: "Diagnóstico gratis" },
 
     hero: {
-      eyebrow: "Phoenix · Mesa · Glendale · Tempe",
+      eyebrow: "Phoenix · Mesa · Glendale · Tempe · Gilbert · Chandler · Cave Creek · Queen Creek",
       h1a: "Tus reseñas ya te están costando",
       h1b: "dinero real",
       lede: "Cada estrella en Google vale entre 5% y 9% de tus ventas. Te hago un diagnóstico gratuito de tu reputación en línea — con datos de Google, Yelp y TripAdvisor — y te digo exactamente cuánto estás dejando en la mesa.",
@@ -59,15 +59,15 @@ export const content = {
 
     diag: {
       eyebrow: "Qué recibes",
-      h2: "Un reporte que puedes usar el lunes en la mañana",
+      h2: "Un reporte real de lo que opinan tus clientes, hecho para darte resultados tangibles",
       lede: "No es un PDF genérico. Es tu restaurante, tus reseñas, tus números — y una lista de qué arreglar primero.",
       cards: [
         { i: "★", h: "Tu posición real", p: "Tu calificación comparada con el promedio de tu categoría y con los competidores directos en tu código postal." },
         { i: "◎", h: "Los temas que se repiten", p: "Agrupo todas tus reseñas por tema: comida, servicio, tiempos de espera, precio, limpieza y autenticidad." },
         { i: "$", h: "El impacto en dólares", p: "Cuánto vale medio punto de calificación en tu operación, con tus ventas como base del cálculo." },
-        { i: "◷", h: "Tendencia de 12 meses", p: "Si vas subiendo o bajando, y qué pasó en los meses donde la calificación se movió." },
-        { i: "✓", h: "Plan de 3 acciones", p: "Las tres cosas que más mueven la aguja en tu caso, en orden, con el esfuerzo que requiere cada una." },
+        { i: "✓", h: "Plan de 3 acciones", p: "Plan de acción basado en las áreas de oportunidad operativas de tu negocio: las tres cosas que más mueven la aguja en tu caso, en orden, con el esfuerzo que requiere cada una." },
         { i: "⇄", h: "Guion de respuestas", p: "Plantillas en español e inglés para responder reseñas buenas y malas sin sonar a robot." },
+        { i: "📍", h: "Tu Perfil de Negocio en Google", p: "Reviso tu Google Business Profile completo — horarios, fotos, categorías, atributos, menú — para que tengas todo lo necesario y así generar más ventas y atraer más clientes." },
       ],
     },
 
@@ -76,7 +76,7 @@ export const content = {
       h2: "Tres pasos. Ninguno te cuesta.",
       items: [
         { h: "Me das el nombre y la dirección", p: "Nada más. No necesito acceso a tus sistemas, ni a tu punto de venta, ni a tus cuentas." },
-        { h: "Analizo tus reseñas públicas", p: "Reúno mínimo 50 reseñas de Google, Yelp y TripAdvisor y las agrupo por tema y por mes." },
+        { h: "Analizo tus reseñas públicas", p: "Agrego todas tus reseñas reales en Google, Yelp y TripAdvisor y las agrupo por tema y por mes. También reviso tu Google Business Profile completo para que tengas todos los atributos necesarios y generes más ventas." },
         { h: "Nos sentamos 20 minutos", p: "Te explico el reporte en persona o por video, en el idioma que prefieras. Te lo llevas aunque no trabajemos juntos." },
       ],
     },
@@ -112,7 +112,7 @@ export const content = {
       locPlaceholder: "1",
       okTitle: "¡Listo! Ya tengo tus datos.",
       okBody: "Te contacto en menos de 24 horas hábiles con los siguientes pasos. Revisa tu correo — y la carpeta de spam, por si acaso.",
-      error: "No se pudo enviar. Revisa tu conexión e inténtalo de nuevo, o escríbeme directo a mario.padilla@toast.com.",
+      error: "No se pudo enviar. Revisa tu conexión e inténtalo de nuevo, o escríbeme directo a mario.padilla@toasttab.com.",
     },
 
     foot: {
@@ -134,9 +134,25 @@ export const content = {
       close: "Cerrar",
       okTitle: "¡Listo!",
       okBody: "Recibí tus datos y te contacto en menos de 24 horas hábiles.",
-      error: "No se pudo enviar. Inténtalo de nuevo o escríbeme a mario.padilla@toast.com.",
+      error: "No se pudo enviar. Inténtalo de nuevo o escríbeme a mario.padilla@toasttab.com.",
       moreDetail: "¿Prefieres darme más contexto ahora?",
       moreDetailLink: "Usa el formulario completo",
+    },
+
+    midCta: {
+      h: "¿Seguimos? Pide tu diagnóstico gratis antes de que se te olvide.",
+      cta: "Pedir mi diagnóstico gratis",
+    },
+
+    clients: {
+      eyebrow: "Clientes",
+      h2: "Restaurantes que ya confían en este proceso",
+      lede: "Marcas independientes del área de Phoenix con las que he trabajado.",
+      items: [
+        { key: "las-culichis", name: "Las Culichis Mariscos" },
+        { key: "padel-pals", name: "Padel Pals" },
+        { key: "sushino", name: "Sushino Mexican Roll" },
+      ],
     },
   },
 
@@ -144,7 +160,7 @@ export const content = {
     nav: { how: "How it works", calc: "Calculator", diag: "The diagnostic", cta: "Free diagnostic" },
 
     hero: {
-      eyebrow: "Phoenix · Mesa · Glendale · Tempe",
+      eyebrow: "Phoenix · Mesa · Glendale · Tempe · Gilbert · Chandler · Cave Creek · Queen Creek",
       h1a: "Your reviews are already costing you",
       h1b: "real money",
       lede: "Every star on Google is worth 5–9% of your sales. I'll run a free diagnostic on your online reputation — pulling from Google, Yelp and TripAdvisor — and show you exactly what you're leaving on the table.",
@@ -197,15 +213,15 @@ export const content = {
 
     diag: {
       eyebrow: "What you get",
-      h2: "A report you can act on Monday morning",
+      h2: "A real report on what your customers are saying, built to get you tangible results",
       lede: "Not a generic PDF. Your restaurant, your reviews, your numbers — and a list of what to fix first.",
       cards: [
         { i: "★", h: "Where you actually stand", p: "Your rating against your category average and the direct competitors in your zip code." },
         { i: "◎", h: "The themes that repeat", p: "Every review grouped by theme: food, service, wait times, price, cleanliness and authenticity." },
         { i: "$", h: "The dollar impact", p: "What half a rating point is worth in your operation, calculated against your actual revenue." },
-        { i: "◷", h: "12-month trend", p: "Whether you're climbing or sliding, and what happened in the months the rating moved." },
-        { i: "✓", h: "A 3-action plan", p: "The three things that move the needle most in your case, ranked, with the effort each one takes." },
+        { i: "✓", h: "A 3-action plan", p: "An action plan based on your business's operational opportunity areas: the three things that move the needle most in your case, ranked, with the effort each one takes." },
         { i: "⇄", h: "Response scripts", p: "Templates in English and Spanish for answering good and bad reviews without sounding like a robot." },
+        { i: "📍", h: "Your Google Business Profile", p: "I review your full Google Business Profile — hours, photos, categories, attributes, menu — so you have everything needed to drive more sales and attract more customers." },
       ],
     },
 
@@ -214,7 +230,7 @@ export const content = {
       h2: "Three steps. None of them cost you.",
       items: [
         { h: "Give me the name and address", p: "That's it. I don't need access to your systems, your POS, or any of your accounts." },
-        { h: "I analyze your public reviews", p: "I pull at least 50 reviews from Google, Yelp and TripAdvisor and group them by theme and by month." },
+        { h: "I analyze your public reviews", p: "I pull every one of your real reviews from Google, Yelp and TripAdvisor and group them by theme and by month. I also review your full Google Business Profile so you have every attribute needed to drive more sales." },
         { h: "We sit down for 20 minutes", p: "I walk you through the report in person or over video, in whichever language you prefer. It's yours either way." },
       ],
     },
@@ -250,7 +266,7 @@ export const content = {
       locPlaceholder: "1",
       okTitle: "Got it — you're on the list.",
       okBody: "I'll reach out within one business day with next steps. Keep an eye on your inbox, and your spam folder just in case.",
-      error: "Couldn't send that. Check your connection and try again, or email me directly at mario.padilla@toast.com.",
+      error: "Couldn't send that. Check your connection and try again, or email me directly at mario.padilla@toasttab.com.",
     },
 
     foot: {
@@ -272,9 +288,25 @@ export const content = {
       close: "Close",
       okTitle: "You're set!",
       okBody: "Got your details — I'll reach out within one business day.",
-      error: "Couldn't send that. Try again or email me at mario.padilla@toast.com.",
+      error: "Couldn't send that. Try again or email me at mario.padilla@toasttab.com.",
       moreDetail: "Want to give me more context now?",
       moreDetailLink: "Use the full form",
+    },
+
+    midCta: {
+      h: "Still here? Get your free diagnostic before you scroll past it.",
+      cta: "Get my free diagnostic",
+    },
+
+    clients: {
+      eyebrow: "Clients",
+      h2: "Restaurants that already trust this process",
+      lede: "Independent brands across the Phoenix area I've worked with.",
+      items: [
+        { key: "las-culichis", name: "Las Culichis Mariscos" },
+        { key: "padel-pals", name: "Padel Pals" },
+        { key: "sushino", name: "Sushino Mexican Roll" },
+      ],
     },
   },
 };

@@ -791,6 +791,31 @@ ul { list-style: none; padding: 0; margin: 0; }
   .reveal { opacity: 1; transform: none; }
 }
 
+/* ---- Challenge chips ---- */
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 10px;
+}
+.chip {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text-2);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 0.84rem;
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: border-color 0.15s var(--ease), color 0.15s var(--ease), background 0.15s var(--ease);
+}
+.chip:hover { border-color: var(--orange); color: var(--text); }
+.chip.active {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: #fff;
+}
+
 /* ---- Consent checkbox ---- */
 .inp.consent { margin-top: 4px; }
 .checkbox-label {

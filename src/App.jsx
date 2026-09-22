@@ -275,7 +275,7 @@ function QuickModal({ open, onClose, t, lang }) {
 
 /* ---------------- sections ---------------- */
 
-function Nav({ lang, setLang, t, onQuick }) {
+function Nav({ lang, setLang, t }) {
   const [stuck, setStuck] = useState(false);
   useEffect(() => {
     const on = () => setStuck(window.scrollY > 8);
@@ -295,7 +295,6 @@ function Nav({ lang, setLang, t, onQuick }) {
         <nav className="nav-links">
           <a href="#como">{t.nav.how}</a>
           <a href="#calculadora">{t.nav.calc}</a>
-          <a href="#diagnostico">{t.nav.diag}</a>
         </nav>
 
         <div className="lang" role="group" aria-label="Language / Idioma">
@@ -315,9 +314,9 @@ function Nav({ lang, setLang, t, onQuick }) {
           </button>
         </div>
 
-        <button type="button" className="btn" onClick={onQuick}>
+        <a className="btn" href="#empezar">
           {t.nav.cta}
-        </button>
+        </a>
       </div>
     </header>
   );
@@ -743,27 +742,34 @@ function LeadForm({ t, lang }) {
                 </div>
                 <div className="inp">
                   <label htmlFor="ct">{t.form.f.city}</label>
-                  <input
+                  <select
                     id="ct"
                     autoComplete="address-level2"
-                    placeholder={t.form.cityPlaceholder}
                     value={form.city}
                     onChange={set("city")}
-                  />
+                  >
+                    <option value="" disabled>
+                      {t.form.f.cityPlaceholderOpt}
+                    </option>
+                    {t.form.cityOptions.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
               <div className="row">
                 <div className="inp">
                   <label htmlFor="lc">{t.form.f.locations}</label>
-                  <input
-                    id="lc"
-                    type="number"
-                    min="1"
-                    placeholder={t.form.locPlaceholder}
-                    value={form.locations}
-                    onChange={set("locations")}
-                  />
+                  <select id="lc" value={form.locations} onChange={set("locations")}>
+                    {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+                      <option key={n} value={n}>
+                        {n}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="inp">
                   <label htmlFor="lg">{t.form.f.lang}</label>
@@ -780,6 +786,24 @@ function LeadForm({ t, lang }) {
 
               <div className="inp">
                 <label htmlFor="ch">{t.form.f.challenge}</label>
+                <div className="chip-row" role="group" aria-label={t.form.f.challenge}>
+                  {t.form.challengeOptions.map((opt) => (
+                    <button
+                      key={opt}
+                      type="button"
+                      className={`chip${form.biggest_challenge === opt ? " active" : ""}`}
+                      aria-pressed={form.biggest_challenge === opt}
+                      onClick={() =>
+                        setForm((f) => ({
+                          ...f,
+                          biggest_challenge: f.biggest_challenge === opt ? "" : opt,
+                        }))
+                      }
+                    >
+                      {opt}
+                    </button>
+                  ))}
+                </div>
                 <textarea
                   id="ch"
                   value={form.biggest_challenge}

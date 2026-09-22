@@ -790,3 +790,45 @@ ul { list-style: none; padding: 0; margin: 0; }
   }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* ---- Consent checkbox ---- */
+.inp.consent { margin-top: 4px; }
+.checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--text-2);
+}
+.checkbox-label input[type="checkbox"] {
+  margin-top: 3px;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--orange);
+  flex-shrink: 0;
+}
+.checkbox-label a { color: var(--orange-deep); text-decoration: underline; }
+
+/* ---- Privacy policy page ---- */
+.privacy-page { padding: clamp(48px, 8vw, 96px) 0; }
+.privacy-page h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin: 18px 0 6px; }
+.privacy-page .updated { color: var(--text-3); font-size: 0.9rem; margin-bottom: 20px; }
+.privacy-page .lede { margin-bottom: 32px; }
+.privacy-sec { margin-bottom: 28px; }
+.privacy-sec h2 { font-size: 1.15rem; margin-bottom: 8px; }
+.privacy-sec p { color: var(--text-2); }
+.privacy-page .disclaimer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  font-size: 0.85rem;
+  color: var(--text-3);
+}
+.back-link {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: var(--orange-deep);
+}

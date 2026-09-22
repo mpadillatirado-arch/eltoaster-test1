@@ -95,6 +95,7 @@ function Stars({ value }) {
 function QuickModal({ open, onClose, t, lang }) {
   const [state, setState] = useState("idle"); // idle | sending | done | error
   const [form, setForm] = useState({ restaurant_name: "", email: "", city: "" });
+  const [marketingConsent, setMarketingConsent] = useState(false);
   const firstRef = useRef(null);
   const dialogRef = useRef(null);
 
@@ -102,6 +103,7 @@ function QuickModal({ open, onClose, t, lang }) {
     if (open) {
       setState("idle");
       setForm({ restaurant_name: "", email: "", city: "" });
+      setMarketingConsent(false);
       setTimeout(() => firstRef.current?.focus(), 30);
     }
   }, [open]);
@@ -133,7 +135,13 @@ function QuickModal({ open, onClose, t, lang }) {
       return;
     }
 
-    const payload = { ...form, preferred_language: lang, source: "quick_modal" };
+    const payload = {
+      ...form,
+      preferred_language: lang,
+      source: "quick_modal",
+      marketing_consent: marketingConsent,
+      marketing_consent_at: marketingConsent ? new Date().toISOString() : null,
+    };
     const { error } = await supabase.from("leads").insert([payload]);
 
     if (error) {
@@ -229,6 +237,22 @@ function QuickModal({ open, onClose, t, lang }) {
                   value={form.city}
                   onChange={set("city")}
                 />
+              </div>
+
+              <div className="inp consent">
+                <label htmlFor="qm-consent" className="checkbox-label">
+                  <input
+                    id="qm-consent"
+                    type="checkbox"
+                    checked={marketingConsent}
+                    onChange={(e) => setMarketingConsent(e.target.checked)}
+                  />
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: t.consent.label(t.consent.linkText),
+                    }}
+                  />
+                </label>
               </div>
 
               <button className="btn" type="submit" disabled={state === "sending"}>
@@ -584,6 +608,7 @@ function LeadForm({ t, lang }) {
     biggest_challenge: "",
     preferred_language: lang,
   });
+  const [marketingConsent, setMarketingConsent] = useState(false);
 
   useEffect(() => {
     setForm((f) => ({ ...f, preferred_language: lang }));
@@ -604,11 +629,21 @@ function LeadForm({ t, lang }) {
       return;
     }
 
-    const { error } = await supabase
-      .from("leads")
-      .insert([{ ...form, source: "landing" }]);
+    const payload = {
+      ...form,
+      source: "landing",
+      marketing_consent: marketingConsent,
+      marketing_consent_at: marketingConsent ? new Date().toISOString() : null,
+    };
+    const { error } = await supabase.from("leads").insert([payload]);
 
     setState(error ? "error" : "done");
+
+    if (!error) {
+      // Best-effort notification + marketing sync — never blocks or fails
+      // the UI outcome, since the lead is already safely stored.
+      supabase.functions.invoke("send-lead-email", { body: payload }).catch(() => {});
+    }
   }
 
   return (
@@ -752,6 +787,22 @@ function LeadForm({ t, lang }) {
                 />
               </div>
 
+              <div className="inp consent">
+                <label htmlFor="lf-consent" className="checkbox-label">
+                  <input
+                    id="lf-consent"
+                    type="checkbox"
+                    checked={marketingConsent}
+                    onChange={(e) => setMarketingConsent(e.target.checked)}
+                  />
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: t.consent.label(t.consent.linkText),
+                    }}
+                  />
+                </label>
+              </div>
+
               <button className="btn" type="submit" disabled={state === "sending"}>
                 {state === "sending" ? t.form.f.sending : t.form.f.submit}
               </button>
@@ -759,6 +810,30 @@ function LeadForm({ t, lang }) {
             </form>
           )}
         </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function PrivacyPolicy({ t }) {
+  return (
+    <section className="privacy-page">
+      <div className="wrap" style={{ maxWidth: 760 }}>
+        <a href="#top" className="back-link">
+          {t.privacy.back}
+        </a>
+        <h1>{t.privacy.title}</h1>
+        <p className="updated">{t.privacy.updated}</p>
+        <p className="lede">{t.privacy.intro}</p>
+
+        {t.privacy.sections.map((s, i) => (
+          <div key={i} className="privacy-sec">
+            <h2>{s.h}</h2>
+            <p>{s.p}</p>
+          </div>
+        ))}
+
+        <p className="disclaimer">{t.privacy.disclaimer}</p>
       </div>
     </section>
   );
@@ -786,6 +861,7 @@ function Footer({ t, onQuick }) {
           </a>
           <a href="#calculadora">{t.nav.calc}</a>
           <a href="#diagnostico">{t.nav.diag}</a>
+          <a href="#privacy">{t.privacy.title}</a>
         </div>
 
         <div className="foot-bot">
@@ -823,6 +899,28 @@ export default function App() {
 
   const t = content[lang];
   const [quickOpen, setQuickOpen] = useState(false);
+
+  const [route, setRoute] = useState(() =>
+    window.location.hash === "#privacy" ? "privacy" : "site"
+  );
+  useEffect(() => {
+    const onHash = () =>
+      setRoute(window.location.hash === "#privacy" ? "privacy" : "site");
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+
+  if (route === "privacy") {
+    return (
+      <>
+        <Nav lang={lang} setLang={setLang} t={t} onQuick={() => setQuickOpen(true)} />
+        <main>
+          <PrivacyPolicy t={t} />
+        </main>
+        <Footer t={t} onQuick={() => setQuickOpen(true)} />
+      </>
+    );
+  }
 
   return (
     <>

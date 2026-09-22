@@ -154,6 +154,52 @@ export const content = {
         { key: "sushino", name: "Sushino Mexican Roll" },
       ],
     },
+
+    consent: {
+      label: (link) =>
+        `Quiero recibir por correo tips, casos de éxito y promociones sobre reputación de restaurantes (opcional). Puedo darme de baja cuando quiera. Ver <a href="#privacy" target="_blank" rel="noopener noreferrer">${link}</a>.`,
+      linkText: "Aviso de Privacidad",
+    },
+
+    privacy: {
+      title: "Aviso de Privacidad",
+      updated: "Última actualización: septiembre de 2026",
+      intro:
+        "Este aviso explica qué información recopilo a través de El Toaster, para qué la uso, con quién la comparto y qué derechos tienes sobre tus datos, conforme a la ley de privacidad de California (CCPA/CPRA) y otras leyes estatales de privacidad de EE. UU. aplicables.",
+      sections: [
+        {
+          h: "Qué información recopilo",
+          p: "Cuando llenas el formulario de diagnóstico gratuito, recopilo: nombre del restaurante, tu nombre, correo electrónico, teléfono (opcional), ciudad, número de ubicaciones y el reto que nos compartas. Si aceptas recibir correos de marketing, guardo esa preferencia y la fecha en que la diste.",
+        },
+        {
+          h: "Para qué la uso",
+          p: "Uso tus datos únicamente para: (1) contactarte sobre tu diagnóstico de reputación, (2) enviarte el reporte y coordinar la llamada de seguimiento, y (3) si diste tu consentimiento explícito, enviarte contenido de marketing relacionado (tips, casos de éxito, promociones). Nunca uso tus datos para fines distintos a estos.",
+        },
+        {
+          h: "Con quién la comparto",
+          p: "No vendo ni comparto tu información con terceros para publicidad. Uso dos proveedores de servicio que procesan datos en mi nombre bajo sus propios acuerdos de confidencialidad: Supabase (almacenamiento de la base de datos) y, solo si diste tu consentimiento de marketing, Resend (envío de correos). Ninguno de los dos está autorizado a usar tus datos para sus propios fines.",
+        },
+        {
+          h: "Tus derechos (CCPA/CPRA)",
+          p: "Si eres residente de California — o de otro estado con protecciones similares — tienes derecho a: saber qué datos tengo sobre ti, solicitar una copia, pedir que los corrija, pedir que los elimine, y optar por no recibir más comunicaciones de marketing en cualquier momento. No vendo ni comparto tu información personal con terceros para publicidad dirigida, por lo que no aplica un mecanismo de 'no vender mis datos' — pero puedes ejercer cualquiera de los derechos anteriores escribiendo a mario.padilla@toasttab.com. Respondo en un plazo razonable y no habrá represalia ni cambio en el servicio por ejercer estos derechos.",
+        },
+        {
+          h: "Cómo darte de baja de marketing",
+          p: "Todo correo de marketing incluye un enlace de baja al final. También puedes escribirme directamente y te doy de baja de inmediato.",
+        },
+        {
+          h: "Retención de datos",
+          p: "Conservo tu información mientras exista una relación comercial activa o potencial, y la elimino a solicitud tuya salvo que la ley exija conservarla por más tiempo.",
+        },
+        {
+          h: "Contacto",
+          p: "Para cualquier pregunta o solicitud sobre tus datos, escribe a mario.padilla@toasttab.com.",
+        },
+      ],
+      disclaimer:
+        "Este aviso se ofrece con fines informativos y no constituye asesoría legal. Si operas un negocio con obligaciones de privacidad específicas, consulta a un abogado.",
+      back: "← Volver al sitio",
+    },
   },
 
   en: {
@@ -307,6 +353,52 @@ export const content = {
         { key: "padel-pals", name: "Padel Pals" },
         { key: "sushino", name: "Sushino Mexican Roll" },
       ],
+    },
+
+    consent: {
+      label: (link) =>
+        `I'd like to receive email tips, success stories and promotions about restaurant reputation (optional). I can unsubscribe anytime. See <a href="#privacy" target="_blank" rel="noopener noreferrer">${link}</a>.`,
+      linkText: "Privacy Notice",
+    },
+
+    privacy: {
+      title: "Privacy Notice",
+      updated: "Last updated: September 2026",
+      intro:
+        "This notice explains what information I collect through El Toaster, how I use it, who I share it with, and what rights you have over your data under the California Consumer Privacy Act (CCPA/CPRA) and other applicable U.S. state privacy laws.",
+      sections: [
+        {
+          h: "What I collect",
+          p: "When you fill out the free diagnostic form, I collect: restaurant name, your name, email address, phone (optional), city, number of locations, and whatever challenge you share. If you opt in to marketing emails, I store that preference and the date you gave it.",
+        },
+        {
+          h: "How I use it",
+          p: "I use your data only to: (1) contact you about your reputation diagnostic, (2) send you the report and coordinate a follow-up call, and (3) if you gave explicit consent, send you related marketing content (tips, success stories, promotions). I never use your data for anything outside these purposes.",
+        },
+        {
+          h: "Who I share it with",
+          p: "I don't sell or share your information with third parties for advertising. I use two service providers who process data on my behalf under their own confidentiality agreements: Supabase (database storage) and, only if you gave marketing consent, Resend (email delivery). Neither is authorized to use your data for their own purposes.",
+        },
+        {
+          h: "Your rights (CCPA/CPRA)",
+          p: "If you're a California resident — or from another state with similar protections — you have the right to: know what data I have on you, request a copy, ask me to correct it, ask me to delete it, and opt out of marketing communications at any time. I don't sell or share your personal information with third parties for targeted advertising, so a 'do not sell my data' mechanism doesn't apply — but you can exercise any of the rights above by emailing mario.padilla@toasttab.com. I respond within a reasonable timeframe, and there's no retaliation or change in service for exercising these rights.",
+        },
+        {
+          h: "How to unsubscribe from marketing",
+          p: "Every marketing email includes an unsubscribe link at the bottom. You can also email me directly and I'll remove you right away.",
+        },
+        {
+          h: "Data retention",
+          p: "I keep your information for as long as there's an active or potential business relationship, and delete it on request unless the law requires me to keep it longer.",
+        },
+        {
+          h: "Contact",
+          p: "For any question or request about your data, email mario.padilla@toasttab.com.",
+        },
+      ],
+      disclaimer:
+        "This notice is provided for informational purposes and does not constitute legal advice. If you operate a business with specific privacy obligations, consult an attorney.",
+      back: "← Back to the site",
     },
   },
 };

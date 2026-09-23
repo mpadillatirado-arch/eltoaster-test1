@@ -151,9 +151,10 @@ function QuickModal({ open, onClose, t, lang }) {
 
     setState("done");
 
-    // Best-effort notification email — never blocks or fails the UI, since
-    // the lead is already safely stored regardless of email delivery.
+    // Best-effort emails — never block or fail the UI, since the lead is
+    // already safely stored regardless of delivery.
     supabase.functions.invoke("send-lead-email", { body: payload }).catch(() => {});
+    supabase.functions.invoke("send-diagnostic-email", { body: payload }).catch(() => {});
   }
 
   return (
@@ -642,6 +643,7 @@ function LeadForm({ t, lang }) {
       // Best-effort notification + marketing sync — never blocks or fails
       // the UI outcome, since the lead is already safely stored.
       supabase.functions.invoke("send-lead-email", { body: payload }).catch(() => {});
+      supabase.functions.invoke("send-diagnostic-email", { body: payload }).catch(() => {});
     }
   }
 

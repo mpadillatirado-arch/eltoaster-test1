@@ -340,7 +340,7 @@ function Diagnostic({ t }) {
           {t.diag.cards.map((c, i) => (
             <Reveal
               key={i}
-              className={`card${i === 0 || i === 5 ? " wide" : ""}`}
+              className={`card${i === 0 || i === t.diag.cards.length - 1 ? " wide" : ""}`}
               delay={i * 60}
             >
               <div className="ic" aria-hidden="true">

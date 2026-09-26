@@ -9,7 +9,7 @@ export const content = {
       eyebrow: "Phoenix · Mesa · Glendale · Tempe · Gilbert · Chandler · Cave Creek · Queen Creek",
       h1a: "Tus reseñas ya te están costando",
       h1b: "dinero real",
-      lede: "Cada estrella en Google vale entre 5% y 9% de tus ventas. Te hago un diagnóstico gratuito de tu reputación en línea — con datos de Google, Yelp y TripAdvisor — y te digo exactamente cuánto estás dejando en la mesa.",
+      lede: "Cada estrella en Yelp vale entre 5% y 9% de tus ventas. Te hago un diagnóstico gratuito de tu reputación en línea — de lo que opinan tus clientes en tiempo real — y te digo exactamente cómo mejorar esos ratings y cuánto estás dejando en la mesa.",
       cta1: "Pedir mi diagnóstico gratis",
       cta2: "Ver cuánto pierdo",
       t1: "Sin costo",
@@ -63,11 +63,9 @@ export const content = {
       lede: "No es un PDF genérico. Es tu restaurante, tus reseñas, tus números — y una lista de qué arreglar primero.",
       cards: [
         { i: "★", h: "Tu posición real", p: "Tu calificación comparada con el promedio de tu categoría y con los competidores directos en tu código postal." },
-        { i: "◎", h: "Los temas que se repiten", p: "Agrupo todas tus reseñas por tema: comida, servicio, tiempos de espera, precio, limpieza y autenticidad." },
+        { i: "◎", h: "Tus principales problemas operativos", p: "Agrupo todas tus reseñas por tema: comida, servicio, tiempos de espera, precio, limpieza y autenticidad." },
         { i: "$", h: "El impacto en dólares", p: "Cuánto vale medio punto de calificación en tu operación, con tus ventas como base del cálculo." },
         { i: "✓", h: "Plan de 3 acciones", p: "Plan de acción basado en las áreas de oportunidad operativas de tu negocio: las tres cosas que más mueven la aguja en tu caso, en orden, con el esfuerzo que requiere cada una." },
-        { i: "⇄", h: "Guion de respuestas", p: "Plantillas en español e inglés para responder reseñas buenas y malas sin sonar a robot." },
-        { i: "📍", h: "Tu Perfil de Negocio en Google", p: "Reviso tu Google Business Profile completo — horarios, fotos, categorías, atributos, menú — para que tengas todo lo necesario y así generar más ventas y atraer más clientes." },
       ],
     },
 
@@ -296,11 +294,9 @@ export const content = {
       lede: "Not a generic PDF. Your restaurant, your reviews, your numbers — and a list of what to fix first.",
       cards: [
         { i: "★", h: "Where you actually stand", p: "Your rating against your category average and the direct competitors in your zip code." },
-        { i: "◎", h: "The themes that repeat", p: "Every review grouped by theme: food, service, wait times, price, cleanliness and authenticity." },
+        { i: "◎", h: "Your main operational problems", p: "Every review grouped by theme: food, service, wait times, price, cleanliness and authenticity." },
         { i: "$", h: "The dollar impact", p: "What half a rating point is worth in your operation, calculated against your actual revenue." },
         { i: "✓", h: "A 3-action plan", p: "An action plan based on your business's operational opportunity areas: the three things that move the needle most in your case, ranked, with the effort each one takes." },
-        { i: "⇄", h: "Response scripts", p: "Templates in English and Spanish for answering good and bad reviews without sounding like a robot." },
-        { i: "📍", h: "Your Google Business Profile", p: "I review your full Google Business Profile — hours, photos, categories, attributes, menu — so you have everything needed to drive more sales and attract more customers." },
       ],
     },
 

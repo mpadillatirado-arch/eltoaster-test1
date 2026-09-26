@@ -476,8 +476,11 @@ function Blog({ t, lang }) {
     });
 
   return (
-    <section id="blog">
+    <section id="blog" className="blog-page">
       <div className="wrap">
+        <a href="#top" className="back-link">
+          {t.blog.back}
+        </a>
         <Reveal className="sec-head">
           <p className="eyebrow">{t.blog.eyebrow}</p>
           <h2>{t.blog.h2}</h2>
@@ -1090,12 +1093,16 @@ export default function App() {
 
   const t = content[lang];
 
-  const [route, setRoute] = useState(() =>
-    window.location.hash === "#privacy" ? "privacy" : "site"
-  );
+  const routeFromHash = () => {
+    const h = window.location.hash;
+    if (h === "#privacy") return "privacy";
+    if (h === "#blog") return "blog";
+    return "site";
+  };
+
+  const [route, setRoute] = useState(routeFromHash);
   useEffect(() => {
-    const onHash = () =>
-      setRoute(window.location.hash === "#privacy" ? "privacy" : "site");
+    const onHash = () => setRoute(routeFromHash());
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
@@ -1106,6 +1113,18 @@ export default function App() {
         <Nav lang={lang} setLang={setLang} t={t} />
         <main>
           <PrivacyPolicy t={t} />
+        </main>
+        <Footer t={t} lang={lang} />
+      </>
+    );
+  }
+
+  if (route === "blog") {
+    return (
+      <>
+        <Nav lang={lang} setLang={setLang} t={t} />
+        <main>
+          <Blog t={t} lang={lang} />
         </main>
         <Footer t={t} lang={lang} />
       </>
@@ -1124,7 +1143,6 @@ export default function App() {
         <Diagnostic t={t} />
         <Steps t={t} />
         <Clients t={t} />
-        <Blog t={t} lang={lang} />
         <Pains t={t} />
         <LeadForm t={t} lang={lang} />
         <OneOnOne t={t} />

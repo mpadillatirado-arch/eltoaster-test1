@@ -970,7 +970,9 @@ ul { list-style: none; padding: 0; margin: 0; }
 }
 .inp-note.warn { color: var(--orange-deep); font-weight: 500; }
 
-/* ---- Blog ---- */
+/* ---- Blog (standalone page, not on the landing page) ---- */
+.blog-page { padding: clamp(48px, 8vw, 96px) 0; }
+.blog-page .back-link { display: block; margin-bottom: 8px; }
 .blog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

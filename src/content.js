@@ -139,10 +139,11 @@ export const content = {
       loading: "Cargando artículos…",
       empty: "Todavía no hay artículos publicados. Vuelve pronto.",
       readMore: "Leer el artículo",
+      back: "← Volver al sitio",
     },
 
     newsletter: {
-      h: "Suscríbete al boletín",
+      h: "Suscríbete a mi Newsletter",
       lede: "Notas de la industria y tips de reputación, una vez al mes. Sin spam, y te puedes dar de baja cuando quieras.",
       placeholder: "tu@correo.com",
       cta: "Suscribirme",
@@ -401,6 +402,7 @@ export const content = {
       loading: "Loading articles…",
       empty: "No articles published yet. Check back soon.",
       readMore: "Read the article",
+      back: "← Back to the site",
     },
 
     newsletter: {

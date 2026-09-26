@@ -817,6 +817,15 @@ ul { list-style: none; padding: 0; margin: 0; }
 }
 
 /* ---- Pains section (soft, non-ad callout that links to Cal.com) ---- */
+.pains-head { display: flex; flex-direction: column; align-items: flex-start; }
+.pains-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow-sm);
+}
 .pains-h2 {
   font-size: clamp(2.2rem, 6vw, 3.4rem);
   line-height: 1.05;
@@ -850,6 +859,12 @@ ul { list-style: none; padding: 0; margin: 0; }
   color: var(--text-3);
   font-size: 0.95rem;
 }
+.pains-learn-more {
+  margin-top: 10px;
+  color: var(--text-3);
+  font-size: 0.95rem;
+}
+.pains-learn-more a { color: var(--orange-deep); text-decoration: underline; }
 
 /* ---- One-on-one Cal.com booking section ---- */
 .one-on-one {
@@ -858,6 +873,12 @@ ul { list-style: none; padding: 0; margin: 0; }
 }
 .one-on-one .sec-head { max-width: 640px; margin: 0 auto; }
 .one-on-one .btn { margin-top: 24px; display: inline-flex; }
+.btn-lg {
+  padding: 22px 44px;
+  font-size: 1.2rem;
+  border-radius: 100px;
+  box-shadow: var(--shadow);
+}
 
 /* ---- Consent checkbox ---- */
 .inp.consent { margin-top: 4px; }

@@ -4,6 +4,7 @@ import { supabase } from "./supabase.js";
 import lasCulichisLogo from "./assets/clients/las-culichis.jpg";
 import padelPalsLogo from "./assets/clients/padel-pals.jpg";
 import sushinoLogo from "./assets/clients/sushino.jpg";
+import marioAvatar from "./assets/mario-avatar.webp";
 
 const CLIENT_LOGOS = {
   "las-culichis": lasCulichisLogo,
@@ -14,6 +15,8 @@ const CLIENT_LOGOS = {
 const EMAIL = "mario.padilla@toasttab.com";
 const LINKEDIN = "https://www.linkedin.com/in/mario-padilla-57145839/";
 const CAL_URL = "https://cal.com/mario-padilla-tirado-hnho7v/15-minutos-chat-free-restaurant-diagnostic";
+const POS_LEARN_MORE_URL =
+  "https://pos.toasttab.com/lp/get-started?utm_medium=paid&utm_source=sembb&utm_campaign=tpos-b2bsmb-paid-1139094559993298-exabrandxx-acq-sembb-cousa&utm_term=point%20of%20sale%20toast&_bt=&_bm=e&_bn=o&device=c&utm_campaign_id=352125627&utm_adgroup_id=1139094559993298&msclkid=7b495c0779221c10f9df36b04aa2d98f&utm_content=Toast%20POS";
 
 /* ---------------- helpers ---------------- */
 
@@ -612,7 +615,13 @@ function Pains({ t }) {
   return (
     <section id="dolores" className="pains">
       <div className="wrap">
-        <Reveal className="sec-head">
+        <Reveal className="sec-head pains-head">
+          <img
+            className="pains-avatar"
+            src={marioAvatar}
+            alt="Mario Padilla"
+            loading="lazy"
+          />
           <p className="eyebrow">{t.pains.eyebrow}</p>
           <h2 className="hand pains-h2">{t.pains.h2}</h2>
           <p className="lede">{t.pains.lede}</p>
@@ -635,6 +644,12 @@ function Pains({ t }) {
 
         <Reveal delay={t.pains.items.length * 70}>
           <p className="pains-note">{t.pains.note}</p>
+          <p className="pains-learn-more">
+            {t.pains.learnMore}{" "}
+            <a href={POS_LEARN_MORE_URL} target="_blank" rel="noopener noreferrer">
+              {t.pains.learnMoreLink}
+            </a>
+          </p>
         </Reveal>
       </div>
     </section>
@@ -650,7 +665,7 @@ function OneOnOne({ t }) {
           <h2>{t.oneOnOne.h2}</h2>
           <p className="lede">{t.oneOnOne.lede}</p>
           <a
-            className="btn"
+            className="btn btn-lg"
             href={CAL_URL}
             target="_blank"
             rel="noopener noreferrer"

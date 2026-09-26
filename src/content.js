@@ -165,9 +165,9 @@ export const content = {
     },
 
     pains: {
-      eyebrow: "Detrás de la reseña",
+      eyebrow: "POS System",
       h2: "¿Te suena familiar?",
-      lede: "Muchas veces la reseña baja es el síntoma. El problema real suele estar en cómo opera el restaurante día a día.",
+      lede: "Muchas veces la reseña baja es el síntoma. El problema real suele estar en cómo opera el restaurante día a día — casi siempre en el sistema que usas para vender.",
       items: [
         "Tu punto de venta se traba justo en la hora pico",
         "Los pedidos en línea no le llegan bien a la cocina",
@@ -176,6 +176,8 @@ export const content = {
         "Cerrar caja toma horas y los números casi nunca cuadran",
       ],
       note: "¿Alguno te quitó el sueño esta semana? Platicamos 15 minutos, sin compromiso.",
+      learnMore: "¿Quieres conocer más sobre sistemas POS?",
+      learnMoreLink: "Ver información aquí",
     },
 
     oneOnOne: {
@@ -395,9 +397,9 @@ export const content = {
     },
 
     pains: {
-      eyebrow: "Behind the review",
+      eyebrow: "POS System",
       h2: "Sound familiar?",
-      lede: "A low review is often just the symptom. The real problem usually lives in how the restaurant runs day to day.",
+      lede: "A low review is often just the symptom. The real problem usually lives in how the restaurant runs day to day — most often in the system you use to sell.",
       items: [
         "Your point of sale locks up right at peak hour",
         "Online orders don't make it to the kitchen cleanly",
@@ -406,6 +408,8 @@ export const content = {
         "Closing out takes hours and the numbers rarely match",
       ],
       note: "Any of these keep you up this week? Let's talk for 15 minutes, no strings attached.",
+      learnMore: "Want to learn more about POS systems?",
+      learnMoreLink: "See more information here",
     },
 
     oneOnOne: {

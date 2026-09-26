@@ -703,8 +703,12 @@ ul { list-style: none; padding: 0; margin: 0; }
   #diagnostico .bento { display: none; }
   #clientes { display: none; }
 
-  /* Center the stat numbers/labels in their boxes for a more symmetric grid. */
+  /* Center the stat numbers/labels in their boxes for a more symmetric grid,
+     and keep only the first two stats (5–9% / 93%) as a single two-column
+     row with the divider — dropping "48h" and "$0" entirely on mobile. */
   .stat { text-align: center; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stat:nth-child(n + 3) { display: none; }
 
   /* Drop the testimonial (and the role/company line in it) so mobile visitors
      land on the actual form fields sooner. */

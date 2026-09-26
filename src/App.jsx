@@ -13,6 +13,7 @@ const CLIENT_LOGOS = {
 
 const EMAIL = "mario.padilla@toasttab.com";
 const LINKEDIN = "https://www.linkedin.com/in/mario-padilla-57145839/";
+const CAL_URL = "https://cal.com/mario-padilla-tirado-hnho7v/15-minutos-chat-free-restaurant-diagnostic";
 
 /* ---------------- helpers ---------------- */
 
@@ -230,14 +231,22 @@ function QuickModal({ open, onClose, t, lang }) {
 
               <div className="inp">
                 <label htmlFor="qm-loc">{t.quick.location}</label>
-                <input
+                <select
                   id="qm-loc"
                   required
                   autoComplete="address-level2"
-                  placeholder={t.quick.locationPlaceholder}
                   value={form.city}
                   onChange={set("city")}
-                />
+                >
+                  <option value="" disabled>
+                    {t.form.f.cityPlaceholderOpt}
+                  </option>
+                  {t.form.cityOptions.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="inp consent">
@@ -591,6 +600,64 @@ function Clients({ t }) {
             </Reveal>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+/** Soft, non-salesy callout: restaurant operational pain points. Clicking any
+ *  one opens Mario's Cal.com booking page in a new tab — framed as "let's
+ *  talk," not as a POS pitch. */
+function Pains({ t }) {
+  return (
+    <section id="dolores" className="pains">
+      <div className="wrap">
+        <Reveal className="sec-head">
+          <p className="eyebrow">{t.pains.eyebrow}</p>
+          <h2 className="hand pains-h2">{t.pains.h2}</h2>
+          <p className="lede">{t.pains.lede}</p>
+        </Reveal>
+
+        <div className="pains-list">
+          {t.pains.items.map((p, i) => (
+            <Reveal key={i} delay={i * 70}>
+              <a
+                className="pain-item"
+                href={CAL_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {p}
+              </a>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal delay={t.pains.items.length * 70}>
+          <p className="pains-note">{t.pains.note}</p>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function OneOnOne({ t }) {
+  return (
+    <section className="one-on-one">
+      <div className="wrap">
+        <Reveal className="sec-head">
+          <p className="eyebrow">{t.oneOnOne.eyebrow}</p>
+          <h2>{t.oneOnOne.h2}</h2>
+          <p className="lede">{t.oneOnOne.lede}</p>
+          <a
+            className="btn"
+            href={CAL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t.oneOnOne.cta}
+          </a>
+        </Reveal>
       </div>
     </section>
   );
@@ -960,7 +1027,9 @@ export default function App() {
         <Diagnostic t={t} />
         <Steps t={t} />
         <Clients t={t} />
+        <Pains t={t} />
         <LeadForm t={t} lang={lang} />
+        <OneOnOne t={t} />
       </main>
       <Footer t={t} onQuick={() => setQuickOpen(true)} />
 

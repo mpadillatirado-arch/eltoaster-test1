@@ -816,6 +816,49 @@ ul { list-style: none; padding: 0; margin: 0; }
   color: #fff;
 }
 
+/* ---- Pains section (soft, non-ad callout that links to Cal.com) ---- */
+.pains-h2 {
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+  line-height: 1.05;
+}
+.pains-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+  margin-top: 32px;
+}
+.pain-item {
+  display: block;
+  padding: 22px 26px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: border-color 0.2s var(--ease), transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.pain-item:hover {
+  border-color: var(--orange);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+.pains-note {
+  margin-top: 28px;
+  color: var(--text-3);
+  font-size: 0.95rem;
+}
+
+/* ---- One-on-one Cal.com booking section ---- */
+.one-on-one {
+  background: var(--surface-2);
+  text-align: center;
+}
+.one-on-one .sec-head { max-width: 640px; margin: 0 auto; }
+.one-on-one .btn { margin-top: 24px; display: inline-flex; }
+
 /* ---- Consent checkbox ---- */
 .inp.consent { margin-top: 4px; }
 .checkbox-label {

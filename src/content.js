@@ -47,8 +47,8 @@ export const content = {
     calc: {
       eyebrow: "Calculadora",
       h2: "Haz el número tú mismo",
-      lede: "Mueve las barras con tus datos reales. La fórmula viene del estudio de Harvard Business School sobre reseñas y ventas.",
-      rating: "Tu calificación actual en Google",
+      lede: "Mueve las barras con tus datos reales. La fórmula viene del estudio de Harvard Business School sobre reseñas de Yelp y ventas.",
+      rating: "Tu calificación actual en Yelp",
       target: "A dónde podrías llegar",
       revenue: "Ventas anuales aproximadas",
       resultLabel: "Oportunidad anual estimada",
@@ -164,6 +164,27 @@ export const content = {
       ],
     },
 
+    pains: {
+      eyebrow: "Detrás de la reseña",
+      h2: "¿Te suena familiar?",
+      lede: "Muchas veces la reseña baja es el síntoma. El problema real suele estar en cómo opera el restaurante día a día.",
+      items: [
+        "Tu punto de venta se traba justo en la hora pico",
+        "Los pedidos en línea no le llegan bien a la cocina",
+        "Nadie sabe qué platillos realmente dejan ganancia",
+        "Inventario, nómina y propinas viven en hojas separadas",
+        "Cerrar caja toma horas y los números casi nunca cuadran",
+      ],
+      note: "¿Alguno te quitó el sueño esta semana? Platicamos 15 minutos, sin compromiso.",
+    },
+
+    oneOnOne: {
+      eyebrow: "¿Prefieres hablar directo?",
+      h2: "Agenda 15 minutos conmigo, uno a uno",
+      lede: "Sin formularios. Escoge un horario y platicamos de tu restaurante — reseñas, operación o lo que traigas encima.",
+      cta: "Agendar mi llamada",
+    },
+
     consent: {
       label: (link) =>
         `Quiero recibir por correo tips, casos de éxito y promociones sobre reputación de restaurantes (opcional). Puedo darme de baja cuando quiera. Ver <a href="#privacy" target="_blank" rel="noopener noreferrer">${link}</a>.`,
@@ -256,8 +277,8 @@ export const content = {
     calc: {
       eyebrow: "Calculator",
       h2: "Run the number yourself",
-      lede: "Move the sliders with your real figures. The formula comes from Harvard Business School research on reviews and revenue.",
-      rating: "Your current Google rating",
+      lede: "Move the sliders with your real figures. The formula comes from Harvard Business School research on Yelp reviews and revenue.",
+      rating: "Your current Yelp rating",
       target: "Where you could get to",
       revenue: "Approximate annual revenue",
       resultLabel: "Estimated annual opportunity",
@@ -371,6 +392,27 @@ export const content = {
         { key: "padel-pals", name: "Padel Pals" },
         { key: "sushino", name: "Sushino Mexican Roll" },
       ],
+    },
+
+    pains: {
+      eyebrow: "Behind the review",
+      h2: "Sound familiar?",
+      lede: "A low review is often just the symptom. The real problem usually lives in how the restaurant runs day to day.",
+      items: [
+        "Your point of sale locks up right at peak hour",
+        "Online orders don't make it to the kitchen cleanly",
+        "Nobody knows which dishes actually make money",
+        "Inventory, payroll and tips live in separate spreadsheets",
+        "Closing out takes hours and the numbers rarely match",
+      ],
+      note: "Any of these keep you up this week? Let's talk for 15 minutes, no strings attached.",
+    },
+
+    oneOnOne: {
+      eyebrow: "Would rather just talk?",
+      h2: "Book 15 minutes with me, one on one",
+      lede: "No forms. Pick a time and let's talk about your restaurant — reviews, operations, or whatever's on your plate.",
+      cta: "Book my call",
     },
 
     consent: {

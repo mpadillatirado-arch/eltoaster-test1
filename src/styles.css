@@ -698,6 +698,10 @@ ul { list-style: none; padding: 0; margin: 0; }
 @media (max-width: 620px) {
   .mobile-cta { display: flex; }
   body { padding-bottom: 76px; }
+  /* Keep the "what you get" heading/lede but drop the card grid, and hide
+     the clients showcase entirely — both trimmed for a shorter mobile page. */
+  #diagnostico .bento { display: none; }
+  #clientes { display: none; }
 }
 
 /* ---------- Quick-request modal ---------- */

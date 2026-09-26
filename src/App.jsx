@@ -1056,9 +1056,9 @@ export default function App() {
       </main>
       <Footer t={t} onQuick={() => setQuickOpen(true)} />
 
-      <button type="button" className="btn mobile-cta" onClick={() => setQuickOpen(true)}>
+      <a className="btn mobile-cta" href="#empezar">
         {t.nav.cta}
-      </button>
+      </a>
 
       <QuickModal
         open={quickOpen}

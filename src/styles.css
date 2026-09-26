@@ -155,6 +155,11 @@ section { padding-block: clamp(72px, 11vw, 132px); }
 }
 .btn.ghost:hover { border-color: var(--orange); color: var(--orange); box-shadow: none; }
 
+.btn.dark { --btn-bg: var(--ink); --btn-fg: #fff; }
+.btn.dark:hover { box-shadow: 0 16px 32px -12px rgb(13 13 13 / 55%); }
+/* Needed wherever a dark button sits on a dark surface (the footer). */
+.btn.outline-white { border: 1.5px solid #fff; }
+
 /* ---------- Nav ---------- */
 
 .nav {
@@ -954,4 +959,89 @@ ul { list-style: none; padding: 0; margin: 0; }
   margin-bottom: 8px;
   font-size: 0.9rem;
   color: var(--orange-deep);
+}
+
+/* ---- Inline field notices ---- */
+.inp-note {
+  margin-top: 7px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--text-3);
+}
+.inp-note.warn { color: var(--orange-deep); font-weight: 500; }
+
+/* ---- Blog ---- */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 22px;
+  margin-top: 40px;
+}
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s;
+}
+a.blog-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--orange);
+  box-shadow: var(--shadow);
+}
+.blog-img { width: 100%; height: 168px; object-fit: cover; display: block; }
+.blog-body { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 9px; flex: 1; }
+.blog-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-weight: 600;
+}
+.blog-body h3 { font-size: 1.1rem; line-height: 1.35; }
+.blog-body p { font-size: 0.92rem; color: var(--text-2); }
+.blog-more { margin-top: auto; padding-top: 6px; font-size: 0.88rem; font-weight: 700; color: var(--orange-deep); }
+.blog-empty {
+  margin-top: 34px;
+  padding: 34px;
+  text-align: center;
+  color: var(--text-3);
+  background: var(--surface-2);
+  border-radius: var(--radius-lg);
+}
+
+/* ---- Footer newsletter ---- */
+.newsletter { max-width: 400px; }
+.newsletter h3 { color: #fff; font-size: 1.1rem; max-width: none; }
+.newsletter-lede { margin-top: 8px; font-size: 0.88rem; line-height: 1.55; color: #a8a29c; }
+.newsletter-form { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.newsletter-form input {
+  flex: 1 1 190px;
+  min-width: 0;
+  padding: 14px 16px;
+  border-radius: 100px;
+  border: 1.5px solid #3a3a3a;
+  background: #161616;
+  color: #fff;
+  font: inherit;
+  font-size: 0.95rem;
+}
+.newsletter-form input::placeholder { color: #7d7873; }
+.newsletter-form input:focus-visible { outline: none; border-color: #fff; }
+.newsletter-form .btn { flex: 0 0 auto; }
+.newsletter-msg { margin-top: 12px; font-size: 0.85rem; color: #d6d0ca; }
+.newsletter-msg.ok { color: var(--orange-hot); font-weight: 600; }
+
+@media (max-width: 620px) {
+  .newsletter { max-width: none; width: 100%; }
+  .newsletter-form .btn { width: 100%; }
 }

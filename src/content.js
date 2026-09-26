@@ -3,14 +3,13 @@
 
 export const content = {
   es: {
-    nav: { how: "POS System", calc: "Calculadora", diag: "El diagnóstico", cta: "Diagnóstico gratis" },
+    nav: { how: "POS System", blog: "Blog", calc: "Calculadora", diag: "El diagnóstico", cta: "Diagnóstico gratis" },
 
     hero: {
       eyebrow: "Phoenix · Mesa · Glendale · Tempe · Gilbert · Chandler · Cave Creek · Queen Creek",
       h1a: "Tus reseñas ya te están costando",
       h1b: "dinero real",
       lede: "Cada estrella en Yelp vale entre 5% y 9% de tus ventas. Te hago un diagnóstico gratuito de tu reputación en línea — de lo que opinan tus clientes en tiempo real — y te digo exactamente cómo mejorar esos ratings y cuánto estás dejando en la mesa.",
-      cta1: "Pedir mi diagnóstico gratis",
       cta2: "Ver cuánto pierdo",
       t1: "Sin costo",
       t2: "Resultados en 48 horas",
@@ -120,6 +119,38 @@ export const content = {
       okTitle: "¡Listo! Ya tengo tus datos.",
       okBody: "Te contacto en menos de 24 horas hábiles con los siguientes pasos. Revisa tu correo — y la carpeta de spam, por si acaso.",
       error: "No se pudo enviar. Revisa tu conexión e inténtalo de nuevo, o escríbeme directo a mario.padilla@toasttab.com.",
+      cooldownTitle: "Ya pediste un diagnóstico con este correo",
+      cooldownBody: (days, date) =>
+        `Cada correo puede pedir un diagnóstico nuevo cada 30 días. Puedes volver en ${days} ${
+          days === 1 ? "día" : "días"
+        } — a partir del ${date} — y con gusto te preparo uno actualizado.`,
+      cooldownClose: "Entendido",
+      cooldownInline: (days) =>
+        `Este correo ya pidió un diagnóstico. Puedes solicitar uno nuevo en ${days} ${
+          days === 1 ? "día" : "días"
+        }.`,
+      alreadySubscribed: "Este correo ya está registrado en el boletín.",
+    },
+
+    blog: {
+      eyebrow: "Blog",
+      h2: "Noticias de la industria restaurantera",
+      lede: "Lo que está pasando en la industria: notas, tendencias y datos que le sirven a un operador en Phoenix.",
+      loading: "Cargando artículos…",
+      empty: "Todavía no hay artículos publicados. Vuelve pronto.",
+      readMore: "Leer el artículo",
+    },
+
+    newsletter: {
+      h: "Suscríbete al boletín",
+      lede: "Notas de la industria y tips de reputación, una vez al mes. Sin spam, y te puedes dar de baja cuando quieras.",
+      placeholder: "tu@correo.com",
+      cta: "Suscribirme",
+      sending: "Enviando…",
+      ok: "¡Listo! Ya estás suscrito al boletín.",
+      already: "Este correo ya está registrado en el boletín.",
+      invalid: "Escribe un correo válido.",
+      error: "No se pudo completar. Inténtalo de nuevo.",
     },
 
     foot: {
@@ -234,14 +265,13 @@ export const content = {
   },
 
   en: {
-    nav: { how: "POS System", calc: "Calculator", diag: "The diagnostic", cta: "Free diagnostic" },
+    nav: { how: "POS System", blog: "Blog", calc: "Calculator", diag: "The diagnostic", cta: "Free diagnostic" },
 
     hero: {
       eyebrow: "Phoenix · Mesa · Glendale · Tempe · Gilbert · Chandler · Cave Creek · Queen Creek",
       h1a: "Your reviews are already costing you",
       h1b: "real money",
       lede: "Every star on Google is worth 5–9% of your sales. I'll run a free diagnostic on your online reputation — pulling from Google, Yelp and TripAdvisor — and show you exactly what you're leaving on the table.",
-      cta1: "Get my free diagnostic",
       cta2: "See what I'm losing",
       t1: "No cost",
       t2: "Results in 48 hours",
@@ -351,6 +381,38 @@ export const content = {
       okTitle: "Got it — you're on the list.",
       okBody: "I'll reach out within one business day with next steps. Keep an eye on your inbox, and your spam folder just in case.",
       error: "Couldn't send that. Check your connection and try again, or email me directly at mario.padilla@toasttab.com.",
+      cooldownTitle: "You already requested a diagnostic with this email",
+      cooldownBody: (days, date) =>
+        `Each email can request a new diagnostic every 30 days. Come back in ${days} ${
+          days === 1 ? "day" : "days"
+        } — from ${date} — and I'll gladly put together an updated one.`,
+      cooldownClose: "Got it",
+      cooldownInline: (days) =>
+        `This email already requested a diagnostic. You can request a new one in ${days} ${
+          days === 1 ? "day" : "days"
+        }.`,
+      alreadySubscribed: "This email is already on the newsletter list.",
+    },
+
+    blog: {
+      eyebrow: "Blog",
+      h2: "Hospitality industry news",
+      lede: "What's happening across the industry: reporting, trends and numbers an operator in Phoenix can actually use.",
+      loading: "Loading articles…",
+      empty: "No articles published yet. Check back soon.",
+      readMore: "Read the article",
+    },
+
+    newsletter: {
+      h: "Subscribe to the newsletter",
+      lede: "Industry reporting and reputation tips, once a month. No spam, and you can unsubscribe anytime.",
+      placeholder: "you@email.com",
+      cta: "Subscribe",
+      sending: "Sending…",
+      ok: "You're in — thanks for subscribing.",
+      already: "This email is already on the newsletter list.",
+      invalid: "Enter a valid email address.",
+      error: "Couldn't complete that. Please try again.",
     },
 
     foot: {

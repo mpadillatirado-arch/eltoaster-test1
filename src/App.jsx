@@ -75,6 +75,32 @@ function Reveal({
   );
 }
 
+function CalculatorIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="4" y="2" width="16" height="20" rx="2" />
+      <line x1="8" y1="6" x2="16" y2="6" />
+      <line x1="8" y1="11" x2="8" y2="11" />
+      <line x1="12" y1="11" x2="12" y2="11" />
+      <line x1="16" y1="11" x2="16" y2="11" />
+      <line x1="8" y1="15" x2="8" y2="15" />
+      <line x1="12" y1="15" x2="12" y2="15" />
+      <line x1="16" y1="15" x2="16" y2="18" />
+      <line x1="8" y1="18" x2="12" y2="18" />
+    </svg>
+  );
+}
+
 function Stars({ value }) {
   return (
     <div className="stars" aria-hidden="true">
@@ -114,6 +140,7 @@ function Nav({ lang, setLang, t }) {
 
         <nav className="nav-links">
           <a href="#dolores">{t.nav.how}</a>
+          <a href="#blog">{t.nav.blog}</a>
           <a href="#calculadora">{t.nav.calc}</a>
         </nav>
 
@@ -155,10 +182,8 @@ function Hero({ t }) {
           <p className="lede">{t.hero.lede}</p>
 
           <div className="hero-cta">
-            <a className="btn" href="#empezar">
-              {t.hero.cta1}
-            </a>
-            <a className="btn ghost" href="#calculadora">
+            <a className="btn dark" href="#calculadora">
+              <CalculatorIcon />
               {t.hero.cta2}
             </a>
           </div>
@@ -415,6 +440,89 @@ function Clients({ t }) {
   );
 }
 
+/** Curated hospitality-industry articles. Rows live in the blog_posts table so
+ *  new pieces can be added from the Supabase dashboard without a redeploy. */
+function Blog({ t, lang }) {
+  const [posts, setPosts] = useState(null); // null while loading
+
+  useEffect(() => {
+    if (!supabase) {
+      setPosts([]);
+      return;
+    }
+    let cancelled = false;
+
+    supabase
+      .from("blog_posts")
+      .select("id,title,excerpt,source,image_url,external_url,published_at")
+      .eq("published", true)
+      .in("lang", [lang, "both"])
+      .order("published_at", { ascending: false })
+      .limit(9)
+      .then(({ data }) => {
+        if (!cancelled) setPosts(data || []);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [lang]);
+
+  const fmtDate = (d) =>
+    new Date(d).toLocaleDateString(lang === "en" ? "en-US" : "es-MX", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+
+  return (
+    <section id="blog">
+      <div className="wrap">
+        <Reveal className="sec-head">
+          <p className="eyebrow">{t.blog.eyebrow}</p>
+          <h2>{t.blog.h2}</h2>
+          <p className="lede">{t.blog.lede}</p>
+        </Reveal>
+
+        {posts === null ? (
+          <p className="blog-empty">{t.blog.loading}</p>
+        ) : posts.length === 0 ? (
+          <p className="blog-empty">{t.blog.empty}</p>
+        ) : (
+          <div className="blog-grid">
+            {posts.map((p, i) => {
+              const Card = p.external_url ? "a" : "div";
+              const linkProps = p.external_url
+                ? { href: p.external_url, target: "_blank", rel: "noopener noreferrer" }
+                : {};
+              return (
+                <Reveal key={p.id} delay={i * 70}>
+                  <Card className="blog-card" {...linkProps}>
+                    {p.image_url && (
+                      <img className="blog-img" src={p.image_url} alt="" loading="lazy" />
+                    )}
+                    <div className="blog-body">
+                      <div className="blog-meta">
+                        {p.source && <span>{p.source}</span>}
+                        <span>{fmtDate(p.published_at)}</span>
+                      </div>
+                      <h3>{p.title}</h3>
+                      {p.excerpt && <p>{p.excerpt}</p>}
+                      {p.external_url && (
+                        <span className="blog-more">{t.blog.readMore} →</span>
+                      )}
+                    </div>
+                  </Card>
+                </Reveal>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 /** Soft, non-salesy callout: restaurant operational pain points. Clicking any
  *  one opens Mario's Cal.com booking page in a new tab — framed as "let's
  *  talk," not as a POS pitch. */
@@ -506,6 +614,10 @@ function LeadForm({ t, lang }) {
     preferred_language: lang,
   });
   const [marketingConsent, setMarketingConsent] = useState(false);
+  // What the eligibility endpoint last said about the typed email.
+  const [status, setStatus] = useState(null);
+  const [cooldown, setCooldown] = useState(null);
+  const checkedEmail = useRef("");
 
   useEffect(() => {
     setForm((f) => ({ ...f, preferred_language: lang }));
@@ -516,13 +628,48 @@ function LeadForm({ t, lang }) {
     []
   );
 
+  const fmtDate = useCallback(
+    (iso) =>
+      new Date(iso).toLocaleDateString(lang === "en" ? "en-US" : "es-MX", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+    [lang]
+  );
+
+  /** Asks the backend whether this email may request a diagnostic and whether
+   *  it is already subscribed, so the form can say so before submitting. */
+  const checkEmail = useCallback(async (email) => {
+    const address = email.trim().toLowerCase();
+    if (!supabase || !address || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(address)) return null;
+    if (checkedEmail.current === address) return status;
+
+    const { data, error } = await supabase.functions.invoke("check-lead-eligibility", {
+      body: { email: address },
+    });
+    if (error) return null;
+
+    checkedEmail.current = address;
+    setStatus(data);
+    return data;
+  }, [status]);
+
   async function submit(e) {
     e.preventDefault();
     if (state === "sending") return;
-    setState("sending");
 
     if (!supabase) {
       setState("error");
+      return;
+    }
+
+    setState("sending");
+
+    const check = await checkEmail(form.email);
+    if (check && !check.eligible) {
+      setCooldown(check);
+      setState("idle");
       return;
     }
 
@@ -534,14 +681,30 @@ function LeadForm({ t, lang }) {
     };
     const { error } = await supabase.from("leads").insert([payload]);
 
-    setState(error ? "error" : "done");
-
-    if (!error) {
-      // Best-effort notification + marketing sync — never blocks or fails
-      // the UI outcome, since the lead is already safely stored.
-      supabase.functions.invoke("send-lead-email", { body: payload }).catch(() => {});
-      supabase.functions.invoke("send-diagnostic-email", { body: payload }).catch(() => {});
+    if (error) {
+      // The 30-day rule is enforced by a database trigger, so a race (or a
+      // stale check) still lands here — show the same friendly explanation
+      // rather than a generic failure.
+      const match = /DIAGNOSTIC_COOLDOWN\s+(\S+)/.exec(error.message || "");
+      if (match) {
+        const next = new Date(match[1]);
+        setCooldown({
+          nextEligibleAt: next.toISOString(),
+          daysRemaining: Math.max(1, Math.ceil((next.getTime() - Date.now()) / 86400000)),
+        });
+        setState("idle");
+      } else {
+        setState("error");
+      }
+      return;
     }
+
+    setState("done");
+
+    // Best-effort notification + marketing sync — never blocks or fails
+    // the UI outcome, since the lead is already safely stored.
+    supabase.functions.invoke("send-lead-email", { body: payload }).catch(() => {});
+    supabase.functions.invoke("send-diagnostic-email", { body: payload }).catch(() => {});
   }
 
   return (
@@ -624,7 +787,13 @@ function LeadForm({ t, lang }) {
                     autoComplete="email"
                     value={form.email}
                     onChange={set("email")}
+                    onBlur={(e) => checkEmail(e.target.value)}
                   />
+                  {status && !status.eligible && (
+                    <p className="inp-note warn">
+                      {t.form.cooldownInline(status.daysRemaining)}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -724,6 +893,9 @@ function LeadForm({ t, lang }) {
                     }}
                   />
                 </label>
+                {marketingConsent && status?.subscribed && (
+                  <p className="inp-note">{t.form.alreadySubscribed}</p>
+                )}
               </div>
 
               <button className="btn" type="submit" disabled={state === "sending"}>
@@ -734,6 +906,46 @@ function LeadForm({ t, lang }) {
           )}
         </Reveal>
       </div>
+
+      {cooldown && (
+        <div
+          className="modal-overlay"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) setCooldown(null);
+          }}
+        >
+          <div
+            className="modal"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="cooldown-title"
+          >
+            <button
+              type="button"
+              className="modal-close"
+              aria-label={t.form.cooldownClose}
+              onClick={() => setCooldown(null)}
+            >
+              ✕
+            </button>
+            <div className="done">
+              <div className="ic" aria-hidden="true">
+                ⏳
+              </div>
+              <h3 id="cooldown-title">{t.form.cooldownTitle}</h3>
+              <p>
+                {t.form.cooldownBody(
+                  cooldown.daysRemaining,
+                  fmtDate(cooldown.nextEligibleAt)
+                )}
+              </p>
+            </div>
+            <button type="button" className="btn" onClick={() => setCooldown(null)}>
+              {t.form.cooldownClose}
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
@@ -762,15 +974,71 @@ function PrivacyPolicy({ t }) {
   );
 }
 
-function Footer({ t }) {
+function Newsletter({ t, lang }) {
+  const [email, setEmail] = useState("");
+  const [state, setState] = useState("idle"); // idle | sending | ok | already | invalid | error
+
+  async function submit(e) {
+    e.preventDefault();
+    if (state === "sending") return;
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) {
+      setState("invalid");
+      return;
+    }
+    if (!supabase) {
+      setState("error");
+      return;
+    }
+
+    setState("sending");
+    const { data, error } = await supabase.functions.invoke("newsletter-subscribe", {
+      body: { email: email.trim(), lang },
+    });
+
+    if (error || !data) {
+      setState("error");
+      return;
+    }
+    setState(data.status === "already" ? "already" : data.status === "subscribed" ? "ok" : "error");
+    if (data.status === "subscribed") setEmail("");
+  }
+
+  return (
+    <div className="newsletter">
+      <h3>{t.newsletter.h}</h3>
+      <p className="newsletter-lede">{t.newsletter.lede}</p>
+      <form className="newsletter-form" onSubmit={submit}>
+        <input
+          type="email"
+          aria-label={t.newsletter.h}
+          placeholder={t.newsletter.placeholder}
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (state !== "sending") setState("idle");
+          }}
+        />
+        <button className="btn dark outline-white" type="submit" disabled={state === "sending"}>
+          {state === "sending" ? t.newsletter.sending : t.newsletter.cta}
+        </button>
+      </form>
+      {state !== "idle" && state !== "sending" && (
+        <p className={`newsletter-msg${state === "ok" ? " ok" : ""}`} role="status">
+          {t.newsletter[state === "ok" ? "ok" : state]}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function Footer({ t, lang }) {
   return (
     <footer className="foot">
       <div className="wrap">
         <div className="foot-top">
           <h3>{t.foot.h}</h3>
-          <a className="btn" href="#empezar">
-            {t.foot.cta}
-          </a>
+          <Newsletter t={t} lang={lang} />
         </div>
 
         <div className="foot-links" style={{ marginTop: 34 }}>
@@ -839,7 +1107,7 @@ export default function App() {
         <main>
           <PrivacyPolicy t={t} />
         </main>
-        <Footer t={t} />
+        <Footer t={t} lang={lang} />
       </>
     );
   }
@@ -856,11 +1124,12 @@ export default function App() {
         <Diagnostic t={t} />
         <Steps t={t} />
         <Clients t={t} />
+        <Blog t={t} lang={lang} />
         <Pains t={t} />
         <LeadForm t={t} lang={lang} />
         <OneOnOne t={t} />
       </main>
-      <Footer t={t} />
+      <Footer t={t} lang={lang} />
 
       <a className="btn mobile-cta" href="#empezar">
         {t.nav.cta}

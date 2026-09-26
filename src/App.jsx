@@ -306,7 +306,7 @@ function Nav({ lang, setLang, t }) {
         </a>
 
         <nav className="nav-links">
-          <a href="#como">{t.nav.how}</a>
+          <a href="#dolores">{t.nav.how}</a>
           <a href="#calculadora">{t.nav.calc}</a>
         </nav>
 

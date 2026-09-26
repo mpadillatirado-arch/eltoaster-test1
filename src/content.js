@@ -3,7 +3,7 @@
 
 export const content = {
   es: {
-    nav: { how: "Cómo funciona", calc: "Calculadora", diag: "El diagnóstico", cta: "Diagnóstico gratis" },
+    nav: { how: "POS System", calc: "Calculadora", diag: "El diagnóstico", cta: "Diagnóstico gratis" },
 
     hero: {
       eyebrow: "Phoenix · Mesa · Glendale · Tempe · Gilbert · Chandler · Cave Creek · Queen Creek",
@@ -235,7 +235,7 @@ export const content = {
   },
 
   en: {
-    nav: { how: "How it works", calc: "Calculator", diag: "The diagnostic", cta: "Free diagnostic" },
+    nav: { how: "POS System", calc: "Calculator", diag: "The diagnostic", cta: "Free diagnostic" },
 
     hero: {
       eyebrow: "Phoenix · Mesa · Glendale · Tempe · Gilbert · Chandler · Cave Creek · Queen Creek",

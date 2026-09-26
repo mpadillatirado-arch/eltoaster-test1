@@ -93,199 +93,6 @@ function Stars({ value }) {
   );
 }
 
-/** Quick-request modal: business name, email, location. Saves to Supabase
- *  and fires the send-lead-email Edge Function (best-effort, non-blocking
- *  for the UI outcome). */
-function QuickModal({ open, onClose, t, lang }) {
-  const [state, setState] = useState("idle"); // idle | sending | done | error
-  const [form, setForm] = useState({ restaurant_name: "", email: "", city: "" });
-  const [marketingConsent, setMarketingConsent] = useState(false);
-  const firstRef = useRef(null);
-  const dialogRef = useRef(null);
-
-  useEffect(() => {
-    if (open) {
-      setState("idle");
-      setForm({ restaurant_name: "", email: "", city: "" });
-      setMarketingConsent(false);
-      setTimeout(() => firstRef.current?.focus(), 30);
-    }
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [open, onClose]);
-
-  if (!open) return null;
-
-  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
-
-  async function submit(e) {
-    e.preventDefault();
-    if (state === "sending") return;
-    setState("sending");
-
-    if (!supabase) {
-      setState("error");
-      return;
-    }
-
-    const payload = {
-      ...form,
-      preferred_language: lang,
-      source: "quick_modal",
-      marketing_consent: marketingConsent,
-      marketing_consent_at: marketingConsent ? new Date().toISOString() : null,
-    };
-    const { error } = await supabase.from("leads").insert([payload]);
-
-    if (error) {
-      setState("error");
-      return;
-    }
-
-    setState("done");
-
-    // Best-effort emails — never block or fail the UI, since the lead is
-    // already safely stored regardless of delivery.
-    supabase.functions.invoke("send-lead-email", { body: payload }).catch(() => {});
-    supabase.functions.invoke("send-diagnostic-email", { body: payload }).catch(() => {});
-  }
-
-  return (
-    <div
-      className="modal-overlay"
-      onMouseDown={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
-    >
-      <div
-        className="modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="quick-modal-title"
-        ref={dialogRef}
-      >
-        <button
-          type="button"
-          className="modal-close"
-          aria-label={t.quick.close}
-          onClick={onClose}
-        >
-          ✕
-        </button>
-
-        {state === "done" ? (
-          <div className="done">
-            <div className="ic" aria-hidden="true">
-              ✓
-            </div>
-            <h3>{t.quick.okTitle}</h3>
-            <p>{t.quick.okBody}</p>
-          </div>
-        ) : (
-          <>
-            <h3 id="quick-modal-title" style={{ fontSize: "1.6rem", fontWeight: 800 }}>
-              {t.quick.title}
-            </h3>
-            <p className="lede" style={{ marginTop: 10, fontSize: "0.98rem" }}>
-              {t.quick.lede}
-            </p>
-
-            <form onSubmit={submit} style={{ marginTop: 24 }}>
-              {state === "error" && (
-                <div className="alert err" role="alert">
-                  {t.quick.error}
-                </div>
-              )}
-
-              <div className="inp">
-                <label htmlFor="qm-biz">{t.quick.business}</label>
-                <input
-                  id="qm-biz"
-                  ref={firstRef}
-                  required
-                  autoComplete="organization"
-                  value={form.restaurant_name}
-                  onChange={set("restaurant_name")}
-                />
-              </div>
-
-              <div className="inp">
-                <label htmlFor="qm-email">{t.quick.email}</label>
-                <input
-                  id="qm-email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  value={form.email}
-                  onChange={set("email")}
-                />
-              </div>
-
-              <div className="inp">
-                <label htmlFor="qm-loc">{t.quick.location}</label>
-                <select
-                  id="qm-loc"
-                  required
-                  autoComplete="address-level2"
-                  value={form.city}
-                  onChange={set("city")}
-                >
-                  <option value="" disabled>
-                    {t.form.f.cityPlaceholderOpt}
-                  </option>
-                  {t.form.cityOptions.map((c) => (
-                    <option key={c} value={c}>
-                      {c}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="inp consent">
-                <label htmlFor="qm-consent" className="checkbox-label">
-                  <input
-                    id="qm-consent"
-                    type="checkbox"
-                    checked={marketingConsent}
-                    onChange={(e) => setMarketingConsent(e.target.checked)}
-                  />
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: t.consent.label(t.consent.linkText),
-                    }}
-                  />
-                </label>
-              </div>
-
-              <button className="btn" type="submit" disabled={state === "sending"}>
-                {state === "sending" ? t.quick.sending : t.quick.submit}
-              </button>
-            </form>
-
-            <p className="formnote">
-              {t.quick.moreDetail}{" "}
-              <a href="#empezar" onClick={onClose}>
-                {t.quick.moreDetailLink}
-              </a>
-            </p>
-          </>
-        )}
-      </div>
-    </div>
-  );
-}
-
 /* ---------------- sections ---------------- */
 
 function Nav({ lang, setLang, t }) {
@@ -571,15 +378,15 @@ function Steps({ t }) {
   );
 }
 
-function MidCta({ t, onQuick }) {
+function MidCta({ t }) {
   return (
     <section className="midcta">
       <div className="wrap midcta-in">
         <Reveal as="h2">{t.midCta.h}</Reveal>
         <Reveal delay={80}>
-          <button type="button" className="btn" onClick={onQuick}>
+          <a className="btn" href="#empezar">
             {t.midCta.cta}
-          </button>
+          </a>
         </Reveal>
       </div>
     </section>
@@ -955,15 +762,15 @@ function PrivacyPolicy({ t }) {
   );
 }
 
-function Footer({ t, onQuick }) {
+function Footer({ t }) {
   return (
     <footer className="foot">
       <div className="wrap">
         <div className="foot-top">
           <h3>{t.foot.h}</h3>
-          <button type="button" className="btn" onClick={onQuick}>
+          <a className="btn" href="#empezar">
             {t.foot.cta}
-          </button>
+          </a>
         </div>
 
         <div className="foot-links" style={{ marginTop: 34 }}>
@@ -1014,7 +821,6 @@ export default function App() {
   }, [lang]);
 
   const t = content[lang];
-  const [quickOpen, setQuickOpen] = useState(false);
 
   const [route, setRoute] = useState(() =>
     window.location.hash === "#privacy" ? "privacy" : "site"
@@ -1029,24 +835,24 @@ export default function App() {
   if (route === "privacy") {
     return (
       <>
-        <Nav lang={lang} setLang={setLang} t={t} onQuick={() => setQuickOpen(true)} />
+        <Nav lang={lang} setLang={setLang} t={t} />
         <main>
           <PrivacyPolicy t={t} />
         </main>
-        <Footer t={t} onQuick={() => setQuickOpen(true)} />
+        <Footer t={t} />
       </>
     );
   }
 
   return (
     <>
-      <Nav lang={lang} setLang={setLang} t={t} onQuick={() => setQuickOpen(true)} />
+      <Nav lang={lang} setLang={setLang} t={t} />
       <main>
         <Hero t={t} />
         <Stats t={t} />
         <Problem t={t} />
         <Calculator t={t} />
-        <MidCta t={t} onQuick={() => setQuickOpen(true)} />
+        <MidCta t={t} />
         <Diagnostic t={t} />
         <Steps t={t} />
         <Clients t={t} />
@@ -1054,18 +860,11 @@ export default function App() {
         <LeadForm t={t} lang={lang} />
         <OneOnOne t={t} />
       </main>
-      <Footer t={t} onQuick={() => setQuickOpen(true)} />
+      <Footer t={t} />
 
       <a className="btn mobile-cta" href="#empezar">
         {t.nav.cta}
       </a>
-
-      <QuickModal
-        open={quickOpen}
-        onClose={() => setQuickOpen(false)}
-        t={t}
-        lang={lang}
-      />
     </>
   );
 }

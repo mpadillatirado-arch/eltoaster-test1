@@ -123,12 +123,33 @@ function Stars({ value }) {
 
 function Nav({ lang, setLang, t }) {
   const [stuck, setStuck] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   useEffect(() => {
     const on = () => setStuck(window.scrollY > 8);
     on();
     window.addEventListener("scroll", on, { passive: true });
     return () => window.removeEventListener("scroll", on);
   }, []);
+
+  // Close the mobile menu on nav (hash changes) or on resize back to desktop.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const close = () => setMenuOpen(false);
+    window.addEventListener("hashchange", close);
+    const mq = window.matchMedia("(min-width: 900px)");
+    mq.addEventListener("change", close);
+    return () => {
+      window.removeEventListener("hashchange", close);
+      mq.removeEventListener("change", close);
+    };
+  }, [menuOpen]);
+
+  const links = [
+    { href: "#dolores", label: t.nav.how },
+    { href: "#blog", label: t.nav.blog },
+    { href: "#calculadora", label: t.nav.calc },
+  ];
 
   return (
     <header className="nav" data-stuck={stuck}>
@@ -139,9 +160,11 @@ function Nav({ lang, setLang, t }) {
         </a>
 
         <nav className="nav-links">
-          <a href="#dolores">{t.nav.how}</a>
-          <a href="#blog">{t.nav.blog}</a>
-          <a href="#calculadora">{t.nav.calc}</a>
+          {links.map((l) => (
+            <a key={l.href} href={l.href}>
+              {l.label}
+            </a>
+          ))}
         </nav>
 
         <div className="lang" role="group" aria-label="Language / Idioma">
@@ -164,7 +187,29 @@ function Nav({ lang, setLang, t }) {
         <a className="btn" href="#empezar">
           {t.nav.cta}
         </a>
+
+        <button
+          type="button"
+          className="nav-burger"
+          aria-label={t.nav.menu}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((v) => !v)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
       </div>
+
+      {menuOpen && (
+        <nav className="nav-mobile" aria-label={t.nav.menu}>
+          {links.map((l) => (
+            <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)}>
+              {l.label}
+            </a>
+          ))}
+        </nav>
+      )}
     </header>
   );
 }

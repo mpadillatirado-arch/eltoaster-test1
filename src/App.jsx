@@ -642,8 +642,16 @@ function Pains({ t }) {
           ))}
         </div>
 
-        <Reveal delay={t.pains.items.length * 70}>
+        <Reveal delay={t.pains.items.length * 70} className="pains-cta-block">
           <p className="pains-note">{t.pains.note}</p>
+          <a
+            className="btn btn-lg pains-cta"
+            href={CAL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t.pains.cta}
+          </a>
           <p className="pains-learn-more">
             {t.pains.learnMore}{" "}
             <a href={POS_LEARN_MORE_URL} target="_blank" rel="noopener noreferrer">

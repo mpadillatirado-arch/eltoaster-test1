@@ -178,6 +178,7 @@ export const content = {
       note: "¿Alguno te quitó el sueño esta semana? Platicamos 15 minutos, sin compromiso.",
       learnMore: "¿Quieres conocer más sobre sistemas POS?",
       learnMoreLink: "Ver información aquí",
+      cta: "Agenda tu llamada de 15 minutos",
     },
 
     oneOnOne: {
@@ -410,6 +411,7 @@ export const content = {
       note: "Any of these keep you up this week? Let's talk for 15 minutes, no strings attached.",
       learnMore: "Want to learn more about POS systems?",
       learnMoreLink: "See more information here",
+      cta: "Book your 15-minute call",
     },
 
     oneOnOne: {

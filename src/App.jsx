@@ -335,7 +335,7 @@ function Nav({ lang, setLang, t }) {
   );
 }
 
-function Hero({ t, onQuick }) {
+function Hero({ t }) {
   return (
     <section className="hero" id="top">
       <div className="hero-glow" aria-hidden="true" />
@@ -348,9 +348,9 @@ function Hero({ t, onQuick }) {
           <p className="lede">{t.hero.lede}</p>
 
           <div className="hero-cta">
-            <button type="button" className="btn" onClick={onQuick}>
+            <a className="btn" href="#empezar">
               {t.hero.cta1}
-            </button>
+            </a>
             <a className="btn ghost" href="#calculadora">
               {t.hero.cta2}
             </a>
@@ -1042,7 +1042,7 @@ export default function App() {
     <>
       <Nav lang={lang} setLang={setLang} t={t} onQuick={() => setQuickOpen(true)} />
       <main>
-        <Hero t={t} onQuick={() => setQuickOpen(true)} />
+        <Hero t={t} />
         <Stats t={t} />
         <Problem t={t} />
         <Calculator t={t} />

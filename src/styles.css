@@ -702,6 +702,19 @@ ul { list-style: none; padding: 0; margin: 0; }
      the clients showcase entirely — both trimmed for a shorter mobile page. */
   #diagnostico .bento { display: none; }
   #clientes { display: none; }
+
+  /* Center the stat numbers/labels in their boxes for a more symmetric grid. */
+  .stat { text-align: center; }
+
+  /* Drop the testimonial (and the role/company line in it) so mobile visitors
+     land on the actual form fields sooner. */
+  .form-grid .quote { display: none; }
+
+  /* Center every standalone orange CTA button so they line up consistently. */
+  .hero-cta { justify-content: center; text-align: center; }
+  .midcta-in { justify-content: center; text-align: center; }
+  .pains-cta-block { text-align: center; }
+  .foot-top { justify-content: center; text-align: center; flex-direction: column; align-items: center; }
 }
 
 /* ---------- Quick-request modal ---------- */

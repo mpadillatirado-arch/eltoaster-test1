@@ -657,6 +657,7 @@ function LeadForm({ t, lang }) {
     email: "",
     phone: "",
     city: "",
+    zip_code: "",
     locations: "1",
     biggest_challenge: "",
     preferred_language: lang,
@@ -878,6 +879,19 @@ function LeadForm({ t, lang }) {
 
               <div className="row">
                 <div className="inp">
+                  <label htmlFor="zip">{t.form.f.zip}</label>
+                  <input
+                    id="zip"
+                    inputMode="numeric"
+                    autoComplete="postal-code"
+                    placeholder={t.form.f.zipPlaceholder}
+                    pattern="[0-9]{5}(-[0-9]{4})?"
+                    maxLength={10}
+                    value={form.zip_code}
+                    onChange={set("zip_code")}
+                  />
+                </div>
+                <div className="inp">
                   <label htmlFor="lc">{t.form.f.locations}</label>
                   <select id="lc" value={form.locations} onChange={set("locations")}>
                     {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
@@ -887,17 +901,18 @@ function LeadForm({ t, lang }) {
                     ))}
                   </select>
                 </div>
-                <div className="inp">
-                  <label htmlFor="lg">{t.form.f.lang}</label>
-                  <select
-                    id="lg"
-                    value={form.preferred_language}
-                    onChange={set("preferred_language")}
-                  >
-                    <option value="es">{t.form.f.langEs}</option>
-                    <option value="en">{t.form.f.langEn}</option>
-                  </select>
-                </div>
+              </div>
+
+              <div className="inp">
+                <label htmlFor="lg">{t.form.f.lang}</label>
+                <select
+                  id="lg"
+                  value={form.preferred_language}
+                  onChange={set("preferred_language")}
+                >
+                  <option value="es">{t.form.f.langEs}</option>
+                  <option value="en">{t.form.f.langEn}</option>
+                </select>
               </div>
 
               <div className="inp">

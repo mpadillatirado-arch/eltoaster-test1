@@ -193,6 +193,7 @@ export const content = {
         { key: "las-culichis", name: "Las Culichis Mariscos" },
         { key: "padel-pals", name: "Padel Pals" },
         { key: "sushino", name: "Sushino Mexican Roll" },
+        { key: "el-chaka", name: "El Chaka Tacos y Más" },
       ],
     },
 
@@ -458,6 +459,7 @@ export const content = {
         { key: "las-culichis", name: "Las Culichis Mariscos" },
         { key: "padel-pals", name: "Padel Pals" },
         { key: "sushino", name: "Sushino Mexican Roll" },
+        { key: "el-chaka", name: "El Chaka Tacos y Más" },
       ],
     },
 

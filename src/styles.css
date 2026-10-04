@@ -753,10 +753,9 @@ ul { list-style: none; padding: 0; margin: 0; }
 @media (max-width: 620px) {
   .mobile-cta { display: flex; }
   body { padding-bottom: 76px; }
-  /* Keep the "what you get" heading/lede but drop the card grid, and hide
-     the clients showcase entirely — both trimmed for a shorter mobile page. */
+  /* Keep the "what you get" heading/lede but drop the card grid — trimmed
+     for a shorter mobile page. Clients showcase stays visible on mobile. */
   #diagnostico .bento { display: none; }
-  #clientes { display: none; }
 
   /* Center the stat numbers/labels in their boxes for a more symmetric grid,
      and keep only the first two stats (5–9% / 93%) as a single two-column

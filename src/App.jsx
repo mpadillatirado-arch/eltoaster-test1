@@ -4,12 +4,14 @@ import { supabase } from "./supabase.js";
 import lasCulichisLogo from "./assets/clients/las-culichis.jpg";
 import padelPalsLogo from "./assets/clients/padel-pals.jpg";
 import sushinoLogo from "./assets/clients/sushino.jpg";
+import elChakaLogo from "./assets/clients/el-chaka.jpg";
 import marioAvatar from "./assets/mario-avatar.webp";
 
 const CLIENT_LOGOS = {
   "las-culichis": lasCulichisLogo,
   "padel-pals": padelPalsLogo,
   sushino: sushinoLogo,
+  "el-chaka": elChakaLogo,
 };
 
 const EMAIL = "mario.padilla@toasttab.com";

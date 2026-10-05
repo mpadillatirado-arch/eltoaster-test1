@@ -91,6 +91,17 @@ export const content = {
       quote: "Trabajo con dueños de restaurantes todos los días. La conversación siempre empieza igual: con datos, no con una presentación de ventas.",
       quoteBy: "Mario Padilla · Strategic Cuisines Account Executive",
       cityOptions: ["Phoenix", "Mesa", "Glendale", "Tempe", "Gilbert", "Chandler", "Cave Creek", "Queen Creek"],
+      // Value is a stable English key so the diagnostic engine reads the same
+      // format regardless of which language the visitor filled the form in.
+      restaurantTypeOptions: [
+        { value: "taco_shop", label: "Taquería" },
+        { value: "coffee_shop", label: "Cafetería" },
+        { value: "full_service_casual", label: "Servicio completo — casual" },
+        { value: "full_service_fine_dining", label: "Servicio completo — alta cocina" },
+        { value: "food_truck", label: "Food truck" },
+        { value: "mariscos_seafood", label: "Mariscos" },
+        { value: "full_service_with_bar", label: "Servicio completo con bar" },
+      ],
       challengeOptions: [
         "Escasez de personal y alta rotación",
         "Costos de comida e insumos en aumento",
@@ -107,7 +118,29 @@ export const content = {
         cityPlaceholderOpt: "Selecciona tu ciudad",
         zip: "Código postal",
         zipPlaceholder: "85001",
-        locations: "Número de ubicaciones",
+        restaurantType: "Tipo de restaurante",
+        restaurantTypePlaceholder: "Selecciona el tipo",
+        address: "Dirección del restaurante",
+        addressPlaceholder: "4344 W Indian School Rd",
+        addressNote:
+          "La necesito exacta: sin ella puedo acabar analizando otro restaurante con el mismo nombre al otro lado de la ciudad.",
+        moreAddresses: "Direcciones de tus otras sucursales (opcional)",
+        moreAddressesPlaceholder: "Una dirección por línea",
+        moreAddressesNote: "Si tienes más de una sucursal, así reviso cada una por separado.",
+        mapsUrl: "Enlace de Google Maps (opcional)",
+        mapsUrlPlaceholder: "https://maps.app.goo.gl/…",
+        mapsUrlNote: "Si lo tienes a mano, es la forma más segura de identificar tu negocio.",
+        revenue: "Ventas anuales aproximadas (opcional)",
+        revenuePlaceholder: "Selecciona un rango",
+        revenueNote:
+          "Solo para calcular en dólares lo que vale subir tu calificación. Si lo dejas vacío uso una cifra de ejemplo.",
+        revenueOptions: [
+          "Menos de $250,000",
+          "$250,000 – $500,000",
+          "$500,000 – $1 millón",
+          "$1 – $2 millones",
+          "Más de $2 millones",
+        ],
         challenge: "¿Cuál es tu reto más grande ahora mismo? (opcional)",
         lang: "Prefiero que me contacten en",
         langEs: "Español",
@@ -235,7 +268,7 @@ export const content = {
       sections: [
         {
           h: "Qué información recopilo",
-          p: "Cuando llenas el formulario de diagnóstico gratuito, recopilo: nombre del restaurante, tu nombre, correo electrónico, teléfono (opcional), ciudad, número de ubicaciones y el reto que nos compartas. Si aceptas recibir correos de marketing, guardo esa preferencia y la fecha en que la diste.",
+          p: "Cuando llenas el formulario de diagnóstico gratuito, recopilo: nombre del restaurante, tu nombre, correo electrónico, teléfono (opcional), ciudad, código postal, dirección, tipo de restaurante y el reto que nos compartas. Si aceptas recibir correos de marketing, guardo esa preferencia y la fecha en que la diste.",
         },
         {
           h: "Para qué la uso",
@@ -357,6 +390,17 @@ export const content = {
       quote: "I work with restaurant owners every day. The conversation always starts the same way: with data, not a sales deck.",
       quoteBy: "Mario Padilla · Strategic Cuisines Account Executive",
       cityOptions: ["Phoenix", "Mesa", "Glendale", "Tempe", "Gilbert", "Chandler", "Cave Creek", "Queen Creek"],
+      // Value is a stable English key so the diagnostic engine reads the same
+      // format regardless of which language the visitor filled the form in.
+      restaurantTypeOptions: [
+        { value: "taco_shop", label: "Taco shop" },
+        { value: "coffee_shop", label: "Coffee shop" },
+        { value: "full_service_casual", label: "Full service — casual" },
+        { value: "full_service_fine_dining", label: "Full service — fine dining" },
+        { value: "food_truck", label: "Food truck" },
+        { value: "mariscos_seafood", label: "Mariscos / seafood" },
+        { value: "full_service_with_bar", label: "Full service with bar" },
+      ],
       challengeOptions: [
         "Staffing shortages and high turnover",
         "Rising food and supply costs",
@@ -373,7 +417,29 @@ export const content = {
         cityPlaceholderOpt: "Select your city",
         zip: "ZIP code",
         zipPlaceholder: "85001",
-        locations: "Number of locations",
+        restaurantType: "Restaurant type",
+        restaurantTypePlaceholder: "Select the type",
+        address: "Restaurant street address",
+        addressPlaceholder: "4344 W Indian School Rd",
+        addressNote:
+          "I need the exact one — without it I can end up analyzing a same-named restaurant across town.",
+        moreAddresses: "Addresses of your other locations (optional)",
+        moreAddressesPlaceholder: "One address per line",
+        moreAddressesNote: "If you run more than one store, this lets me review each separately.",
+        mapsUrl: "Google Maps link (optional)",
+        mapsUrlPlaceholder: "https://maps.app.goo.gl/…",
+        mapsUrlNote: "If you have it handy, it's the surest way to pin down your listing.",
+        revenue: "Approximate annual sales (optional)",
+        revenuePlaceholder: "Select a range",
+        revenueNote:
+          "Only used to put a dollar figure on raising your rating. Leave it blank and I'll use an example number.",
+        revenueOptions: [
+          "Under $250,000",
+          "$250,000 – $500,000",
+          "$500,000 – $1 million",
+          "$1 – $2 million",
+          "Over $2 million",
+        ],
         challenge: "What's your biggest challenge right now? (optional)",
         lang: "Contact me in",
         langEs: "Spanish",
@@ -501,7 +567,7 @@ export const content = {
       sections: [
         {
           h: "What I collect",
-          p: "When you fill out the free diagnostic form, I collect: restaurant name, your name, email address, phone (optional), city, number of locations, and whatever challenge you share. If you opt in to marketing emails, I store that preference and the date you gave it.",
+          p: "When you fill out the free diagnostic form, I collect: restaurant name, your name, email address, phone (optional), city, ZIP code, street address, restaurant type, and whatever challenge you share. If you opt in to marketing emails, I store that preference and the date you gave it.",
         },
         {
           h: "How I use it",

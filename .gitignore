@@ -3,6 +3,17 @@ dist
 .env
 .env.local
 .env.*.local
+# Holds the Supabase service role key the diagnostic job runs with.
+tools/diagnostic-engine/.env.engine
+# Rendered email previews are build artifacts, not source.
+tools/diagnostic-engine/*preview*.html
+tools/diagnostic-engine/*-v[0-9].html
+tools/diagnostic-engine/preview-output.html
+# Generated reports and research payloads name real client restaurants and
+# quote their customers. This repo is public — keep them local.
+tools/diagnostic-engine/review-*.html
+tools/diagnostic-engine/*-payload.json
+tools/diagnostic-engine/sample-*.json
 .claude/settings.local.json
 .vercel
 .DS_Store

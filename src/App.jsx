@@ -662,10 +662,10 @@ function LeadForm({ t, lang }) {
     zip_code: "",
     restaurant_type: "",
     street_address: "",
-    location_addresses: "",
-    google_maps_url: "",
     annual_revenue: "",
     biggest_challenge: "",
+    // Not asked for — the language the visitor is reading the site in is the
+    // language they'll be contacted in.
     preferred_language: lang,
   });
   const [marketingConsent, setMarketingConsent] = useState(false);
@@ -933,31 +933,6 @@ function LeadForm({ t, lang }) {
               </div>
 
               <div className="inp">
-                <label htmlFor="addrs">{t.form.f.moreAddresses}</label>
-                <textarea
-                  id="addrs"
-                  rows={3}
-                  placeholder={t.form.f.moreAddressesPlaceholder}
-                  value={form.location_addresses}
-                  onChange={set("location_addresses")}
-                />
-                <p className="inp-note">{t.form.f.moreAddressesNote}</p>
-              </div>
-
-              <div className="inp">
-                <label htmlFor="gmu">{t.form.f.mapsUrl}</label>
-                <input
-                  id="gmu"
-                  type="url"
-                  inputMode="url"
-                  placeholder={t.form.f.mapsUrlPlaceholder}
-                  value={form.google_maps_url}
-                  onChange={set("google_maps_url")}
-                />
-                <p className="inp-note">{t.form.f.mapsUrlNote}</p>
-              </div>
-
-              <div className="inp">
                 <label htmlFor="rev">{t.form.f.revenue}</label>
                 <select id="rev" value={form.annual_revenue} onChange={set("annual_revenue")}>
                   <option value="">{t.form.f.revenuePlaceholder}</option>
@@ -968,18 +943,6 @@ function LeadForm({ t, lang }) {
                   ))}
                 </select>
                 <p className="inp-note">{t.form.f.revenueNote}</p>
-              </div>
-
-              <div className="inp">
-                <label htmlFor="lg">{t.form.f.lang}</label>
-                <select
-                  id="lg"
-                  value={form.preferred_language}
-                  onChange={set("preferred_language")}
-                >
-                  <option value="es">{t.form.f.langEs}</option>
-                  <option value="en">{t.form.f.langEn}</option>
-                </select>
               </div>
 
               <div className="inp">

@@ -100,7 +100,7 @@ export const content = {
         { value: "full_service_fine_dining", label: "Servicio completo — alta cocina" },
         { value: "food_truck", label: "Food truck" },
         { value: "mariscos_seafood", label: "Mariscos" },
-        { value: "full_service_with_bar", label: "Servicio completo con bar" },
+        { value: "quick_service", label: "Servicio rápido" },
       ],
       challengeOptions: [
         "Escasez de personal y alta rotación",
@@ -390,7 +390,7 @@ export const content = {
         { value: "full_service_fine_dining", label: "Full service — fine dining" },
         { value: "food_truck", label: "Food truck" },
         { value: "mariscos_seafood", label: "Mariscos / seafood" },
-        { value: "full_service_with_bar", label: "Full service with bar" },
+        { value: "quick_service", label: "Quick service restaurant" },
       ],
       challengeOptions: [
         "Staffing shortages and high turnover",

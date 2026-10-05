@@ -89,7 +89,7 @@ export const content = {
         "Tus datos no se comparten ni se venden",
       ],
       quote: "Trabajo con dueños de restaurantes todos los días. La conversación siempre empieza igual: con datos, no con una presentación de ventas.",
-      quoteBy: "Mario Padilla · Strategic Cuisines Account Executive",
+      quoteBy: "Mario Padilla · El Toaster",
       cityOptions: ["Phoenix", "Mesa", "Glendale", "Tempe", "Gilbert", "Chandler", "Cave Creek", "Queen Creek"],
       // Value is a stable English key so the diagnostic engine reads the same
       // format regardless of which language the visitor filled the form in.
@@ -379,7 +379,7 @@ export const content = {
         "Your information is never shared or sold",
       ],
       quote: "I work with restaurant owners every day. The conversation always starts the same way: with data, not a sales deck.",
-      quoteBy: "Mario Padilla · Strategic Cuisines Account Executive",
+      quoteBy: "Mario Padilla · El Toaster",
       cityOptions: ["Phoenix", "Mesa", "Glendale", "Tempe", "Gilbert", "Chandler", "Cave Creek", "Queen Creek"],
       // Value is a stable English key so the diagnostic engine reads the same
       // format regardless of which language the visitor filled the form in.

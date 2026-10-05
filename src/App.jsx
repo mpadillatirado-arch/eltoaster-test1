@@ -660,7 +660,11 @@ function LeadForm({ t, lang }) {
     phone: "",
     city: "",
     zip_code: "",
-    locations: "1",
+    restaurant_type: "",
+    street_address: "",
+    location_addresses: "",
+    google_maps_url: "",
+    annual_revenue: "",
     biggest_challenge: "",
     preferred_language: lang,
   });
@@ -818,6 +822,21 @@ function LeadForm({ t, lang }) {
                 />
               </div>
 
+              {/* Required: a brand name alone matches same-named restaurants
+                  elsewhere in the metro, which would diagnose the wrong store. */}
+              <div className="inp">
+                <label htmlFor="addr">{t.form.f.address}</label>
+                <input
+                  id="addr"
+                  required
+                  autoComplete="street-address"
+                  placeholder={t.form.f.addressPlaceholder}
+                  value={form.street_address}
+                  onChange={set("street_address")}
+                />
+                <p className="inp-note">{t.form.f.addressNote}</p>
+              </div>
+
               <div className="row">
                 <div className="inp">
                   <label htmlFor="nm">{t.form.f.name}</label>
@@ -894,15 +913,61 @@ function LeadForm({ t, lang }) {
                   />
                 </div>
                 <div className="inp">
-                  <label htmlFor="lc">{t.form.f.locations}</label>
-                  <select id="lc" value={form.locations} onChange={set("locations")}>
-                    {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
-                      <option key={n} value={n}>
-                        {n}
+                  <label htmlFor="rtype">{t.form.f.restaurantType}</label>
+                  <select
+                    id="rtype"
+                    required
+                    value={form.restaurant_type}
+                    onChange={set("restaurant_type")}
+                  >
+                    <option value="" disabled>
+                      {t.form.f.restaurantTypePlaceholder}
+                    </option>
+                    {t.form.restaurantTypeOptions.map((o) => (
+                      <option key={o.value} value={o.value}>
+                        {o.label}
                       </option>
                     ))}
                   </select>
                 </div>
+              </div>
+
+              <div className="inp">
+                <label htmlFor="addrs">{t.form.f.moreAddresses}</label>
+                <textarea
+                  id="addrs"
+                  rows={3}
+                  placeholder={t.form.f.moreAddressesPlaceholder}
+                  value={form.location_addresses}
+                  onChange={set("location_addresses")}
+                />
+                <p className="inp-note">{t.form.f.moreAddressesNote}</p>
+              </div>
+
+              <div className="inp">
+                <label htmlFor="gmu">{t.form.f.mapsUrl}</label>
+                <input
+                  id="gmu"
+                  type="url"
+                  inputMode="url"
+                  placeholder={t.form.f.mapsUrlPlaceholder}
+                  value={form.google_maps_url}
+                  onChange={set("google_maps_url")}
+                />
+                <p className="inp-note">{t.form.f.mapsUrlNote}</p>
+              </div>
+
+              <div className="inp">
+                <label htmlFor="rev">{t.form.f.revenue}</label>
+                <select id="rev" value={form.annual_revenue} onChange={set("annual_revenue")}>
+                  <option value="">{t.form.f.revenuePlaceholder}</option>
+                  {t.form.f.revenueOptions.map((o) => (
+                    <option key={o} value={o}>
+                      {o}
+                    </option>
+                  ))}
+                </select>
+                <p className="inp-note">{t.form.f.revenueNote}</p>
               </div>
 
               <div className="inp">

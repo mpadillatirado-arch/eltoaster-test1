@@ -29,7 +29,7 @@ Read leads from the Supabase dashboard, or:
 
 ```sql
 select created_at, restaurant_name, contact_name, email, phone, city,
-       locations, preferred_language, biggest_challenge
+       zip_code, restaurant_type, preferred_language, biggest_challenge
 from public.leads
 order by created_at desc;
 ```

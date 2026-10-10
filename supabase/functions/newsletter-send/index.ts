@@ -209,9 +209,9 @@ function contentReady(send: Send) {
   });
 }
 
-// Phones get tighter padding, a stacked fun fact and full-width buttons. Mail
-// programs that ignore this block still get a layout that fits, because every
-// width below is a percentage or a max-width rather than a fixed size.
+// Phones get tighter padding and full-width buttons. Mail programs that ignore
+// this block still get a layout that fits: nothing below depends on it to stay
+// inside the screen.
 const MOBILE_CSS = `
   body { margin:0; padding:0; background:#fdfbf8; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
   table { border-collapse:collapse; }
@@ -223,8 +223,6 @@ const MOBILE_CSS = `
     .card { padding:20px 16px 22px !important; }
     .box { padding:16px 14px !important; }
     .cta { padding:22px 16px !important; }
-    .ff-img, .ff-txt { display:block !important; width:100% !important; padding:0 !important; }
-    .ff-img img { width:100% !important; max-width:200px !important; margin:0 0 14px 0 !important; }
     .btn { display:block !important; padding-left:12px !important; padding-right:12px !important; }
     .legal { font-size:12px !important; }
   }`;
@@ -255,18 +253,17 @@ function render(
     <div style="font-size:14.5px;line-height:1.6;color:#5b5651;margin-bottom:10px;">${esc(c.fun_fact.body)}</div>
     ${textLink(blog(links.fun_fact), t.onBlog)}`;
 
-  // Side by side on a wide screen, stacked on a phone. The image column is a
-  // percentage so it still leaves room for the text where stacking is ignored.
+  // Two inline blocks: side by side when there is room for both (150 + 300),
+  // wrapping to photo-above-text when there isn't. This needs no media query,
+  // so it also holds in mail programs that drop the stylesheet.
   const funFact = c.fun_fact.image_url
     ? `
-    <table role="presentation" width="100%" style="width:100%;">
-      <tr>
-        <td class="ff-img" width="32%" valign="top" style="width:32%;padding:0 16px 0 0;">
-          <a href="${esc(blog(links.fun_fact))}"><img src="${esc(c.fun_fact.image_url)}" alt="${esc(c.fun_fact.image_alt || c.fun_fact.title)}" width="150" style="display:block;width:100%;max-width:150px;height:auto;border-radius:10px;" /></a>
-        </td>
-        <td class="ff-txt" valign="top">${funFactText}</td>
-      </tr>
-    </table>
+    <div style="font-size:0;">
+      <div style="display:inline-block;vertical-align:top;width:150px;margin:0 16px 12px 0;">
+        <a href="${esc(blog(links.fun_fact))}"><img src="${esc(c.fun_fact.image_url)}" alt="${esc(c.fun_fact.image_alt || c.fun_fact.title)}" width="150" style="display:block;width:150px;height:auto;border-radius:10px;" /></a>
+      </div>
+      <div style="display:inline-block;vertical-align:top;width:100%;max-width:300px;font-size:14.5px;">${funFactText}</div>
+    </div>
     ${
       c.fun_fact.image_credit
         ? `<div style="font-size:11px;line-height:1.4;color:#8f8880;margin-top:8px;">${esc(c.fun_fact.image_credit)}</div>`

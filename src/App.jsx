@@ -1067,6 +1067,164 @@ function PrivacyPolicy({ t }) {
   );
 }
 
+/** POSTs to an Edge Function and returns its JSON whatever the HTTP status —
+ *  these pages need the body of a 404/409 to say what went wrong. */
+async function callFunction(name, body) {
+  const base = import.meta.env.VITE_SUPABASE_URL;
+  const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
+  try {
+    const res = await fetch(`${base}/functions/v1/${name}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: key,
+        Authorization: `Bearer ${key}`,
+      },
+      body: JSON.stringify(body),
+    });
+    return { status: res.status, data: await res.json().catch(() => null) };
+  } catch {
+    return { status: 0, data: null };
+  }
+}
+
+/** Landing page for every unsubscribe link (#unsubscribe/t/<token> from the
+ *  newsletter, #unsubscribe/l/<lead id> from diagnostic emails). Opting out
+ *  takes a click here, so a mail scanner opening the link can't do it. */
+function Unsubscribe({ t }) {
+  const [, kind, value] = window.location.hash.split("/");
+  const [state, setState] = useState(value ? "confirm" : "missing"); // confirm | working | done | missing | error
+
+  async function confirm() {
+    setState("working");
+    const { status, data } = await callFunction("unsubscribe", { [kind === "t" ? "t" : "l"]: value });
+    setState(data?.ok ? "done" : status === 404 ? "missing" : "error");
+  }
+
+  const u = t.unsubscribe;
+  return (
+    <section className="privacy-page">
+      <div className="wrap notice">
+        {state === "done" ? (
+          <>
+            <h1>{u.doneTitle}</h1>
+            <p className="lede">{u.doneBody}</p>
+          </>
+        ) : state === "missing" ? (
+          <>
+            <h1>{u.missingTitle}</h1>
+            <p className="lede">{u.missingBody}</p>
+          </>
+        ) : (
+          <>
+            <h1>{u.title}</h1>
+            <p className="lede">{u.body}</p>
+            <button type="button" className="btn" onClick={confirm} disabled={state === "working"}>
+              {state === "working" ? u.working : u.button}
+            </button>
+            {state === "error" && (
+              <p className="notice-msg" role="alert">
+                {u.error}
+              </p>
+            )}
+          </>
+        )}
+        <a href="#top" className="back-link">
+          {u.back}
+        </a>
+      </div>
+    </section>
+  );
+}
+
+/** Mario's approval page, opened from the test email (#send/<id>/<token>).
+ *  Shows what the issue contains and who it reaches before anything goes out. */
+function NewsletterSend({ t, lang }) {
+  const [, send, token] = window.location.hash.split("/");
+  const [issue, setIssue] = useState(null);
+  const [state, setState] = useState("loading"); // loading | ready | sending | missing
+  const [problem, setProblem] = useState(null);
+
+  useEffect(() => {
+    let alive = true;
+    callFunction("newsletter-send", { send, token, action: "status" }).then(({ data }) => {
+      if (!alive) return;
+      if (!data?.id) return setState("missing");
+      setIssue(data);
+      setState("ready");
+    });
+    return () => {
+      alive = false;
+    };
+  }, [send, token]);
+
+  async function approve() {
+    setState("sending");
+    setProblem(null);
+    const { data } = await callFunction("newsletter-send", { send, token, action: "live" });
+    if (data?.id) setIssue(data);
+    if (!data?.id || data.error) setProblem(data?.error || "error");
+    setState("ready");
+  }
+
+  const s = t.sendPage;
+  if (state === "loading" || state === "missing") {
+    return (
+      <section className="privacy-page">
+        <div className="wrap notice">
+          <h1>{s.title}</h1>
+          <p className="lede">{state === "loading" ? s.loading : s.notFound}</p>
+        </div>
+      </section>
+    );
+  }
+
+  const blocked =
+    problem ||
+    (issue.status === "draft" || issue.status === "cancelled" ? issue.status : null) ||
+    (!issue.mailing_address_set && issue.status !== "sent" ? "mailing_address_missing" : null);
+  const canSend = ["test_sent", "failed"].includes(issue.status) && issue.mailing_address_set;
+
+  return (
+    <section className="privacy-page">
+      <div className="wrap notice">
+        <h1>{s.title}</h1>
+
+        {issue.status === "sent" ? (
+          <p className="lede">{s.sent(issue.recipients ?? 0)}</p>
+        ) : (
+          <p className="lede">{s.audience(issue.live_recipients)}</p>
+        )}
+
+        <h2>{s.stories}</h2>
+        <ol className="notice-list">
+          {(issue.stories?.[lang] || []).map((title) => (
+            <li key={title}>{title}</li>
+          ))}
+        </ol>
+
+        {issue.status !== "sent" && (
+          <button
+            type="button"
+            className="btn"
+            onClick={approve}
+            disabled={!canSend || state === "sending"}
+          >
+            {state === "sending" ? s.sending : s.button(issue.live_recipients)}
+          </button>
+        )}
+
+        {issue.status !== "sent" && blocked && (
+          <p className="notice-msg" role="alert">
+            {s.status[blocked] || s.status.error}
+          </p>
+        )}
+        {issue.last_error && <p className="notice-msg">{issue.last_error}</p>}
+      </div>
+    </section>
+  );
+}
+
 function Newsletter({ t, lang }) {
   const [email, setEmail] = useState("");
   const [state, setState] = useState("idle"); // idle | sending | ok | already | invalid | error
@@ -1187,12 +1345,20 @@ export default function App() {
     const h = window.location.hash;
     if (h === "#privacy") return "privacy";
     if (h === "#blog") return "blog";
+    if (h.startsWith("#unsubscribe")) return "unsubscribe";
+    if (h.startsWith("#send/")) return "send";
     return "site";
   };
 
   const [route, setRoute] = useState(routeFromHash);
+  // The token pages carry their identifier in the hash, so they are keyed by
+  // it: a different link in the same tab must start from a clean page.
+  const [hash, setHash] = useState(() => window.location.hash);
   useEffect(() => {
-    const onHash = () => setRoute(routeFromHash());
+    const onHash = () => {
+      setRoute(routeFromHash());
+      setHash(window.location.hash);
+    };
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
@@ -1205,6 +1371,21 @@ export default function App() {
           <PrivacyPolicy t={t} />
         </main>
         <Footer t={t} lang={lang} />
+      </>
+    );
+  }
+
+  if (route === "unsubscribe" || route === "send") {
+    return (
+      <>
+        <Nav lang={lang} setLang={setLang} t={t} />
+        <main>
+          {route === "send" ? (
+            <NewsletterSend key={hash} t={t} lang={lang} />
+          ) : (
+            <Unsubscribe key={hash} t={t} />
+          )}
+        </main>
       </>
     );
   }

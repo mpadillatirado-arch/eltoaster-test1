@@ -1010,6 +1010,16 @@ ul { list-style: none; padding: 0; margin: 0; }
   color: var(--orange-deep);
 }
 
+/* ---- Unsubscribe + newsletter approval pages ---- */
+.notice { max-width: 640px; }
+.notice h2 { font-size: 1.05rem; margin: 0 0 10px; }
+.notice .btn { margin-bottom: 18px; }
+.notice .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.notice .back-link { display: block; margin-top: 28px; }
+.notice-list { margin: 0 0 28px; padding-left: 1.2em; color: var(--text-2); line-height: 1.55; }
+.notice-list li { margin-bottom: 6px; }
+.notice-msg { color: var(--text-2); font-size: 0.95rem; margin-top: 4px; }
+
 /* ---- Inline field notices ---- */
 .inp-note {
   margin-top: 7px;

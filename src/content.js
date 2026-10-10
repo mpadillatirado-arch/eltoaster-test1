@@ -180,6 +180,39 @@ export const content = {
       error: "No se pudo completar. Inténtalo de nuevo.",
     },
 
+    unsubscribe: {
+      title: "¿Darte de baja de los correos de El Toaster?",
+      body: "Dejarás de recibir el boletín y las promociones. Si pediste un diagnóstico, ese sí te llega.",
+      button: "Sí, darme de baja",
+      working: "Un momento…",
+      doneTitle: "Listo, ya no recibirás más correos",
+      doneBody: "Te di de baja del boletín de El Toaster. Si cambias de opinión, puedes volver a suscribirte al final de la página principal.",
+      missingTitle: "Este enlace ya no es válido",
+      missingBody: "Si quieres darte de baja, responde cualquier correo de El Toaster o escribe a mario@eltoaster.com y lo hago por ti.",
+      error: "No se pudo completar. Inténtalo de nuevo o escribe a mario@eltoaster.com.",
+      back: "← Ir al sitio",
+    },
+
+    sendPage: {
+      title: "Enviar el boletín",
+      loading: "Cargando la edición…",
+      notFound: "Este enlace de aprobación no es válido.",
+      stories: "Historias de esta edición",
+      audience: (n) => `Saldrá a ${n} ${n === 1 ? "suscriptor" : "suscriptores"}. Las direcciones de prueba no se cuentan.`,
+      button: (n) => `Enviar a ${n} ${n === 1 ? "suscriptor" : "suscriptores"}`,
+      sending: "Enviando… no cierres esta página.",
+      sent: (n) => `Enviado a ${n} ${n === 1 ? "suscriptor" : "suscriptores"}.`,
+      status: {
+        draft: "Primero hay que enviar la prueba.",
+        test_first: "Primero hay que enviar la prueba.",
+        mailing_address_missing: "Falta tu dirección postal, que la ley CAN-SPAM exige. No se puede enviar hasta agregarla.",
+        already_sent: "Esta edición ya se envió.",
+        in_progress: "Esta edición se está enviando ahora mismo.",
+        cancelled: "Esta edición fue cancelada.",
+        error: "Algo falló. No se envió nada nuevo; revisa e inténtalo otra vez.",
+      },
+    },
+
     foot: {
       h: "¿Listo para saber qué dicen realmente de tu restaurante?",
       cta: "Pedir diagnóstico gratis",
@@ -468,6 +501,39 @@ export const content = {
       already: "This email is already on the newsletter list.",
       invalid: "Enter a valid email address.",
       error: "Couldn't complete that. Please try again.",
+    },
+
+    unsubscribe: {
+      title: "Unsubscribe from El Toaster emails?",
+      body: "You'll stop getting the newsletter and promotions. If you requested a diagnostic, you'll still receive it.",
+      button: "Yes, unsubscribe me",
+      working: "One moment…",
+      doneTitle: "Done — you won't get more emails",
+      doneBody: "You're off the El Toaster newsletter. If you change your mind, you can subscribe again at the bottom of the home page.",
+      missingTitle: "This link is no longer valid",
+      missingBody: "If you want to unsubscribe, reply to any El Toaster email or write to mario@eltoaster.com and I'll do it for you.",
+      error: "Couldn't complete that. Try again or write to mario@eltoaster.com.",
+      back: "← Go to the site",
+    },
+
+    sendPage: {
+      title: "Send the newsletter",
+      loading: "Loading the issue…",
+      notFound: "This approval link isn't valid.",
+      stories: "Stories in this issue",
+      audience: (n) => `It will go to ${n} ${n === 1 ? "subscriber" : "subscribers"}. Test addresses aren't counted.`,
+      button: (n) => `Send to ${n} ${n === 1 ? "subscriber" : "subscribers"}`,
+      sending: "Sending… don't close this page.",
+      sent: (n) => `Sent to ${n} ${n === 1 ? "subscriber" : "subscribers"}.`,
+      status: {
+        draft: "The test has to go out first.",
+        test_first: "The test has to go out first.",
+        mailing_address_missing: "Your postal address is missing, and CAN-SPAM requires it. Nothing can be sent until it's added.",
+        already_sent: "This issue has already been sent.",
+        in_progress: "This issue is being sent right now.",
+        cancelled: "This issue was cancelled.",
+        error: "Something failed. Nothing new was sent; check and try again.",
+      },
     },
 
     foot: {

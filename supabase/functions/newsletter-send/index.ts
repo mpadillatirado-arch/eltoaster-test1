@@ -11,6 +11,7 @@
 //   POST { send, token, action: "live" }               send to subscribers
 //   POST { send, token, action: "cancel" }             abandon a draft
 //   POST { ..., action: "test" | "live", only: [..] }  just these addresses
+//   POST { send, token, action: "preview", lang }      the HTML, nothing sent
 //
 // `only` narrows a send to specific people who are already eligible for that
 // step; it cannot add anyone. A narrowed live send leaves the issue open, and
@@ -37,6 +38,9 @@ const MAILING_ADDRESS = (
 ).trim();
 
 const SITE_URL = "https://eltoaster.com";
+// A JPG at a fixed address: mail programs don't all show WebP, and the site's
+// own copy of the avatar has a build hash in its name.
+const AVATAR_URL = `${SITE_URL}/mario-avatar.jpg`;
 const BOOKING_URL =
   "https://cal.com/mario-padilla-tirado-hnho7v/15-minutos-chat-free-restaurant-diagnostic";
 const FROM_EMAIL = "El Toaster <mario@eltoaster.com>";
@@ -205,6 +209,26 @@ function contentReady(send: Send) {
   });
 }
 
+// Phones get tighter padding, a stacked fun fact and full-width buttons. Mail
+// programs that ignore this block still get a layout that fits, because every
+// width below is a percentage or a max-width rather than a fixed size.
+const MOBILE_CSS = `
+  body { margin:0; padding:0; background:#fdfbf8; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+  table { border-collapse:collapse; }
+  img { border:0; max-width:100%; height:auto; }
+  a { word-break:break-word; }
+  @media only screen and (max-width:600px) {
+    .outer { padding:12px 8px !important; }
+    .head { padding:16px 18px !important; }
+    .card { padding:20px 16px 22px !important; }
+    .box { padding:16px 14px !important; }
+    .cta { padding:22px 16px !important; }
+    .ff-img, .ff-txt { display:block !important; width:100% !important; padding:0 !important; }
+    .ff-img img { width:100% !important; max-width:200px !important; margin:0 0 14px 0 !important; }
+    .btn { display:block !important; padding-left:12px !important; padding-right:12px !important; }
+    .legal { font-size:12px !important; }
+  }`;
+
 const label = (text: string) =>
   `<div style="font-size:11px;letter-spacing:0.09em;text-transform:uppercase;color:#d63e00;font-weight:800;margin:0 0 10px 0;">${text}</div>`;
 
@@ -231,21 +255,21 @@ function render(
     <div style="font-size:14.5px;line-height:1.6;color:#5b5651;margin-bottom:10px;">${esc(c.fun_fact.body)}</div>
     ${textLink(blog(links.fun_fact), t.onBlog)}`;
 
-  // The photo sits beside the text so a tall picture doesn't push the story
-  // off the first screen.
+  // Side by side on a wide screen, stacked on a phone. The image column is a
+  // percentage so it still leaves room for the text where stacking is ignored.
   const funFact = c.fun_fact.image_url
     ? `
-    <table role="presentation" style="width:100%;border-collapse:collapse;">
+    <table role="presentation" width="100%" style="width:100%;">
       <tr>
-        <td style="width:150px;vertical-align:top;padding-right:16px;">
-          <a href="${esc(blog(links.fun_fact))}"><img src="${esc(c.fun_fact.image_url)}" width="150" alt="${esc(c.fun_fact.image_alt || c.fun_fact.title)}" style="display:block;width:150px;height:auto;border-radius:10px;border:0;" /></a>
+        <td class="ff-img" width="32%" valign="top" style="width:32%;padding:0 16px 0 0;">
+          <a href="${esc(blog(links.fun_fact))}"><img src="${esc(c.fun_fact.image_url)}" alt="${esc(c.fun_fact.image_alt || c.fun_fact.title)}" width="150" style="display:block;width:100%;max-width:150px;height:auto;border-radius:10px;" /></a>
         </td>
-        <td style="vertical-align:top;">${funFactText}</td>
+        <td class="ff-txt" valign="top">${funFactText}</td>
       </tr>
     </table>
     ${
       c.fun_fact.image_credit
-        ? `<div style="font-size:10.5px;color:#8f8880;margin-top:8px;">${esc(c.fun_fact.image_credit)}</div>`
+        ? `<div style="font-size:11px;line-height:1.4;color:#8f8880;margin-top:8px;">${esc(c.fun_fact.image_credit)}</div>`
         : ""
     }`
     : funFactText;
@@ -265,10 +289,10 @@ function render(
     .map(
       (b, i) => `
       <tr>
-        <td style="width:40px;vertical-align:top;padding:0 0 16px 0;">
+        <td width="40" valign="top" style="width:40px;padding:0 0 16px 0;">
           <div style="width:28px;height:28px;line-height:28px;border-radius:50%;background:#FF4C00;color:#ffffff;font-weight:800;font-size:13px;text-align:center;">${i + 1}</div>
         </td>
-        <td style="padding:2px 0 16px 0;">
+        <td valign="top" style="padding:2px 0 16px 0;">
           <div style="font-size:15px;font-weight:800;color:#0d0d0d;line-height:1.35;margin-bottom:4px;">${esc(b.title)}</div>
           <div style="font-size:14px;line-height:1.55;color:#5b5651;">${esc(b.body)}</div>
         </td>
@@ -279,67 +303,93 @@ function render(
   const testBanner =
     mode === "test"
       ? `
-      <div style="border:2px dashed #FF4C00;border-radius:14px;background:#fff7f2;padding:18px 20px;margin-bottom:18px;">
+      <div class="box" style="border:2px dashed #FF4C00;border-radius:14px;background:#fff7f2;padding:18px 20px;margin-bottom:18px;">
         <div style="font-size:15px;font-weight:800;color:#0d0d0d;margin-bottom:6px;">${t.testTitle}</div>
         <div style="font-size:14px;line-height:1.55;color:#5b5651;margin-bottom:14px;">${t.testBody(ctx.liveCount)}</div>
-        <a href="${SITE_URL}/#send/${ctx.send.id}/${ctx.send.token}" style="display:inline-block;background:#FF4C00;color:#ffffff;text-decoration:none;font-weight:700;font-size:14px;padding:12px 22px;border-radius:10px;">${t.testButton}</a>
+        <a class="btn" href="${SITE_URL}/#send/${ctx.send.id}/${ctx.send.token}" style="display:inline-block;background:#FF4C00;color:#ffffff;text-decoration:none;font-weight:700;font-size:14px;padding:12px 22px;border-radius:10px;text-align:center;">${t.testButton}</a>
       </div>`
       : "";
 
-  const divider = `<div style="border-top:1px solid #e8e2d9;margin:26px 0;"></div>`;
+  const divider = `<div style="border-top:1px solid #e8e2d9;margin:26px 0;font-size:0;line-height:0;">&nbsp;</div>`;
 
-  const html = `
-  <div style="font-family:Inter,Arial,Helvetica,sans-serif;background:#fdfbf8;padding:28px 16px;">
-    <span style="display:none;max-height:0;overflow:hidden;opacity:0;">${esc(c.preheader || "")}</span>
-    <div style="max-width:580px;margin:0 auto;">
-      ${testBanner}
-      <div style="background:#FF4C00;padding:20px 26px;border-radius:16px 16px 0 0;">
-        <a href="${SITE_URL}" style="color:#ffffff;font-size:20px;font-weight:800;text-decoration:none;">El Toaster</a>
-      </div>
-      <div style="background:#ffffff;border:1px solid #e8e2d9;border-top:0;border-radius:0 0 16px 16px;padding:26px 26px 28px;">
+  const html = `<!DOCTYPE html>
+<html lang="${lang}">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="x-apple-disable-message-reformatting" />
+<title>${esc(c.subject)}</title>
+<style>${MOBILE_CSS}</style>
+</head>
+<body style="margin:0;padding:0;background:#fdfbf8;">
+<span style="display:none;max-height:0;overflow:hidden;opacity:0;">${esc(c.preheader || "")}</span>
+<table role="presentation" width="100%" style="width:100%;background:#fdfbf8;font-family:Inter,Arial,Helvetica,sans-serif;">
+  <tr>
+    <td class="outer" align="center" style="padding:28px 16px;">
+      <table role="presentation" width="580" style="width:100%;max-width:580px;">
+        <tr>
+          <td align="left">
+            ${testBanner}
+            <div class="head" style="background:#FF4C00;padding:20px 26px;border-radius:16px 16px 0 0;">
+              <a href="${SITE_URL}" style="color:#ffffff;font-size:20px;font-weight:800;text-decoration:none;">El Toaster</a>
+            </div>
+            <div class="card" style="background:#ffffff;border:1px solid #e8e2d9;border-top:0;border-radius:0 0 16px 16px;padding:26px 26px 28px;">
 
-        <div style="background:#fff7f2;border-radius:12px;padding:18px 20px;">
-          ${label(t.funFact)}
-          ${funFact}
-        </div>
+              <div class="box" style="background:#fff7f2;border-radius:12px;padding:18px 20px;">
+                ${label(t.funFact)}
+                ${funFact}
+              </div>
 
-        ${divider}
-        ${label(t.news)}
-        ${news}
-        ${textLink(blog(), t.moreNews)}
+              ${divider}
+              ${label(t.news)}
+              ${news}
+              ${textLink(blog(), t.moreNews)}
 
-        ${divider}
-        ${label(t.pos)}
-        <div style="font-size:17px;font-weight:800;color:#0d0d0d;line-height:1.3;margin-bottom:8px;">${esc(c.pos.title)}</div>
-        <div style="font-size:14.5px;line-height:1.6;color:#5b5651;margin-bottom:10px;">${esc(c.pos.body)}</div>
-        ${textLink(blog(links.pos), t.onBlog)}
+              ${divider}
+              ${label(t.pos)}
+              <div style="font-size:17px;font-weight:800;color:#0d0d0d;line-height:1.3;margin-bottom:8px;">${esc(c.pos.title)}</div>
+              <div style="font-size:14.5px;line-height:1.6;color:#5b5651;margin-bottom:10px;">${esc(c.pos.body)}</div>
+              ${textLink(blog(links.pos), t.onBlog)}
 
-        ${divider}
-        ${label(t.business)}
-        <table role="presentation" style="width:100%;border-collapse:collapse;">${business}</table>
-        ${textLink(blog(links.business), t.onBlog)}
+              ${divider}
+              ${label(t.business)}
+              <table role="presentation" width="100%" style="width:100%;">${business}</table>
+              ${textLink(blog(links.business), t.onBlog)}
 
-        <div style="background:#0d0d0d;border-radius:14px;padding:24px 22px;text-align:center;margin-top:24px;">
-          <div style="font-size:18px;font-weight:800;color:#ffffff;margin-bottom:6px;">${t.ctaTitle}</div>
-          <div style="font-size:14px;line-height:1.55;color:#d6d0ca;margin-bottom:16px;">${t.ctaBody}</div>
-          <a href="${BOOKING_URL}" style="display:inline-block;background:#FF4C00;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 28px;border-radius:10px;">${t.ctaButton}</a>
-        </div>
+              <div class="cta" style="background:#0d0d0d;border-radius:14px;padding:24px 22px;text-align:center;margin-top:24px;">
+                <div style="font-size:18px;font-weight:800;color:#ffffff;margin-bottom:6px;">${t.ctaTitle}</div>
+                <div style="font-size:14px;line-height:1.55;color:#d6d0ca;margin-bottom:16px;">${t.ctaBody}</div>
+                <a class="btn" href="${BOOKING_URL}" style="display:inline-block;background:#FF4C00;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 28px;border-radius:10px;text-align:center;">${t.ctaButton}</a>
+              </div>
 
-        <div style="margin-top:24px;font-size:14px;color:#5b5651;line-height:1.6;">
-          ${t.signOff}<br />
-          <b style="color:#0d0d0d;">Mario Padilla</b><br />
-          <span style="font-size:12.5px;color:#8f8880;">El Toaster</span>
-        </div>
-      </div>
+              <table role="presentation" style="margin-top:24px;">
+                <tr>
+                  <td width="56" valign="middle" style="width:56px;padding:0 12px 0 0;">
+                    <img src="${AVATAR_URL}" alt="Mario Padilla" width="56" height="56" style="display:block;width:56px;height:56px;border-radius:50%;" />
+                  </td>
+                  <td valign="middle" style="font-size:14px;color:#5b5651;line-height:1.5;">
+                    ${t.signOff}<br />
+                    <b style="color:#0d0d0d;">Mario Padilla</b><br />
+                    <span style="font-size:12.5px;color:#8f8880;">El Toaster</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
 
-      <p style="font-size:11.5px;line-height:1.65;color:#8f8880;text-align:center;margin:16px 8px 0;">
-        ${t.ad}<br />
-        ${t.why}<br />
-        <a href="${unsubscribeUrl}" style="color:#8f8880;text-decoration:underline;">${t.unsubscribe}</a> · ${t.unsubscribeNote}<br />
-        El Toaster · Mario Padilla · ${esc(MAILING_ADDRESS)}
-      </p>
-    </div>
-  </div>`;
+            <p class="legal" style="font-size:11.5px;line-height:1.65;color:#8f8880;text-align:center;margin:16px 8px 0;">
+              ${t.ad}<br />
+              ${t.why}<br />
+              <a href="${unsubscribeUrl}" style="color:#8f8880;text-decoration:underline;">${t.unsubscribe}</a> · ${t.unsubscribeNote}<br />
+              El Toaster · Mario Padilla · ${esc(MAILING_ADDRESS)}
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>`;
 
   const subject = (mode === "test" ? `${t.testTag} ` : "") + c.subject;
   return { subject, html, oneClickUrl, hasPosts: mine.length > 0 };
@@ -452,6 +502,17 @@ const patchSend = (id: string, filter: string, body: Record<string, unknown>) =>
     body: JSON.stringify(body),
   }).then(async (r) => (r.ok ? ((await r.json()) as Send[]) : []));
 
+/** Where the issue's written sections live on the blog, if published yet. */
+async function sectionLinks(sendId: string): Promise<SectionLinks | null> {
+  const res = await db(`blog_posts?send_id=eq.${sendId}&published=eq.true&select=id,kind,lang`);
+  if (!res.ok) return null;
+  const links: SectionLinks = {};
+  for (const row of (await res.json()) as { id: string; kind: string; lang: Lang }[]) {
+    (links[row.lang] ||= {})[row.kind as "fun_fact" | "pos" | "business"] = row.id;
+  }
+  return links;
+}
+
 /** Puts the issue's written sections on the blog and returns where they are. */
 async function publishToBlog(sendId: string): Promise<SectionLinks | null> {
   const pub = await db("rpc/newsletter_publish_issue", {
@@ -462,13 +523,7 @@ async function publishToBlog(sendId: string): Promise<SectionLinks | null> {
     console.error("Publish to blog failed:", pub.status, await pub.text());
     return null;
   }
-  const res = await db(`blog_posts?send_id=eq.${sendId}&published=eq.true&select=id,kind,lang`);
-  if (!res.ok) return null;
-  const links: SectionLinks = {};
-  for (const row of (await res.json()) as { id: string; kind: string; lang: Lang }[]) {
-    (links[row.lang] ||= {})[row.kind as "fun_fact" | "pos" | "business"] = row.id;
-  }
-  return links;
+  return sectionLinks(sendId);
 }
 
 Deno.serve(async (req: Request) => {
@@ -540,10 +595,29 @@ Deno.serve(async (req: Request) => {
       return rows.length ? json(summary(rows[0])) : json({ error: "cannot_cancel", ...summary(send) }, 409);
     }
 
-    if (action !== "test" && action !== "live") return json({ error: "unknown_action" }, 400);
-    if (!RESEND_API_KEY) return json({ error: "resend_not_configured" }, 500);
+    if (!["test", "live", "preview"].includes(action)) return json({ error: "unknown_action" }, 400);
     if (posts.length === 0) return json({ error: "no_posts", ...summary(send) }, 409);
     if (!ready) return json({ error: "content_missing", ...summary(send) }, 409);
+
+    // The exact HTML a reader of that language would get. Sends nothing and
+    // publishes nothing; the unsubscribe link in it is a placeholder.
+    if (action === "preview") {
+      const sample: Subscriber = {
+        id: "preview",
+        email: "preview@example.com",
+        lang: body.lang === "en" ? "en" : "es",
+        is_test: body.mode === "test",
+        unsubscribe_token: "00000000-0000-0000-0000-000000000000",
+      };
+      const mail = render(sample, posts, body.mode === "test" ? "test" : "live", {
+        send,
+        liveCount: live.length,
+        links: (await sectionLinks(send.id)) || {},
+      });
+      return json({ subject: mail.subject, html: mail.html });
+    }
+
+    if (!RESEND_API_KEY) return json({ error: "resend_not_configured" }, 500);
 
     // Narrow to the requested addresses. Anyone asked for who is not eligible
     // for this step (opted out, unknown, or the wrong kind of address) is

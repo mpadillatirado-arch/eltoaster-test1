@@ -569,7 +569,7 @@ function Blog({ t, lang }) {
 
 /** One post, opened from a blog card or from a newsletter link (#blog/<id>).
  *  Shows the full text here first; the original source is one click further. */
-function BlogPost({ t, lang, id }) {
+function BlogPost({ t, lang, setLang, id }) {
   const [post, setPost] = useState(undefined); // undefined while loading, null if missing
 
   useEffect(() => {
@@ -580,17 +580,22 @@ function BlogPost({ t, lang, id }) {
     let cancelled = false;
     supabase
       .from("blog_posts")
-      .select("id,title,excerpt,source,image_url,image_credit,image_credit_url,external_url,published_at")
+      .select("id,lang,title,excerpt,source,image_url,image_credit,image_credit_url,external_url,published_at")
       .eq("published", true)
       .eq("id", id)
       .maybeSingle()
       .then(({ data }) => {
-        if (!cancelled) setPost(data || null);
+        if (cancelled) return;
+        setPost(data || null);
+        // A link from an email or a share should read in the story's own
+        // language, buttons included. Runs once per post, so the visitor can
+        // still switch afterwards.
+        if (data?.lang === "es" || data?.lang === "en") setLang(data.lang);
       });
     return () => {
       cancelled = true;
     };
-  }, [id]);
+  }, [id, setLang]);
 
   return (
     <article className="blog-page blog-post">
@@ -1509,7 +1514,7 @@ export default function App() {
         <Nav lang={lang} setLang={setLang} t={t} />
         <main>
           {hash.startsWith("#blog/") ? (
-            <BlogPost key={hash} t={t} lang={lang} id={hash.slice(6)} />
+            <BlogPost key={hash} t={t} lang={lang} setLang={setLang} id={hash.slice(6)} />
           ) : (
             <Blog t={t} lang={lang} />
           )}

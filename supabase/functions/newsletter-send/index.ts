@@ -328,7 +328,17 @@ function render(
           <td align="left">
             ${testBanner}
             <div class="head" style="background:#FF4C00;padding:20px 26px;border-radius:16px 16px 0 0;">
-              <a href="${SITE_URL}" style="color:#ffffff;font-size:20px;font-weight:800;text-decoration:none;">El Toaster</a>
+              <table role="presentation">
+                <tr>
+                  <td width="60" valign="middle" style="width:60px;padding:0 14px 0 0;">
+                    <a href="${SITE_URL}"><img src="${AVATAR_URL}" alt="Mario Padilla" width="54" height="54" style="display:block;width:54px;height:54px;border-radius:50%;border:3px solid #ffffff;" /></a>
+                  </td>
+                  <td valign="middle" style="line-height:1.25;">
+                    <a href="${SITE_URL}" style="color:#ffffff;font-size:22px;font-weight:800;text-decoration:none;">El Toaster</a><br />
+                    <span style="color:#ffffff;font-size:13.5px;">${lang === "en" ? "by Mario Padilla" : "por Mario Padilla"}</span>
+                  </td>
+                </tr>
+              </table>
             </div>
             <div class="card" style="background:#ffffff;border:1px solid #e8e2d9;border-top:0;border-radius:0 0 16px 16px;padding:26px 26px 28px;">
 
@@ -388,7 +398,15 @@ function render(
 </body>
 </html>`;
 
-  const subject = (mode === "test" ? `${t.testTag} ` : "") + c.subject;
+  // Gmail folds whatever a message repeats from earlier ones in its thread
+  // behind "•••" buttons, and tests of one issue share a subject, so they
+  // thread. The time makes every test its own conversation, shown in full.
+  const sentAt = new Date().toLocaleTimeString("en-GB", {
+    timeZone: "America/Phoenix",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const subject = (mode === "test" ? `${t.testTag.replace("]", ` ${sentAt}]`)} ` : "") + c.subject;
   return { subject, html, oneClickUrl, hasPosts: mine.length > 0 };
 }
 

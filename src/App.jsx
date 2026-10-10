@@ -489,6 +489,13 @@ function Clients({ t }) {
 
 /** Curated hospitality-industry articles. Rows live in the blog_posts table so
  *  new pieces can be added from the Supabase dashboard without a redeploy. */
+const fmtDate = (d, lang) =>
+  new Date(d).toLocaleDateString(lang === "en" ? "en-US" : "es-MX", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+
 function Blog({ t, lang }) {
   const [posts, setPosts] = useState(null); // null while loading
 
@@ -501,11 +508,11 @@ function Blog({ t, lang }) {
 
     supabase
       .from("blog_posts")
-      .select("id,title,excerpt,source,image_url,external_url,published_at")
+      .select("id,title,teaser,excerpt,source,image_url,published_at")
       .eq("published", true)
       .in("lang", [lang, "both"])
       .order("published_at", { ascending: false })
-      .limit(9)
+      .limit(12)
       .then(({ data }) => {
         if (!cancelled) setPosts(data || []);
       });
@@ -514,13 +521,6 @@ function Blog({ t, lang }) {
       cancelled = true;
     };
   }, [lang]);
-
-  const fmtDate = (d) =>
-    new Date(d).toLocaleDateString(lang === "en" ? "en-US" : "es-MX", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
 
   return (
     <section id="blog" className="blog-page">
@@ -540,34 +540,129 @@ function Blog({ t, lang }) {
           <p className="blog-empty">{t.blog.empty}</p>
         ) : (
           <div className="blog-grid">
-            {posts.map((p, i) => {
-              const Card = p.external_url ? "a" : "div";
-              const linkProps = p.external_url
-                ? { href: p.external_url, target: "_blank", rel: "noopener noreferrer" }
-                : {};
-              return (
-                <Reveal key={p.id} delay={i * 70}>
-                  <Card className="blog-card" {...linkProps}>
-                    {p.image_url && (
-                      <img className="blog-img" src={p.image_url} alt="" loading="lazy" />
-                    )}
-                    <div className="blog-body">
-                      <div className="blog-meta">
-                        {p.source && <span>{p.source}</span>}
-                        <span>{fmtDate(p.published_at)}</span>
-                      </div>
-                      <h3>{p.title}</h3>
-                      {p.excerpt && <p>{p.excerpt}</p>}
-                      {p.external_url && (
-                        <span className="blog-more">{t.blog.readMore} →</span>
-                      )}
+            {posts.map((p, i) => (
+              <Reveal key={p.id} delay={i * 70}>
+                {/* Every card opens the post on this site; the original
+                    source is linked from there. */}
+                <a className="blog-card" href={`#blog/${p.id}`}>
+                  {p.image_url && (
+                    <img className="blog-img" src={p.image_url} alt="" loading="lazy" />
+                  )}
+                  <div className="blog-body">
+                    <div className="blog-meta">
+                      {p.source && <span>{p.source}</span>}
+                      <span>{fmtDate(p.published_at, lang)}</span>
                     </div>
-                  </Card>
-                </Reveal>
-              );
-            })}
+                    <h3>{p.title}</h3>
+                    {(p.teaser || p.excerpt) && <p>{p.teaser || p.excerpt}</p>}
+                    <span className="blog-more">{t.blog.readMore} →</span>
+                  </div>
+                </a>
+              </Reveal>
+            ))}
           </div>
         )}
+      </div>
+    </section>
+  );
+}
+
+/** One post, opened from a blog card or from a newsletter link (#blog/<id>).
+ *  Shows the full text here first; the original source is one click further. */
+function BlogPost({ t, lang, id }) {
+  const [post, setPost] = useState(undefined); // undefined while loading, null if missing
+
+  useEffect(() => {
+    if (!supabase || !/^[0-9a-f-]{36}$/i.test(id)) {
+      setPost(null);
+      return;
+    }
+    let cancelled = false;
+    supabase
+      .from("blog_posts")
+      .select("id,title,excerpt,source,image_url,image_credit,image_credit_url,external_url,published_at")
+      .eq("published", true)
+      .eq("id", id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!cancelled) setPost(data || null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [id]);
+
+  return (
+    <article className="blog-page blog-post">
+      <div className="wrap">
+        <a href="#blog" className="back-link">
+          {t.blog.backToBlog}
+        </a>
+
+        {post === undefined ? (
+          <p className="blog-empty">{t.blog.loading}</p>
+        ) : post === null ? (
+          <p className="blog-empty">{t.blog.notFound}</p>
+        ) : (
+          <>
+            <div className="blog-meta">
+              {post.source && <span>{post.source}</span>}
+              <span>{fmtDate(post.published_at, lang)}</span>
+            </div>
+            <h1>{post.title}</h1>
+
+            {post.image_url && (
+              <figure>
+                <img src={post.image_url} alt="" />
+                {post.image_credit && (
+                  <figcaption>
+                    {post.image_credit_url ? (
+                      <a href={post.image_credit_url} target="_blank" rel="noopener noreferrer">
+                        {post.image_credit}
+                      </a>
+                    ) : (
+                      post.image_credit
+                    )}
+                  </figcaption>
+                )}
+              </figure>
+            )}
+
+            {(post.excerpt || "").split(/\n{2,}/).map((para, i) => (
+              <p key={i} className="blog-para">
+                {para}
+              </p>
+            ))}
+
+            {post.external_url && (
+              <a
+                className="blog-source"
+                href={post.external_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t.blog.original(post.source)} →
+              </a>
+            )}
+          </>
+        )}
+      </div>
+    </article>
+  );
+}
+
+/** Full-width band under every blog page that sends readers to the form. */
+function BlogCta({ t }) {
+  return (
+    <section className="midcta">
+      <div className="wrap midcta-in">
+        <div>
+          <h2>{t.blog.ctaTitle}</h2>
+          <p className="blog-cta-body">{t.blog.ctaBody}</p>
+        </div>
+        <a className="btn" href="#empezar">
+          {t.blog.ctaButton}
+        </a>
       </div>
     </section>
   );
@@ -1344,7 +1439,7 @@ export default function App() {
   const routeFromHash = () => {
     const h = window.location.hash;
     if (h === "#privacy") return "privacy";
-    if (h === "#blog") return "blog";
+    if (h === "#blog" || h.startsWith("#blog/")) return "blog";
     if (h.startsWith("#unsubscribe")) return "unsubscribe";
     if (h.startsWith("#send/")) return "send";
     return "site";
@@ -1362,6 +1457,24 @@ export default function App() {
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
+
+  // Pages start at the top. Going back to the landing page with an anchor
+  // (#empezar from a blog post) needs a nudge, because the target did not
+  // exist yet when the browser handled the hash change.
+  // Anchors within the landing page are left to the browser's own smooth
+  // scroll; this only steps in when arriving from another page.
+  const prevRoute = useRef(null);
+  useEffect(() => {
+    const arriving = prevRoute.current !== "site";
+    prevRoute.current = route;
+    if (route !== "site") {
+      window.scrollTo({ top: 0, behavior: "instant" });
+      return;
+    }
+    if (!arriving) return;
+    const target = hash.length > 1 ? document.getElementById(hash.slice(1)) : null;
+    if (target) target.scrollIntoView({ behavior: "instant" });
+  }, [hash, route]);
 
   if (route === "privacy") {
     return (
@@ -1395,7 +1508,12 @@ export default function App() {
       <>
         <Nav lang={lang} setLang={setLang} t={t} />
         <main>
-          <Blog t={t} lang={lang} />
+          {hash.startsWith("#blog/") ? (
+            <BlogPost key={hash} t={t} lang={lang} id={hash.slice(6)} />
+          ) : (
+            <Blog t={t} lang={lang} />
+          )}
+          <BlogCta t={t} />
         </main>
         <Footer t={t} lang={lang} />
       </>

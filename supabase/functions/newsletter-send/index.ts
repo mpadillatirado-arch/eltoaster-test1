@@ -16,6 +16,10 @@
 // step; it cannot add anyone. A narrowed live send leaves the issue open, and
 // the delivery rows it writes mean those people are skipped by the full send.
 //
+// Before any email goes out the issue's written sections are published to the
+// blog (newsletter_publish_issue), and every link in the email points at a
+// page on eltoaster.com — never straight at an outside site.
+//
 // verify_jwt is off because the approval page on eltoaster.com calls this with
 // the publishable key. Authority comes from the issue's own token, which exists
 // only in the database and in the test email. Responses are JSON on purpose:
@@ -27,12 +31,10 @@ const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
-// CAN-SPAM requires a valid physical postal address (street, P.O. box or
-// registered mailbox) in every commercial email. Sending to the whole list is
-// refused until the full address is set. The locality is shown meanwhile, but
-// a city and ZIP alone do not meet the requirement.
-const MAILING_ADDRESS = (Deno.env.get("MAILING_ADDRESS") || "").trim();
-const MAILING_LOCALITY = "Chandler, AZ 85286";
+// CAN-SPAM requires a valid physical postal address in every commercial email.
+const MAILING_ADDRESS = (
+  Deno.env.get("MAILING_ADDRESS") || "3031 E Lark Dr, Chandler, AZ 85286"
+).trim();
 
 const SITE_URL = "https://eltoaster.com";
 const BOOKING_URL =
@@ -83,9 +85,9 @@ type Post = {
   id: string;
   lang: string;
   title: string;
+  teaser: string | null;
   excerpt: string | null;
   source: string | null;
-  external_url: string | null;
   published_at: string;
 };
 type Subscriber = {
@@ -96,10 +98,15 @@ type Subscriber = {
   unsubscribe_token: string;
 };
 type Block = { title: string; body: string };
+type FunFact = Block & {
+  image_url?: string;
+  image_alt?: string;
+  image_credit?: string;
+};
 type IssueContent = {
   subject: string;
   preheader?: string;
-  fun_fact: Block;
+  fun_fact: FunFact;
   pos: Block;
   business: Block[];
 };
@@ -114,14 +121,17 @@ type Send = {
   recipients: number | null;
   error: string | null;
 };
+/** Blog post id of each written section, per language. */
+type SectionLinks = Partial<Record<Lang, Partial<Record<"fun_fact" | "pos" | "business", string>>>>;
 
 // The fixed words around each issue's written content.
 const COPY = {
   es: {
     funFact: "Dato curioso",
     news: "Lo que pasó en la industria",
-    readMore: "Leer el artículo completo →",
-    moreNews: "Ver más noticias en el blog →",
+    readMore: "Leer más en el blog →",
+    moreNews: "Ver todas las noticias en el blog →",
+    onBlog: "Seguir leyendo en eltoaster.com →",
     pos: "Tu punto de venta",
     business: "3 cosas que todo dueño debe saber",
     ctaTitle: "¿Platicamos 15 minutos?",
@@ -138,14 +148,13 @@ const COPY = {
     testBody: (n: number) =>
       `Así la verán tus suscriptores. Si se ve bien, apruébala y saldrá a ${n} ${n === 1 ? "persona" : "personas"}.`,
     testButton: "Revisar y enviar",
-    testNoAddress:
-      "Falta tu dirección postal completa (calle o apartado postal), que la ley CAN-SPAM exige. Una ciudad y código postal no bastan, así que el envío a toda la lista sigue bloqueado.",
   },
   en: {
     funFact: "Fun fact",
     news: "What happened in the industry",
-    readMore: "Read the full article →",
-    moreNews: "See more news on the blog →",
+    readMore: "Read more on the blog →",
+    moreNews: "See all the news on the blog →",
+    onBlog: "Keep reading at eltoaster.com →",
     pos: "Your point of sale",
     business: "3 things every owner should know",
     ctaTitle: "Got 15 minutes?",
@@ -162,8 +171,6 @@ const COPY = {
     testBody: (n: number) =>
       `This is what your subscribers will see. If it looks right, approve it and it goes to ${n} ${n === 1 ? "person" : "people"}.`,
     testButton: "Review and send",
-    testNoAddress:
-      "Your full postal address (street or P.O. box) is missing, and CAN-SPAM requires it. A city and ZIP are not enough, so sending to the whole list stays blocked.",
   },
 };
 
@@ -176,6 +183,14 @@ function postsFor(lang: Lang, posts: Post[]) {
       .slice(0, POSTS_PER_ISSUE);
   const own = pick(lang);
   return own.length ? own : pick(lang === "es" ? "en" : "es");
+}
+
+/** The email shows only a short teaser; the full story is on the blog. */
+function teaserOf(p: Post) {
+  if (p.teaser) return p.teaser;
+  const text = (p.excerpt || "").trim();
+  const first = text.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? text;
+  return first.length > 170 ? first.slice(0, 169).trimEnd() + "…" : first;
 }
 
 /** An issue is sendable only when both languages have every written section. */
@@ -193,31 +208,55 @@ function contentReady(send: Send) {
 const label = (text: string) =>
   `<div style="font-size:11px;letter-spacing:0.09em;text-transform:uppercase;color:#d63e00;font-weight:800;margin:0 0 10px 0;">${text}</div>`;
 
+const textLink = (href: string, text: string) =>
+  `<a href="${esc(href)}" style="font-size:13px;font-weight:700;color:#d63e00;text-decoration:none;">${text}</a>`;
+
 function render(
   sub: Subscriber,
   posts: Post[],
   mode: "test" | "live",
-  ctx: { send: Send; liveCount: number }
+  ctx: { send: Send; liveCount: number; links: SectionLinks }
 ) {
   const lang: Lang = sub.lang === "en" ? "en" : "es";
   const t = COPY[lang];
   const c = ctx.send.content![lang]!;
   const mine = postsFor(lang, posts);
+  const blog = (id?: string) => (id ? `${SITE_URL}/#blog/${id}` : `${SITE_URL}/#blog`);
+  const links = ctx.links[lang] || {};
   const unsubscribeUrl = `${SITE_URL}/#unsubscribe/t/${sub.unsubscribe_token}`;
   const oneClickUrl = `${SUPABASE_URL}/functions/v1/unsubscribe?t=${sub.unsubscribe_token}`;
+
+  const funFactText = `
+    <div style="font-size:18px;font-weight:800;color:#0d0d0d;line-height:1.3;margin-bottom:8px;">${esc(c.fun_fact.title)}</div>
+    <div style="font-size:14.5px;line-height:1.6;color:#5b5651;margin-bottom:10px;">${esc(c.fun_fact.body)}</div>
+    ${textLink(blog(links.fun_fact), t.onBlog)}`;
+
+  // The photo sits beside the text so a tall picture doesn't push the story
+  // off the first screen.
+  const funFact = c.fun_fact.image_url
+    ? `
+    <table role="presentation" style="width:100%;border-collapse:collapse;">
+      <tr>
+        <td style="width:150px;vertical-align:top;padding-right:16px;">
+          <a href="${esc(blog(links.fun_fact))}"><img src="${esc(c.fun_fact.image_url)}" width="150" alt="${esc(c.fun_fact.image_alt || c.fun_fact.title)}" style="display:block;width:150px;height:auto;border-radius:10px;border:0;" /></a>
+        </td>
+        <td style="vertical-align:top;">${funFactText}</td>
+      </tr>
+    </table>
+    ${
+      c.fun_fact.image_credit
+        ? `<div style="font-size:10.5px;color:#8f8880;margin-top:8px;">${esc(c.fun_fact.image_credit)}</div>`
+        : ""
+    }`
+    : funFactText;
 
   const news = mine
     .map(
       (p) => `
-      <div style="border:1px solid #e8e2d9;border-radius:12px;padding:16px 18px;margin-bottom:12px;">
-        <div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#8f8880;font-weight:700;margin-bottom:5px;">${esc(p.source)}</div>
-        <div style="font-size:16px;font-weight:800;color:#0d0d0d;line-height:1.3;margin-bottom:7px;">${esc(p.title)}</div>
-        <div style="font-size:14px;line-height:1.55;color:#5b5651;">${esc(p.excerpt)}</div>
-        ${
-          p.external_url
-            ? `<div style="margin-top:10px;"><a href="${esc(p.external_url)}" style="font-size:13px;font-weight:700;color:#d63e00;text-decoration:none;">${t.readMore}</a></div>`
-            : ""
-        }
+      <div style="border:1px solid #e8e2d9;border-radius:12px;padding:14px 16px;margin-bottom:10px;">
+        <div style="font-size:15.5px;font-weight:800;color:#0d0d0d;line-height:1.3;margin-bottom:5px;">${esc(p.title)}</div>
+        <div style="font-size:14px;line-height:1.5;color:#5b5651;margin-bottom:8px;">${esc(teaserOf(p))}</div>
+        ${textLink(blog(p.id), t.readMore)}
       </div>`
     )
     .join("");
@@ -243,11 +282,6 @@ function render(
       <div style="border:2px dashed #FF4C00;border-radius:14px;background:#fff7f2;padding:18px 20px;margin-bottom:18px;">
         <div style="font-size:15px;font-weight:800;color:#0d0d0d;margin-bottom:6px;">${t.testTitle}</div>
         <div style="font-size:14px;line-height:1.55;color:#5b5651;margin-bottom:14px;">${t.testBody(ctx.liveCount)}</div>
-        ${
-          MAILING_ADDRESS
-            ? ""
-            : `<div style="font-size:13px;line-height:1.5;color:#a32d2d;margin-bottom:14px;">${t.testNoAddress}</div>`
-        }
         <a href="${SITE_URL}/#send/${ctx.send.id}/${ctx.send.token}" style="display:inline-block;background:#FF4C00;color:#ffffff;text-decoration:none;font-weight:700;font-size:14px;padding:12px 22px;border-radius:10px;">${t.testButton}</a>
       </div>`
       : "";
@@ -260,31 +294,32 @@ function render(
     <div style="max-width:580px;margin:0 auto;">
       ${testBanner}
       <div style="background:#FF4C00;padding:20px 26px;border-radius:16px 16px 0 0;">
-        <div style="color:#ffffff;font-size:20px;font-weight:800;">El Toaster</div>
+        <a href="${SITE_URL}" style="color:#ffffff;font-size:20px;font-weight:800;text-decoration:none;">El Toaster</a>
       </div>
       <div style="background:#ffffff;border:1px solid #e8e2d9;border-top:0;border-radius:0 0 16px 16px;padding:26px 26px 28px;">
 
         <div style="background:#fff7f2;border-radius:12px;padding:18px 20px;">
           ${label(t.funFact)}
-          <div style="font-size:18px;font-weight:800;color:#0d0d0d;line-height:1.3;margin-bottom:8px;">${esc(c.fun_fact.title)}</div>
-          <div style="font-size:14.5px;line-height:1.6;color:#5b5651;">${esc(c.fun_fact.body)}</div>
+          ${funFact}
         </div>
 
         ${divider}
         ${label(t.news)}
         ${news}
-        <a href="${SITE_URL}/#blog" style="font-size:13px;font-weight:700;color:#d63e00;text-decoration:none;">${t.moreNews}</a>
+        ${textLink(blog(), t.moreNews)}
 
         ${divider}
         ${label(t.pos)}
         <div style="font-size:17px;font-weight:800;color:#0d0d0d;line-height:1.3;margin-bottom:8px;">${esc(c.pos.title)}</div>
-        <div style="font-size:14.5px;line-height:1.6;color:#5b5651;">${esc(c.pos.body)}</div>
+        <div style="font-size:14.5px;line-height:1.6;color:#5b5651;margin-bottom:10px;">${esc(c.pos.body)}</div>
+        ${textLink(blog(links.pos), t.onBlog)}
 
         ${divider}
         ${label(t.business)}
         <table role="presentation" style="width:100%;border-collapse:collapse;">${business}</table>
+        ${textLink(blog(links.business), t.onBlog)}
 
-        <div style="background:#0d0d0d;border-radius:14px;padding:24px 22px;text-align:center;margin-top:10px;">
+        <div style="background:#0d0d0d;border-radius:14px;padding:24px 22px;text-align:center;margin-top:24px;">
           <div style="font-size:18px;font-weight:800;color:#ffffff;margin-bottom:6px;">${t.ctaTitle}</div>
           <div style="font-size:14px;line-height:1.55;color:#d6d0ca;margin-bottom:16px;">${t.ctaBody}</div>
           <a href="${BOOKING_URL}" style="display:inline-block;background:#FF4C00;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 28px;border-radius:10px;">${t.ctaButton}</a>
@@ -301,7 +336,7 @@ function render(
         ${t.ad}<br />
         ${t.why}<br />
         <a href="${unsubscribeUrl}" style="color:#8f8880;text-decoration:underline;">${t.unsubscribe}</a> · ${t.unsubscribeNote}<br />
-        El Toaster · Mario Padilla · ${esc(MAILING_ADDRESS || MAILING_LOCALITY)}
+        El Toaster · Mario Padilla · ${esc(MAILING_ADDRESS)}
       </p>
     </div>
   </div>`;
@@ -339,7 +374,7 @@ async function deliver(
   list: Subscriber[],
   posts: Post[],
   mode: "test" | "live",
-  ctx: { send: Send; liveCount: number },
+  ctx: { send: Send; liveCount: number; links: SectionLinks },
   startedAt: number
 ) {
   const out = { sent: 0, failed: 0, skipped: 0, remaining: 0, errors: [] as string[] };
@@ -417,6 +452,25 @@ const patchSend = (id: string, filter: string, body: Record<string, unknown>) =>
     body: JSON.stringify(body),
   }).then(async (r) => (r.ok ? ((await r.json()) as Send[]) : []));
 
+/** Puts the issue's written sections on the blog and returns where they are. */
+async function publishToBlog(sendId: string): Promise<SectionLinks | null> {
+  const pub = await db("rpc/newsletter_publish_issue", {
+    method: "POST",
+    body: JSON.stringify({ p_send: sendId }),
+  });
+  if (!pub.ok) {
+    console.error("Publish to blog failed:", pub.status, await pub.text());
+    return null;
+  }
+  const res = await db(`blog_posts?send_id=eq.${sendId}&published=eq.true&select=id,kind,lang`);
+  if (!res.ok) return null;
+  const links: SectionLinks = {};
+  for (const row of (await res.json()) as { id: string; kind: string; lang: Lang }[]) {
+    (links[row.lang] ||= {})[row.kind as "fun_fact" | "pos" | "business"] = row.id;
+  }
+  return links;
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
   if (!SUPABASE_URL || !SERVICE_ROLE_KEY) return json({ error: "not_configured" }, 500);
@@ -455,7 +509,7 @@ Deno.serve(async (req: Request) => {
     const live = subs.filter((s) => !s.is_test);
 
     const postsRes = await db(
-      `blog_posts?id=in.(${send.post_ids.join(",")})&select=id,lang,title,excerpt,source,external_url,published_at`
+      `blog_posts?id=in.(${send.post_ids.join(",")})&select=id,lang,title,teaser,excerpt,source,published_at`
     );
     const posts: Post[] = postsRes.ok ? await postsRes.json() : [];
     const ready = contentReady(send);
@@ -498,16 +552,33 @@ Deno.serve(async (req: Request) => {
     const targets = only.length ? pool.filter((s) => only.includes(s.email.toLowerCase())) : pool;
     const notEligible = only.filter((e) => !targets.some((s) => s.email.toLowerCase() === e));
 
-    const ctx = { send, liveCount: live.length };
+    if (action === "test" && !["draft", "test_sent"].includes(send.status)) {
+      return json({ error: "not_testable", ...summary(send) }, 409);
+    }
+    if (action === "live") {
+      if (send.status === "sent") return json({ error: "already_sent", ...summary(send) }, 409);
+      if (send.status === "draft") return json({ error: "test_first", ...summary(send) }, 409);
+      if (send.status === "cancelled") return json({ error: "cancelled", ...summary(send) }, 409);
+      if (!MAILING_ADDRESS) return json({ error: "mailing_address_missing", ...summary(send) }, 409);
+    }
+    if (targets.length === 0) {
+      return json(
+        {
+          error: action === "test" ? "no_test_recipients" : "no_recipients",
+          not_eligible: notEligible,
+          ...summary(send),
+        },
+        409
+      );
+    }
+
+    // The email links to these pages, so they must exist before it leaves.
+    const links = await publishToBlog(send.id);
+    if (!links) return json({ error: "blog_publish_failed", ...summary(send) }, 500);
+
+    const ctx = { send, liveCount: live.length, links };
 
     if (action === "test") {
-      if (!["draft", "test_sent"].includes(send.status)) {
-        return json({ error: "not_testable", ...summary(send) }, 409);
-      }
-      if (targets.length === 0) {
-        return json({ error: "no_test_recipients", not_eligible: notEligible, ...summary(send) }, 409);
-      }
-
       // A test can be repeated, so clear these recipients' previous rows first.
       await db(
         `newsletter_deliveries?send_id=eq.${send.id}&mode=eq.test&subscriber_id=in.(${targets
@@ -532,18 +603,6 @@ Deno.serve(async (req: Request) => {
     }
 
     // action === "live"
-    if (send.status === "sent") return json({ error: "already_sent", ...summary(send) }, 409);
-    if (send.status === "draft") return json({ error: "test_first", ...summary(send) }, 409);
-    if (send.status === "cancelled") return json({ error: "cancelled", ...summary(send) }, 409);
-    // The whole list needs the full postal address. A send narrowed to named
-    // people is allowed with the locality, as an explicit one-off.
-    if (!MAILING_ADDRESS && only.length === 0) {
-      return json({ error: "mailing_address_missing", ...summary(send) }, 409);
-    }
-    if (targets.length === 0) {
-      return json({ error: "no_recipients", not_eligible: notEligible, ...summary(send) }, 409);
-    }
-
     const now = new Date().toISOString();
     let claimed = await patchSend(send.id, "&status=in.(test_sent,failed)", {
       status: "sending",

@@ -1080,6 +1080,36 @@ a.blog-card:hover {
   border-radius: var(--radius-lg);
 }
 
+/* ---- Single blog post ---- */
+.blog-post .wrap { max-width: 760px; }
+.blog-post .blog-meta { margin-top: 22px; }
+.blog-post h1 { font-size: clamp(1.8rem, 4.4vw, 2.7rem); line-height: 1.15; margin: 12px 0 26px; }
+.blog-post figure { margin: 0 0 28px; }
+.blog-post figure img {
+  width: 100%;
+  max-height: 440px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  display: block;
+}
+.blog-post figcaption { margin-top: 8px; font-size: 0.78rem; color: var(--text-3); }
+.blog-post figcaption a { color: inherit; }
+.blog-para {
+  font-size: 1.08rem;
+  line-height: 1.7;
+  color: var(--text-2);
+  margin-bottom: 18px;
+  white-space: pre-line;
+}
+.blog-source {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--orange-deep);
+}
+.blog-cta-body { margin-top: 8px; color: #d6d0ca; font-size: 1rem; }
+
 /* ---- Footer newsletter ---- */
 .newsletter { max-width: 400px; }
 .newsletter h3 { color: #fff; font-size: 1.1rem; max-width: none; }

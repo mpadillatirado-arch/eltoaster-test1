@@ -164,8 +164,14 @@ export const content = {
       lede: "Lo que está pasando en la industria: notas, tendencias y datos que le sirven a un operador en Phoenix.",
       loading: "Cargando artículos…",
       empty: "Todavía no hay artículos publicados. Vuelve pronto.",
-      readMore: "Leer el artículo",
+      readMore: "Leer más",
       back: "← Volver al sitio",
+      backToBlog: "← Todas las notas",
+      notFound: "No encontramos esa nota. Puede que ya no esté publicada.",
+      original: (source) => `Leer la nota original${source ? ` en ${source}` : ""}`,
+      ctaTitle: "¿Y qué dicen las reseñas de tu restaurante?",
+      ctaBody: "Te lo digo con datos, gratis y en menos de 48 horas.",
+      ctaButton: "Pedir mi diagnóstico gratis",
     },
 
     newsletter: {
@@ -487,8 +493,14 @@ export const content = {
       lede: "What's happening across the industry: reporting, trends and numbers an operator in Phoenix can actually use.",
       loading: "Loading articles…",
       empty: "No articles published yet. Check back soon.",
-      readMore: "Read the article",
+      readMore: "Read more",
       back: "← Back to the site",
+      backToBlog: "← All stories",
+      notFound: "We couldn't find that story. It may no longer be published.",
+      original: (source) => `Read the original story${source ? ` at ${source}` : ""}`,
+      ctaTitle: "So what are your restaurant's reviews saying?",
+      ctaBody: "I'll show you with data, free and within 48 hours.",
+      ctaButton: "Get my free diagnostic",
     },
 
     newsletter: {

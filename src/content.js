@@ -144,7 +144,7 @@ export const content = {
       locPlaceholder: "1",
       okTitle: "¡Listo! Ya tengo tus datos.",
       okBody: "Te contacto en menos de 24 horas hábiles con los siguientes pasos. Revisa tu correo — y la carpeta de spam, por si acaso.",
-      error: "No se pudo enviar. Revisa tu conexión e inténtalo de nuevo, o escríbeme directo a mario.padilla@toasttab.com.",
+      error: "No se pudo enviar. Revisa tu conexión e inténtalo de nuevo, o escríbeme directo a mario@eltoaster.com.",
       cooldownTitle: "Ya pediste un diagnóstico con este correo",
       cooldownBody: (days, date) =>
         `Cada correo puede pedir un diagnóstico nuevo cada 30 días. Puedes volver en ${days} ${
@@ -244,7 +244,7 @@ export const content = {
       close: "Cerrar",
       okTitle: "¡Listo!",
       okBody: "Recibí tus datos y te contacto en menos de 24 horas hábiles.",
-      error: "No se pudo enviar. Inténtalo de nuevo o escríbeme a mario.padilla@toasttab.com.",
+      error: "No se pudo enviar. Inténtalo de nuevo o escríbeme a mario@eltoaster.com.",
       moreDetail: "¿Prefieres darme más contexto ahora?",
       moreDetailLink: "Usa el formulario completo",
     },
@@ -259,10 +259,15 @@ export const content = {
       h2: "Restaurantes que ya confían en este proceso",
       lede: "Marcas independientes del área de Phoenix con las que he trabajado.",
       items: [
-        { key: "las-culichis", name: "Las Culichis Mariscos" },
-        { key: "padel-pals", name: "Padel Pals" },
-        { key: "sushino", name: "Sushino Mexican Roll" },
-        { key: "el-chaka", name: "El Chaka Tacos y Más" },
+        {
+          key: "las-culichis",
+          name: "Las Culichis Mariscos",
+          url: "https://toast.app/r/las-culichis-mariscos-2239-west-bethany-home-road/order/r-b41e67b8-2e0e-427f-81d6-8c460f1f6c4e",
+        },
+        { key: "padel-pals", name: "Padel Pals", url: "https://padel-pals.com/" },
+        { key: "sushino", name: "Sushino Mexican Roll", url: "https://sushinomexicanroll.com/" },
+        { key: "el-chaka", name: "El Chaka Tacos y Más", url: "https://elchakarestaurantphx.com/" },
+        { key: "las-15-salsas", name: "Las 15 Salsas", url: "https://las15salsas.com/" },
       ],
     },
 
@@ -316,7 +321,7 @@ export const content = {
         },
         {
           h: "Tus derechos (CCPA/CPRA)",
-          p: "Si eres residente de California — o de otro estado con protecciones similares — tienes derecho a: saber qué datos tengo sobre ti, solicitar una copia, pedir que los corrija, pedir que los elimine, y optar por no recibir más comunicaciones de marketing en cualquier momento. No vendo ni comparto tu información personal con terceros para publicidad dirigida, por lo que no aplica un mecanismo de 'no vender mis datos' — pero puedes ejercer cualquiera de los derechos anteriores escribiendo a mario.padilla@toasttab.com. Respondo en un plazo razonable y no habrá represalia ni cambio en el servicio por ejercer estos derechos.",
+          p: "Si eres residente de California — o de otro estado con protecciones similares — tienes derecho a: saber qué datos tengo sobre ti, solicitar una copia, pedir que los corrija, pedir que los elimine, y optar por no recibir más comunicaciones de marketing en cualquier momento. No vendo ni comparto tu información personal con terceros para publicidad dirigida, por lo que no aplica un mecanismo de 'no vender mis datos' — pero puedes ejercer cualquiera de los derechos anteriores escribiendo a mario@eltoaster.com. Respondo en un plazo razonable y no habrá represalia ni cambio en el servicio por ejercer estos derechos.",
         },
         {
           h: "Cómo darte de baja de marketing",
@@ -328,7 +333,7 @@ export const content = {
         },
         {
           h: "Contacto",
-          p: "Para cualquier pregunta o solicitud sobre tus datos, escribe a mario.padilla@toasttab.com.",
+          p: "Para cualquier pregunta o solicitud sobre tus datos, escribe a mario@eltoaster.com.",
         },
       ],
       disclaimer:
@@ -479,7 +484,7 @@ export const content = {
       locPlaceholder: "1",
       okTitle: "Got it — you're on the list.",
       okBody: "I'll reach out within one business day with next steps. Keep an eye on your inbox, and your spam folder just in case.",
-      error: "Couldn't send that. Check your connection and try again, or email me directly at mario.padilla@toasttab.com.",
+      error: "Couldn't send that. Check your connection and try again, or email me directly at mario@eltoaster.com.",
       cooldownTitle: "You already requested a diagnostic with this email",
       cooldownBody: (days, date) =>
         `Each email can request a new diagnostic every 30 days. Come back in ${days} ${
@@ -579,7 +584,7 @@ export const content = {
       close: "Close",
       okTitle: "You're set!",
       okBody: "Got your details — I'll reach out within one business day.",
-      error: "Couldn't send that. Try again or email me at mario.padilla@toasttab.com.",
+      error: "Couldn't send that. Try again or email me at mario@eltoaster.com.",
       moreDetail: "Want to give me more context now?",
       moreDetailLink: "Use the full form",
     },
@@ -594,10 +599,15 @@ export const content = {
       h2: "Restaurants that already trust this process",
       lede: "Independent brands across the Phoenix area I've worked with.",
       items: [
-        { key: "las-culichis", name: "Las Culichis Mariscos" },
-        { key: "padel-pals", name: "Padel Pals" },
-        { key: "sushino", name: "Sushino Mexican Roll" },
-        { key: "el-chaka", name: "El Chaka Tacos y Más" },
+        {
+          key: "las-culichis",
+          name: "Las Culichis Mariscos",
+          url: "https://toast.app/r/las-culichis-mariscos-2239-west-bethany-home-road/order/r-b41e67b8-2e0e-427f-81d6-8c460f1f6c4e",
+        },
+        { key: "padel-pals", name: "Padel Pals", url: "https://padel-pals.com/" },
+        { key: "sushino", name: "Sushino Mexican Roll", url: "https://sushinomexicanroll.com/" },
+        { key: "el-chaka", name: "El Chaka Tacos y Más", url: "https://elchakarestaurantphx.com/" },
+        { key: "las-15-salsas", name: "Las 15 Salsas", url: "https://las15salsas.com/" },
       ],
     },
 
@@ -651,7 +661,7 @@ export const content = {
         },
         {
           h: "Your rights (CCPA/CPRA)",
-          p: "If you're a California resident — or from another state with similar protections — you have the right to: know what data I have on you, request a copy, ask me to correct it, ask me to delete it, and opt out of marketing communications at any time. I don't sell or share your personal information with third parties for targeted advertising, so a 'do not sell my data' mechanism doesn't apply — but you can exercise any of the rights above by emailing mario.padilla@toasttab.com. I respond within a reasonable timeframe, and there's no retaliation or change in service for exercising these rights.",
+          p: "If you're a California resident — or from another state with similar protections — you have the right to: know what data I have on you, request a copy, ask me to correct it, ask me to delete it, and opt out of marketing communications at any time. I don't sell or share your personal information with third parties for targeted advertising, so a 'do not sell my data' mechanism doesn't apply — but you can exercise any of the rights above by emailing mario@eltoaster.com. I respond within a reasonable timeframe, and there's no retaliation or change in service for exercising these rights.",
         },
         {
           h: "How to unsubscribe from marketing",
@@ -663,7 +673,7 @@ export const content = {
         },
         {
           h: "Contact",
-          p: "For any question or request about your data, email mario.padilla@toasttab.com.",
+          p: "For any question or request about your data, email mario@eltoaster.com.",
         },
       ],
       disclaimer:

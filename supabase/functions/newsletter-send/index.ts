@@ -225,6 +225,9 @@ const MOBILE_CSS = `
     .cta { padding:22px 16px !important; }
     .btn { display:block !important; padding-left:12px !important; padding-right:12px !important; }
     .legal { font-size:12px !important; }
+    .ff-img { display:block !important; width:100% !important; margin:0 0 14px 0 !important; }
+    .ff-img img { width:100% !important; height:210px !important; object-fit:cover; }
+    .ff-txt { display:block !important; max-width:none !important; }
   }`;
 
 const label = (text: string) =>
@@ -255,14 +258,15 @@ function render(
 
   // Two inline blocks: side by side when there is room for both (150 + 300),
   // wrapping to photo-above-text when there isn't. This needs no media query,
-  // so it also holds in mail programs that drop the stylesheet.
+  // so it also holds in mail programs that drop the stylesheet. Phones that
+  // keep it get the photo as a banner the full width of the text.
   const funFact = c.fun_fact.image_url
     ? `
     <div style="font-size:0;">
-      <div style="display:inline-block;vertical-align:top;width:150px;margin:0 16px 12px 0;">
+      <div class="ff-img" style="display:inline-block;vertical-align:top;width:150px;margin:0 16px 12px 0;">
         <a href="${esc(blog(links.fun_fact))}"><img src="${esc(c.fun_fact.image_url)}" alt="${esc(c.fun_fact.image_alt || c.fun_fact.title)}" width="150" style="display:block;width:150px;height:auto;border-radius:10px;" /></a>
       </div>
-      <div style="display:inline-block;vertical-align:top;width:100%;max-width:300px;font-size:14.5px;">${funFactText}</div>
+      <div class="ff-txt" style="display:inline-block;vertical-align:top;width:100%;max-width:300px;font-size:14.5px;">${funFactText}</div>
     </div>
     ${
       c.fun_fact.image_credit

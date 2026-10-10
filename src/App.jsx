@@ -5,6 +5,7 @@ import lasCulichisLogo from "./assets/clients/las-culichis.jpg";
 import padelPalsLogo from "./assets/clients/padel-pals.jpg";
 import sushinoLogo from "./assets/clients/sushino.jpg";
 import elChakaLogo from "./assets/clients/el-chaka.jpg";
+import las15SalsasLogo from "./assets/clients/las-15-salsas.png";
 import marioAvatar from "./assets/mario-avatar.webp";
 
 const CLIENT_LOGOS = {
@@ -12,9 +13,10 @@ const CLIENT_LOGOS = {
   "padel-pals": padelPalsLogo,
   sushino: sushinoLogo,
   "el-chaka": elChakaLogo,
+  "las-15-salsas": las15SalsasLogo,
 };
 
-const EMAIL = "mario.padilla@toasttab.com";
+const EMAIL = "mario@eltoaster.com";
 const LINKEDIN = "https://www.linkedin.com/in/mario-padilla-57145839/";
 const CAL_URL = "https://cal.com/mario-padilla-tirado-hnho7v/15-minutos-chat-free-restaurant-diagnostic";
 const POS_LEARN_MORE_URL =
@@ -515,7 +517,9 @@ function Clients({ t }) {
         <div className="clients-grid">
           {t.clients.items.map((c, i) => (
             <Reveal key={i} className="client-card" delay={i * 70}>
-              <img src={CLIENT_LOGOS[c.key]} alt={c.name} loading="lazy" />
+              <a href={c.url} target="_blank" rel="noopener noreferrer" aria-label={c.name}>
+                <img src={CLIENT_LOGOS[c.key]} alt={c.name} loading="lazy" />
+              </a>
             </Reveal>
           ))}
         </div>

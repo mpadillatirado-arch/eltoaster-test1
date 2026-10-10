@@ -136,17 +136,13 @@ function goToNewsletter(e) {
   box.querySelector("input")?.focus({ preventScroll: true });
 }
 
-/** Fixed bar in the thumb zone on phones, where the nav has no room for buttons. */
+/** The one fixed button on phones, in the thumb zone: the diagnostic. Nothing
+ *  else is pinned there, so it stays the main thing to tap. */
 function MobileBar({ t }) {
   return (
-    <div className="mobile-cta">
-      <a className="btn gray" href="#newsletter" onClick={goToNewsletter}>
-        {t.nav.news}
-      </a>
-      <a className="btn" href="#empezar">
-        {t.nav.cta}
-      </a>
-    </div>
+    <a className="btn mobile-cta" href="#empezar">
+      {t.nav.cta}
+    </a>
   );
 }
 
@@ -271,6 +267,10 @@ function Hero({ t }) {
             <a className="btn dark" href="#calculadora">
               <CalculatorIcon />
               {t.hero.cta2}
+            </a>
+            {/* Phones only: the nav has no room for it there. */}
+            <a className="btn gray hero-news" href="#newsletter" onClick={goToNewsletter}>
+              {t.nav.news}
             </a>
           </div>
 

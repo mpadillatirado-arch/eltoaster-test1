@@ -1108,6 +1108,21 @@ a.blog-card:hover {
   font-weight: 700;
   color: var(--orange-deep);
 }
+.blog-sources {
+  margin-top: 30px;
+  padding: 20px 22px;
+  background: var(--surface-2);
+  border-radius: var(--radius-lg);
+}
+.blog-sources h2 {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.blog-sources ul { list-style: none; margin: 10px 0 0; padding: 0; }
+.blog-sources li + li { margin-top: 10px; }
+.blog-sources a { font-size: 0.95rem; font-weight: 700; line-height: 1.45; color: var(--orange-deep); }
 .blog-cta-body { margin-top: 8px; color: #d6d0ca; font-size: 1rem; }
 
 /* ---- Footer newsletter ---- */

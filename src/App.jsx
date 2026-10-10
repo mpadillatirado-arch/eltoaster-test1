@@ -580,7 +580,7 @@ function BlogPost({ t, lang, setLang, id }) {
     let cancelled = false;
     supabase
       .from("blog_posts")
-      .select("id,lang,title,excerpt,source,image_url,image_credit,image_credit_url,external_url,published_at")
+      .select("id,lang,title,excerpt,source,image_url,image_credit,image_credit_url,external_url,source_links,published_at")
       .eq("published", true)
       .eq("id", id)
       .maybeSingle()
@@ -648,6 +648,21 @@ function BlogPost({ t, lang, setLang, id }) {
               >
                 {t.blog.original(post.source)} →
               </a>
+            )}
+
+            {Array.isArray(post.source_links) && post.source_links.length > 0 && (
+              <div className="blog-sources">
+                <h2>{t.blog.sources}</h2>
+                <ul>
+                  {post.source_links.map((s) => (
+                    <li key={s.url}>
+                      <a href={s.url} target="_blank" rel="noopener noreferrer">
+                        {s.label} →
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </>
         )}

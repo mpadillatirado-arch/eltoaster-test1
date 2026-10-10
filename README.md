@@ -55,15 +55,20 @@ mailable while `unsubscribed_at` is null.
 
   Then write the issue's sections into `newsletter_sends.content` (fun fact,
   point-of-sale note, three business points, subject line — in both languages;
-  the column comment has the shape). The news section comes from the posts.
+  the column comment has the shape). The news section comes from the posts,
+  using each post's short `teaser`.
 
   `POST /functions/v1/newsletter-send` with `{ send, token, action: "test" }`
   mails the test addresses. The test email links to the approval page
   (`/#send/<id>/<token>`), whose button sends it to the rest of the list. Live is
-  refused until a test has gone out and until the `MAILING_ADDRESS` secret holds
-  a full postal address. Add `only: ["a@b.com"]` to either action to reach just
-  those people. `newsletter_deliveries` records each recipient, so a retried
-  issue never reaches anyone twice.
+  refused until a test has gone out. Add `only: ["a@b.com"]` to either action to
+  reach just those people. `newsletter_deliveries` records each recipient, so a
+  retried issue never reaches anyone twice.
+
+  Sending first publishes the written sections to the blog
+  (`newsletter_publish_issue`), and every link in the email points at a page on
+  the site (`/#blog/<id>`), which in turn links to the original source. The
+  postal address in the footer is set in the function (`MAILING_ADDRESS`).
 
 - **Who is where** — `select * from mailing_status;` lists every known address
   as `opted_in`, `opted_out` or `no_status` (asked for a diagnostic, never

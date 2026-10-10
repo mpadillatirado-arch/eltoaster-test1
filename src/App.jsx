@@ -123,6 +123,31 @@ function Stars({ value }) {
 
 /* ---------------- sections ---------------- */
 
+/** The signup lives in the footer. Where a footer is on the page, go to it and
+ *  put the cursor in the field; elsewhere the link's own #newsletter takes the
+ *  visitor to the landing page, which scrolls to it. */
+function goToNewsletter(e) {
+  const box = document.getElementById("newsletter");
+  if (!box) return;
+  e.preventDefault();
+  box.scrollIntoView({ behavior: "smooth", block: "center" });
+  box.querySelector("input")?.focus({ preventScroll: true });
+}
+
+/** Fixed bar in the thumb zone on phones, where the nav has no room for buttons. */
+function MobileBar({ t }) {
+  return (
+    <div className="mobile-cta">
+      <a className="btn gray" href="#newsletter" onClick={goToNewsletter}>
+        {t.nav.news}
+      </a>
+      <a className="btn" href="#empezar">
+        {t.nav.cta}
+      </a>
+    </div>
+  );
+}
+
 function Nav({ lang, setLang, t }) {
   const [stuck, setStuck] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -186,6 +211,9 @@ function Nav({ lang, setLang, t }) {
           </button>
         </div>
 
+        <a className="btn gray" href="#newsletter" onClick={goToNewsletter}>
+          {t.nav.news}
+        </a>
         <a className="btn" href="#empezar">
           {t.nav.cta}
         </a>
@@ -210,6 +238,15 @@ function Nav({ lang, setLang, t }) {
               {l.label}
             </a>
           ))}
+          <a
+            href="#newsletter"
+            onClick={(e) => {
+              setMenuOpen(false);
+              goToNewsletter(e);
+            }}
+          >
+            {t.nav.news}
+          </a>
         </nav>
       )}
     </header>
@@ -496,8 +533,15 @@ const fmtDate = (d, lang) =>
     day: "numeric",
   });
 
-function Blog({ t, lang }) {
+const POSTS_PER_PAGE = 6;
+
+/** El Toaster's own posts (anything that is not outside news) carry Mario's
+ *  face and name, so they read as his and not as a relayed story. */
+const isOwnPost = (p) => Boolean(p.kind) && p.kind !== "news";
+
+function Blog({ t, lang, page }) {
   const [posts, setPosts] = useState(null); // null while loading
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     if (!supabase) {
@@ -508,19 +552,25 @@ function Blog({ t, lang }) {
 
     supabase
       .from("blog_posts")
-      .select("id,title,teaser,excerpt,source,image_url,published_at")
+      .select("id,kind,title,teaser,excerpt,source,image_url,published_at", { count: "exact" })
       .eq("published", true)
       .in("lang", [lang, "both"])
       .order("published_at", { ascending: false })
-      .limit(12)
-      .then(({ data }) => {
-        if (!cancelled) setPosts(data || []);
+      .order("id")
+      .range((page - 1) * POSTS_PER_PAGE, page * POSTS_PER_PAGE - 1)
+      .then(({ data, count }) => {
+        if (cancelled) return;
+        setPosts(data || []);
+        setTotal(count || 0);
       });
 
     return () => {
       cancelled = true;
     };
-  }, [lang]);
+  }, [lang, page]);
+
+  const pages = Math.ceil(total / POSTS_PER_PAGE);
+  const pageHref = (n) => (n === 1 ? "#blog" : `#blog/page/${n}`);
 
   return (
     <section id="blog" className="blog-page">
@@ -539,15 +589,27 @@ function Blog({ t, lang }) {
         ) : posts.length === 0 ? (
           <p className="blog-empty">{t.blog.empty}</p>
         ) : (
+          <>
           <div className="blog-grid">
             {posts.map((p, i) => (
               <Reveal key={p.id} delay={i * 70}>
                 {/* Every card opens the post on this site; the original
                     source is linked from there. */}
                 <a className="blog-card" href={`#blog/${p.id}`}>
-                  {p.image_url && (
-                    <img className="blog-img" src={p.image_url} alt="" loading="lazy" />
-                  )}
+                  <div className={`blog-top${isOwnPost(p) ? " own" : ""}`}>
+                    {p.image_url && (
+                      <img className="blog-img" src={p.image_url} alt="" loading="lazy" />
+                    )}
+                    {isOwnPost(p) && (
+                      <span className="blog-brand">
+                        <img src={marioAvatar} alt="" />
+                        <span>
+                          <strong>El Toaster</strong>
+                          {t.blog.by}
+                        </span>
+                      </span>
+                    )}
+                  </div>
                   <div className="blog-body">
                     <div className="blog-meta">
                       {p.source && <span>{p.source}</span>}
@@ -561,6 +623,32 @@ function Blog({ t, lang }) {
               </Reveal>
             ))}
           </div>
+
+          {pages > 1 && (
+            <nav className="blog-pages" aria-label={t.blog.pagesLabel}>
+              {page > 1 && (
+                <a href={pageHref(page - 1)} rel="prev">
+                  ← {t.blog.prev}
+                </a>
+              )}
+              {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
+                <a
+                  key={n}
+                  href={pageHref(n)}
+                  className="num"
+                  aria-current={n === page ? "page" : undefined}
+                >
+                  {n}
+                </a>
+              ))}
+              {page < pages && (
+                <a href={pageHref(page + 1)} rel="next">
+                  {t.blog.next} →
+                </a>
+              )}
+            </nav>
+          )}
+          </>
         )}
       </div>
     </section>
@@ -580,7 +668,7 @@ function BlogPost({ t, lang, setLang, id }) {
     let cancelled = false;
     supabase
       .from("blog_posts")
-      .select("id,lang,title,excerpt,source,image_url,image_credit,image_credit_url,external_url,source_links,published_at")
+      .select("id,kind,lang,title,excerpt,source,image_url,image_credit,image_credit_url,external_url,source_links,published_at")
       .eq("published", true)
       .eq("id", id)
       .maybeSingle()
@@ -615,6 +703,16 @@ function BlogPost({ t, lang, setLang, id }) {
               <span>{fmtDate(post.published_at, lang)}</span>
             </div>
             <h1>{post.title}</h1>
+
+            {isOwnPost(post) && (
+              <p className="blog-byline">
+                <img src={marioAvatar} alt="" />
+                <span>
+                  <strong>Mario Padilla</strong>
+                  {t.blog.byline}
+                </span>
+              </p>
+            )}
 
             {post.image_url && (
               <figure>
@@ -1371,7 +1469,7 @@ function Newsletter({ t, lang }) {
   }
 
   return (
-    <div className="newsletter">
+    <div className="newsletter" id="newsletter">
       <h3>{t.newsletter.h}</h3>
       <p className="newsletter-lede">{t.newsletter.lede}</p>
       <form className="newsletter-form" onSubmit={submit}>
@@ -1524,18 +1622,22 @@ export default function App() {
   }
 
   if (route === "blog") {
+    // #blog is page 1, #blog/page/<n> the rest; anything else is one post.
+    const pageMatch = hash.match(/^#blog\/page\/(\d+)$/);
+    const blogPage = pageMatch ? Math.max(1, Number(pageMatch[1])) : hash === "#blog" ? 1 : 0;
     return (
       <>
         <Nav lang={lang} setLang={setLang} t={t} />
         <main>
-          {hash.startsWith("#blog/") ? (
-            <BlogPost key={hash} t={t} lang={lang} setLang={setLang} id={hash.slice(6)} />
+          {blogPage ? (
+            <Blog t={t} lang={lang} page={blogPage} />
           ) : (
-            <Blog t={t} lang={lang} />
+            <BlogPost key={hash} t={t} lang={lang} setLang={setLang} id={hash.slice(6)} />
           )}
           <BlogCta t={t} />
         </main>
         <Footer t={t} lang={lang} />
+        <MobileBar t={t} />
       </>
     );
   }
@@ -1558,9 +1660,7 @@ export default function App() {
       </main>
       <Footer t={t} lang={lang} />
 
-      <a className="btn mobile-cta" href="#empezar">
-        {t.nav.cta}
-      </a>
+      <MobileBar t={t} />
     </>
   );
 }

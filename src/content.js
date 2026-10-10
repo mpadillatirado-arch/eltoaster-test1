@@ -3,7 +3,7 @@
 
 export const content = {
   es: {
-    nav: { how: "POS System", blog: "Blog", calc: "Calculadora", diag: "El diagnóstico", cta: "Diagnóstico gratis", menu: "Menú" },
+    nav: { how: "POS System", blog: "Blog", calc: "Calculadora", diag: "El diagnóstico", cta: "Diagnóstico gratis", news: "Newsletter", menu: "Menú" },
 
     hero: {
       eyebrow: "Phoenix · Mesa · Glendale · Tempe · Gilbert · Chandler · Cave Creek · Queen Creek",
@@ -170,16 +170,21 @@ export const content = {
       notFound: "No encontramos esa nota. Puede que ya no esté publicada.",
       original: (source) => `Leer la nota original${source ? ` en ${source}` : ""}`,
       sources: "De dónde sale esto",
+      by: "por Mario Padilla",
+      byline: "El Toaster · Escrito por mí, con las fuentes al final",
+      prev: "Anterior",
+      next: "Siguiente",
+      pagesLabel: "Páginas del blog",
       ctaTitle: "¿Y qué dicen las reseñas de tu restaurante?",
       ctaBody: "Te lo digo con datos, gratis y en menos de 48 horas.",
       ctaButton: "Pedir mi diagnóstico gratis",
     },
 
     newsletter: {
-      h: "Suscríbete a mi Newsletter",
-      lede: "Notas de la industria y tips de reputación, una vez al mes. Sin spam, y te puedes dar de baja cuando quieras.",
+      h: "Recibe mi newsletter. Es gratis.",
+      lede: "Noticias locales, lo que se mueve en la industria restaurantera y una idea para vender más, en un correo que lees en 3 minutos. Sin spam; te das de baja con un clic.",
       placeholder: "tu@correo.com",
-      cta: "Suscribirme",
+      cta: "Quiero recibirlo",
       sending: "Enviando…",
       ok: "¡Listo! Ya estás suscrito al boletín.",
       already: "Este correo ya está registrado en el boletín.",
@@ -221,7 +226,7 @@ export const content = {
     },
 
     foot: {
-      h: "¿Listo para saber qué dicen realmente de tu restaurante?",
+      h: "Entérate de lo que pasa en tu industria antes que tu competencia.",
       cta: "Pedir diagnóstico gratis",
       rights: "Hecho en Phoenix, Arizona.",
       disclaimer: "Sitio personal de Mario Padilla. Las estimaciones de ingresos son orientativas y no constituyen una garantía de resultados.",
@@ -333,7 +338,7 @@ export const content = {
   },
 
   en: {
-    nav: { how: "POS System", blog: "Blog", calc: "Calculator", diag: "The diagnostic", cta: "Free diagnostic", menu: "Menu" },
+    nav: { how: "POS System", blog: "Blog", calc: "Calculator", diag: "The diagnostic", cta: "Free diagnostic", news: "Newsletter", menu: "Menu" },
 
     hero: {
       eyebrow: "Phoenix · Mesa · Glendale · Tempe · Gilbert · Chandler · Cave Creek · Queen Creek",
@@ -500,16 +505,21 @@ export const content = {
       notFound: "We couldn't find that story. It may no longer be published.",
       original: (source) => `Read the original story${source ? ` at ${source}` : ""}`,
       sources: "Where this comes from",
+      by: "by Mario Padilla",
+      byline: "El Toaster · Written by me, sources at the end",
+      prev: "Previous",
+      next: "Next",
+      pagesLabel: "Blog pages",
       ctaTitle: "So what are your restaurant's reviews saying?",
       ctaBody: "I'll show you with data, free and within 48 hours.",
       ctaButton: "Get my free diagnostic",
     },
 
     newsletter: {
-      h: "Subscribe to the newsletter",
-      lede: "Industry reporting and reputation tips, once a month. No spam, and you can unsubscribe anytime.",
+      h: "Get my newsletter. It's free.",
+      lede: "Local news, what's moving in the restaurant industry, and one idea to sell more, in an email you read in 3 minutes. No spam; unsubscribe in one click.",
       placeholder: "you@email.com",
-      cta: "Subscribe",
+      cta: "Send it to me",
       sending: "Sending…",
       ok: "You're in — thanks for subscribing.",
       already: "This email is already on the newsletter list.",
@@ -551,7 +561,7 @@ export const content = {
     },
 
     foot: {
-      h: "Ready to find out what people really say about your restaurant?",
+      h: "Know what's happening in your industry before your competition does.",
       cta: "Get a free diagnostic",
       rights: "Made in Phoenix, Arizona.",
       disclaimer: "Personal site of Mario Padilla. Revenue estimates are directional and are not a guarantee of results.",

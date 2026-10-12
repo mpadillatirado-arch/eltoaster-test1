@@ -254,6 +254,15 @@ export const content = {
       cta: "Pedir mi diagnóstico gratis",
     },
 
+    video: {
+      eyebrow: "En 1 minuto",
+      h2: "Te lo explico yo mismo",
+      lede: "Qué dice el estudio de Harvard sobre las reseñas, cuánto dinero puede haber en juego y qué recibes con el diagnóstico gratuito.",
+      cta: "Pedir mi diagnóstico gratis",
+      label: "Video: Mario Padilla explica el diagnóstico gratuito de reseñas",
+      note: "",
+    },
+
     clients: {
       eyebrow: "Clientes",
       h2: "Restaurantes que ya confían en este proceso",
@@ -592,6 +601,15 @@ export const content = {
     midCta: {
       h: "Still here? Get your free diagnostic before you scroll past it.",
       cta: "Get my free diagnostic",
+    },
+
+    video: {
+      eyebrow: "In 1 minute",
+      h2: "Let me walk you through it",
+      lede: "What the Harvard study says about reviews, how much money can be on the line, and what you get with the free diagnostic.",
+      cta: "Get my free diagnostic",
+      label: "Video: Mario Padilla explains the free review diagnostic",
+      note: "The video is in Spanish.",
     },
 
     clients: {

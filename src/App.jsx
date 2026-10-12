@@ -489,9 +489,90 @@ function Steps({ t }) {
   );
 }
 
+/** Mario explaining the offer himself. Never autoplays: it has sound, so the
+ *  visitor starts it. preload="none" keeps its 9MB off the page until then. */
+function VideoIntro({ t }) {
+  return (
+    <section className="video-sec" id="video">
+      <div className="wrap video-grid">
+        <Reveal className="sec-head video-copy">
+          <p className="eyebrow">{t.video.eyebrow}</p>
+          <h2>{t.video.h2}</h2>
+          <p className="lede">{t.video.lede}</p>
+          <a className="btn" href="#empezar">
+            {t.video.cta}
+          </a>
+          {t.video.note && <p className="video-note">{t.video.note}</p>}
+        </Reveal>
+
+        <Reveal className="video-frame" delay={90}>
+          <video
+            controls
+            playsInline
+            preload="none"
+            poster="/video/diagnostico-poster.jpg"
+            aria-label={t.video.label}
+          >
+            <source src="/video/diagnostico.mp4" type="video/mp4" />
+          </video>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/** Silent kitchen loop behind the mid-page band. Decoration only, so it waits
+ *  until the band is near the viewport and is skipped for reduced motion. */
+function AmbientVideo() {
+  const ref = useRef(null);
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setShow(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "400px 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <div className="midcta-bg" ref={ref} aria-hidden="true">
+      {show && (
+        <video
+          // React sets `muted` as a property, not the attribute iOS Safari
+          // checks before allowing autoplay, so set both and start it by hand.
+          ref={(el) => {
+            if (!el) return;
+            el.defaultMuted = true;
+            el.muted = true;
+            el.play().catch(() => {});
+          }}
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/video/cocina-poster.jpg"
+        >
+          <source src="/video/cocina.mp4" type="video/mp4" />
+        </video>
+      )}
+    </div>
+  );
+}
+
 function MidCta({ t }) {
   return (
     <section className="midcta">
+      <AmbientVideo />
       <div className="wrap midcta-in">
         <Reveal as="h2">{t.midCta.h}</Reveal>
         <Reveal delay={80}>
@@ -1652,6 +1733,7 @@ export default function App() {
       <main>
         <Hero t={t} />
         <Stats t={t} />
+        <VideoIntro t={t} />
         <Problem t={t} />
         <Calculator t={t} />
         <MidCta t={t} />

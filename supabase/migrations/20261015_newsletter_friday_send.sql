@@ -1,5 +1,5 @@
--- Subscribers read the news first. An issue goes out on Friday morning and its
--- stories appear on the blog list the Monday after.
+-- Subscribers read the news first. An issue goes out on Friday at 8 a.m.
+-- (Arizona) and its stories appear on the blog list an hour later.
 --
 --   newsletter_sends.send_at          when an approved issue is mailed
 --   newsletter_sends.blog_publish_at  when its posts show up on the blog list
@@ -38,7 +38,7 @@ as $$
 $$;
 
 -- New issues take the newest news, including stories written ahead and held
--- for the coming Monday, and are timed for the next Friday.
+-- for the coming Friday, and are timed for that Friday.
 create or replace function public.newsletter_create_send()
 returns newsletter_sends
 language plpgsql
@@ -61,7 +61,7 @@ begin
              row_number() over (partition by lang order by published_at desc) as rn
         from blog_posts
        where published and kind = 'news'
-         and published_at > v_since and published_at <= v_friday + interval '3 days'
+         and published_at > v_since and published_at <= v_friday + interval '1 hour'
     ) t
    where rn <= 5;
 
@@ -70,7 +70,7 @@ begin
   end if;
 
   insert into newsletter_sends (post_ids, posts_through, send_at, blog_publish_at)
-  values (v_ids, v_through, v_friday, v_friday + interval '3 days')
+  values (v_ids, v_through, v_friday, v_friday + interval '1 hour')
   returning * into v_row;
   return v_row;
 end;

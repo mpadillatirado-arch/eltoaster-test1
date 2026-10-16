@@ -6,6 +6,11 @@
 // Live is refused until a test has gone out, so nothing reaches a subscriber
 // that Mario has not seen in a real inbox first.
 //
+// An issue with a send_at (Friday morning) is only scheduled when approved
+// early; the newsletter-friday-send cron job calls "live" again once send_at
+// has passed. Its stories reach the blog list on blog_publish_at (Monday), so
+// subscribers read them first.
+//
 //   GET  ?send=<id>&token=<token>                      issue summary (JSON)
 //   POST { send, token, action: "test" }               send the test
 //   POST { send, token, action: "live" }               send to subscribers
@@ -122,6 +127,8 @@ type Send = {
   content: Partial<Record<Lang, IssueContent>> | null;
   started_at: string | null;
   sent_at: string | null;
+  send_at: string | null;
+  blog_publish_at: string | null;
   recipients: number | null;
   error: string | null;
 };
@@ -149,8 +156,10 @@ const COPY = {
     unsubscribeNote: "La baja es inmediata y no tiene costo.",
     testTag: "[PRUEBA]",
     testTitle: "Prueba — esta edición todavía no se envía",
-    testBody: (n: number) =>
-      `Así la verán tus suscriptores. Si se ve bien, apruébala y saldrá a ${n} ${n === 1 ? "persona" : "personas"}.`,
+    testBody: (n: number, when: string | null) =>
+      `Así la verán tus suscriptores. Si se ve bien, apruébala y saldrá a ${n} ${n === 1 ? "persona" : "personas"}${when ? ` el ${when}` : ""}.`,
+    early: (day: string) => `Primero para ti: estas notas llegan al blog el ${day}.`,
+    locale: "es-MX",
     testButton: "Revisar y enviar",
   },
   en: {
@@ -172,8 +181,10 @@ const COPY = {
     unsubscribeNote: "It takes effect right away and costs nothing.",
     testTag: "[TEST]",
     testTitle: "Test — this issue has not been sent yet",
-    testBody: (n: number) =>
-      `This is what your subscribers will see. If it looks right, approve it and it goes to ${n} ${n === 1 ? "person" : "people"}.`,
+    testBody: (n: number, when: string | null) =>
+      `This is what your subscribers will see. If it looks right, approve it and it goes to ${n} ${n === 1 ? "person" : "people"}${when ? ` on ${when}` : ""}.`,
+    early: (day: string) => `You read these first: they go up on the blog ${day}.`,
+    locale: "en-US",
     testButton: "Review and send",
   },
 };
@@ -196,6 +207,18 @@ function teaserOf(p: Post) {
   const first = text.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? text;
   return first.length > 170 ? first.slice(0, 169).trimEnd() + "…" : first;
 }
+
+/** A date as readers say it, in Arizona time: "viernes 16 de octubre, 8:00 a.m." */
+const when = (iso: string, locale: string, withTime: boolean) =>
+  new Date(iso).toLocaleString(locale, {
+    timeZone: "America/Phoenix",
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    ...(withTime ? { hour: "numeric", minute: "2-digit" } : {}),
+  });
+
+const isFuture = (iso: string | null) => Boolean(iso && new Date(iso).getTime() > Date.now());
 
 /** An issue is sendable only when both languages have every written section. */
 function contentReady(send: Send) {
@@ -306,7 +329,10 @@ function render(
       ? `
       <div class="box" style="border:2px dashed #FF4C00;border-radius:14px;background:#fff7f2;padding:18px 20px;margin-bottom:18px;">
         <div style="font-size:15px;font-weight:800;color:#0d0d0d;margin-bottom:6px;">${t.testTitle}</div>
-        <div style="font-size:14px;line-height:1.55;color:#5b5651;margin-bottom:14px;">${t.testBody(ctx.liveCount)}</div>
+        <div style="font-size:14px;line-height:1.55;color:#5b5651;margin-bottom:14px;">${t.testBody(
+          ctx.liveCount,
+          isFuture(ctx.send.send_at) ? when(ctx.send.send_at!, t.locale, true) : null
+        )}</div>
         <a class="btn" href="${SITE_URL}/#send/${ctx.send.id}/${ctx.send.token}" style="display:inline-block;background:#FF4C00;color:#ffffff;text-decoration:none;font-weight:700;font-size:14px;padding:12px 22px;border-radius:10px;text-align:center;">${t.testButton}</a>
       </div>`
       : "";
@@ -353,6 +379,13 @@ function render(
 
               ${divider}
               ${label(t.news)}
+              ${
+                isFuture(ctx.send.blog_publish_at)
+                  ? `<div style="font-size:13px;line-height:1.5;color:#8f8880;margin:-4px 0 12px 0;">${t.early(
+                      when(ctx.send.blog_publish_at!, t.locale, false)
+                    )}</div>`
+                  : ""
+              }
               ${news}
               ${textLink(blog(), t.moreNews)}
 
@@ -596,6 +629,8 @@ Deno.serve(async (req: Request) => {
       live_recipients: live.length,
       mailing_address_set: Boolean(MAILING_ADDRESS),
       sent_at: s.sent_at,
+      send_at: s.send_at,
+      blog_publish_at: s.blog_publish_at,
       recipients: s.recipients,
       last_error: s.error,
       subject: { es: s.content?.es?.subject ?? null, en: s.content?.en?.subject ?? null },
@@ -608,7 +643,7 @@ Deno.serve(async (req: Request) => {
     if (action === "status") return json(summary(send));
 
     if (action === "cancel") {
-      const rows = await patchSend(send.id, "&status=in.(draft,test_sent,failed)", {
+      const rows = await patchSend(send.id, "&status=in.(draft,test_sent,scheduled,failed)", {
         status: "cancelled",
       });
       return rows.length ? json(summary(rows[0])) : json({ error: "cannot_cancel", ...summary(send) }, 409);
@@ -645,7 +680,7 @@ Deno.serve(async (req: Request) => {
     const targets = only.length ? pool.filter((s) => only.includes(s.email.toLowerCase())) : pool;
     const notEligible = only.filter((e) => !targets.some((s) => s.email.toLowerCase() === e));
 
-    if (action === "test" && !["draft", "test_sent"].includes(send.status)) {
+    if (action === "test" && !["draft", "test_sent", "scheduled"].includes(send.status)) {
       return json({ error: "not_testable", ...summary(send) }, 409);
     }
     if (action === "live") {
@@ -663,6 +698,17 @@ Deno.serve(async (req: Request) => {
         },
         409
       );
+    }
+
+    // Approved ahead of its Friday: hold it. The cron job sends it on time.
+    if (action === "live" && only.length === 0 && isFuture(send.send_at)) {
+      const rows = await patchSend(send.id, "&status=in.(test_sent,scheduled,failed)", {
+        status: "scheduled",
+        error: null,
+      });
+      return rows.length
+        ? json({ ...summary(rows[0]), scheduled: true })
+        : json({ error: "in_progress", ...summary(send) }, 409);
     }
 
     // The email links to these pages, so they must exist before it leaves.
@@ -683,7 +729,8 @@ Deno.serve(async (req: Request) => {
 
       let current = send;
       if (result.sent > 0) {
-        const rows = await patchSend(send.id, "&status=in.(draft,test_sent)", {
+        // A new test of an approved issue sends it back for approval.
+        const rows = await patchSend(send.id, "&status=in.(draft,test_sent,scheduled)", {
           status: "test_sent",
           test_sent_at: new Date().toISOString(),
         });
@@ -697,7 +744,7 @@ Deno.serve(async (req: Request) => {
 
     // action === "live"
     const now = new Date().toISOString();
-    let claimed = await patchSend(send.id, "&status=in.(test_sent,failed)", {
+    let claimed = await patchSend(send.id, "&status=in.(test_sent,scheduled,failed)", {
       status: "sending",
       started_at: now,
       error: null,

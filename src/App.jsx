@@ -640,6 +640,9 @@ function Blog({ t, lang, page }) {
       .select("id,kind,title,teaser,excerpt,source,image_url,published_at", { count: "exact" })
       .eq("published", true)
       .in("lang", [lang, "both"])
+      // Newsletter stories are dated for the Monday after the Friday email:
+      // subscribers can open them by link, the list shows them from then on.
+      .lte("published_at", new Date().toISOString())
       .order("published_at", { ascending: false })
       .order("id")
       .range((page - 1) * POSTS_PER_PAGE, page * POSTS_PER_PAGE - 1)
@@ -1466,6 +1469,15 @@ function NewsletterSend({ t, lang }) {
   }
 
   const s = t.sendPage;
+  // Issues are timed in Arizona, whatever the reader's clock says.
+  const day = (iso, withTime) =>
+    new Date(iso).toLocaleString(lang === "en" ? "en-US" : "es-MX", {
+      timeZone: "America/Phoenix",
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      ...(withTime ? { hour: "numeric", minute: "2-digit" } : {}),
+    });
   if (state === "loading" || state === "missing") {
     return (
       <section className="privacy-page">
@@ -1482,6 +1494,8 @@ function NewsletterSend({ t, lang }) {
     (issue.status === "draft" || issue.status === "cancelled" ? issue.status : null) ||
     (!issue.mailing_address_set && issue.status !== "sent" ? "mailing_address_missing" : null);
   const canSend = ["test_sent", "failed"].includes(issue.status) && issue.mailing_address_set;
+  const later = issue.send_at && new Date(issue.send_at) > new Date() ? day(issue.send_at, true) : null;
+  const onBlog = issue.blog_publish_at ? day(issue.blog_publish_at, false) : null;
 
   return (
     <section className="privacy-page">
@@ -1490,8 +1504,13 @@ function NewsletterSend({ t, lang }) {
 
         {issue.status === "sent" ? (
           <p className="lede">{s.sent(issue.recipients ?? 0)}</p>
+        ) : issue.status === "scheduled" ? (
+          <p className="lede">{s.scheduled(issue.live_recipients, day(issue.send_at, true), onBlog)}</p>
         ) : (
-          <p className="lede">{s.audience(issue.live_recipients)}</p>
+          <p className="lede">
+            {s.audience(issue.live_recipients)}
+            {later && ` ${s.when(later, onBlog)}`}
+          </p>
         )}
 
         <h2>{s.stories}</h2>
@@ -1501,14 +1520,18 @@ function NewsletterSend({ t, lang }) {
           ))}
         </ol>
 
-        {issue.status !== "sent" && (
+        {issue.status !== "sent" && issue.status !== "scheduled" && (
           <button
             type="button"
             className="btn"
             onClick={approve}
             disabled={!canSend || state === "sending"}
           >
-            {state === "sending" ? s.sending : s.button(issue.live_recipients)}
+            {state === "sending"
+              ? s.sending
+              : later
+                ? s.approve(issue.live_recipients)
+                : s.button(issue.live_recipients)}
           </button>
         )}
 

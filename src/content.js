@@ -213,6 +213,10 @@ export const content = {
       audience: (n) => `Saldrá a ${n} ${n === 1 ? "suscriptor" : "suscriptores"}. Las direcciones de prueba no se cuentan.`,
       button: (n) => `Enviar a ${n} ${n === 1 ? "suscriptor" : "suscriptores"}`,
       sending: "Enviando… no cierres esta página.",
+      approve: (n) => `Aprobar el envío a ${n} ${n === 1 ? "suscriptor" : "suscriptores"}`,
+      when: (d, blog) => `Sale el ${d}${blog ? `, y sus notas llegan al blog el ${blog}` : ""}.`,
+      scheduled: (n, d, blog) =>
+        `Aprobada. Sale a ${n} ${n === 1 ? "suscriptor" : "suscriptores"} el ${d}${blog ? `, y sus notas llegan al blog el ${blog}` : ""}. Si mandas otra prueba, vuelve a esperar tu aprobación.`,
       sent: (n) => `Enviado a ${n} ${n === 1 ? "suscriptor" : "suscriptores"}.`,
       status: {
         draft: "Primero hay que enviar la prueba.",
@@ -562,6 +566,10 @@ export const content = {
       audience: (n) => `It will go to ${n} ${n === 1 ? "subscriber" : "subscribers"}. Test addresses aren't counted.`,
       button: (n) => `Send to ${n} ${n === 1 ? "subscriber" : "subscribers"}`,
       sending: "Sending… don't close this page.",
+      approve: (n) => `Approve sending to ${n} ${n === 1 ? "subscriber" : "subscribers"}`,
+      when: (d, blog) => `It goes out ${d}${blog ? `, and its stories reach the blog ${blog}` : ""}.`,
+      scheduled: (n, d, blog) =>
+        `Approved. It goes to ${n} ${n === 1 ? "subscriber" : "subscribers"} ${d}${blog ? `, and its stories reach the blog ${blog}` : ""}. Sending another test puts it back to waiting for your approval.`,
       sent: (n) => `Sent to ${n} ${n === 1 ? "subscriber" : "subscribers"}.`,
       status: {
         draft: "The test has to go out first.",

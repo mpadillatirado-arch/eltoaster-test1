@@ -977,6 +977,27 @@ ul { list-style: none; padding: 0; margin: 0; }
 
 /* ---- Pains section (soft, non-ad callout that links to Cal.com) ---- */
 .pains-head { display: flex; flex-direction: column; align-items: flex-start; }
+
+/* Heading on the left, product photo on the right; stacked on smaller screens. */
+.pains-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 64px);
+  margin-bottom: clamp(32px, 5vw, 56px);
+}
+.pains-top .pains-head { margin-bottom: 0; }
+.pains-photo {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  background: var(--surface-2);
+}
+.pains-photo img { display: block; width: 100%; height: auto; }
+@media (max-width: 900px) {
+  .pains-top { grid-template-columns: 1fr; }
+}
 .pains-avatar {
   width: 88px;
   height: 88px;

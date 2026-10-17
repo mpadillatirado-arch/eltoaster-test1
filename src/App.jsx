@@ -7,6 +7,7 @@ import sushinoLogo from "./assets/clients/sushino.jpg";
 import elChakaLogo from "./assets/clients/el-chaka.jpg";
 import las15SalsasLogo from "./assets/clients/las-15-salsas.png";
 import marioAvatar from "./assets/mario-avatar.webp";
+import posTerminal from "./assets/pos-terminal.webp";
 
 const CLIENT_LOGOS = {
   "las-culichis": lasCulichisLogo,
@@ -881,17 +882,30 @@ function Pains({ t }) {
   return (
     <section id="dolores" className="pains">
       <div className="wrap">
-        <Reveal className="sec-head pains-head">
-          <img
-            className="pains-avatar"
-            src={marioAvatar}
-            alt="Mario Padilla"
-            loading="lazy"
-          />
-          <p className="eyebrow">{t.pains.eyebrow}</p>
-          <h2 className="hand pains-h2">{t.pains.h2}</h2>
-          <p className="lede">{t.pains.lede}</p>
-        </Reveal>
+        <div className="pains-top">
+          <Reveal className="sec-head pains-head">
+            <img
+              className="pains-avatar"
+              src={marioAvatar}
+              alt="Mario Padilla"
+              loading="lazy"
+            />
+            <p className="eyebrow">{t.pains.eyebrow}</p>
+            <h2 className="hand pains-h2">{t.pains.h2}</h2>
+            <p className="lede">{t.pains.lede}</p>
+          </Reveal>
+
+          <Reveal className="pains-photo" delay={90}>
+            <img
+              src={posTerminal}
+              alt={t.pains.imageAlt}
+              width="1200"
+              height="576"
+              loading="lazy"
+              decoding="async"
+            />
+          </Reveal>
+        </div>
 
         <div className="pains-list">
           {t.pains.items.map((p, i) => (

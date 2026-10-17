@@ -298,6 +298,7 @@ export const content = {
       note: "¿Alguno te quitó el sueño esta semana? Platicamos 15 minutos, sin compromiso.",
       learnMore: "¿Quieres conocer más sobre sistemas POS?",
       learnMoreLink: "Ver información aquí",
+      imageAlt: "Terminal de punto de venta e impresora de tickets en el mostrador de un café",
       cta: "Agenda tu llamada de 15 minutos",
     },
 
@@ -651,6 +652,7 @@ export const content = {
       note: "Any of these keep you up this week? Let's talk for 15 minutes, no strings attached.",
       learnMore: "Want to learn more about POS systems?",
       learnMoreLink: "See more information here",
+      imageAlt: "Point-of-sale terminal and receipt printer on a café counter",
       cta: "Book your 15-minute call",
     },
 

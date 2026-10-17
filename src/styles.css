@@ -342,6 +342,33 @@ section { padding-block: clamp(72px, 11vw, 132px); }
 
 .hero .lede { margin-top: 26px; font-size: clamp(1.1rem, 2.1vw, 1.35rem); }
 
+/* Video on top on phones/tablets; copy left + video right on wide screens. */
+.hero-grid { position: relative; display: grid; gap: clamp(28px, 4vw, 40px); }
+.hero-media {
+  width: 100%;
+  max-width: 720px;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-lg);
+  background: var(--surface-2);
+}
+.hero-media video,
+.hero-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+@media (min-width: 1000px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(36px, 4.5vw, 64px);
+  }
+  .hero-media { order: 2; max-width: none; }
+  .hero-copy { order: 1; }
+  /* Half the width, so the headline steps down to keep the same line count. */
+  .hero-grid h1 { font-size: clamp(2.8rem, 4.7vw, 4.3rem); }
+}
+
 .hero-cta {
   display: flex;
   flex-wrap: wrap;

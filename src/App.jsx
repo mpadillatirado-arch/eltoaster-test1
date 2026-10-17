@@ -252,12 +252,49 @@ function Nav({ lang, setLang, t }) {
   );
 }
 
+/** Silent food loop beside the hero copy. It's decoration, so visitors who
+ *  ask for reduced motion get the still poster instead of playback. */
+function HeroVideo() {
+  const [still] = useState(
+    () => window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false
+  );
+  return (
+    <div className="hero-media" aria-hidden="true">
+      {still ? (
+        <img src="/video/hero-flautas-poster.jpg" alt="" width="1280" height="720" />
+      ) : (
+        <video
+          // React sets `muted` as a property, not the attribute iOS Safari
+          // checks before allowing autoplay, so set both and start it by hand.
+          ref={(el) => {
+            if (!el) return;
+            el.defaultMuted = true;
+            el.muted = true;
+            el.play().catch(() => {});
+          }}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster="/video/hero-flautas-poster.jpg"
+          width="1280"
+          height="720"
+        >
+          <source src="/video/hero-flautas.mp4" type="video/mp4" />
+        </video>
+      )}
+    </div>
+  );
+}
+
 function Hero({ t }) {
   return (
     <section className="hero" id="top">
       <div className="hero-glow" aria-hidden="true" />
-      <div className="wrap">
-        <Reveal>
+      <div className="wrap hero-grid">
+        <HeroVideo />
+        <Reveal className="hero-copy">
           <p className="eyebrow">{t.hero.eyebrow}</p>
           <h1>
             {t.hero.h1a} <span className="hand">{t.hero.h1b}</span>

@@ -22,6 +22,9 @@
 // step; it cannot add anyone. A narrowed live send leaves the issue open, and
 // the delivery rows it writes mean those people are skipped by the full send.
 //
+// The email opens with a summary (one linked line per note), then each note in
+// full with a button to its post on eltoaster.com.
+//
 // Before any email goes out the issue's written sections are published to the
 // blog (newsletter_publish_issue), and every link in the email points at a
 // page on eltoaster.com — never straight at an outside site.
@@ -51,7 +54,7 @@ const BOOKING_URL =
 const FROM_EMAIL = "El Toaster <mario@eltoaster.com>";
 const REPLY_TO = "mario@eltoaster.com";
 
-const POSTS_PER_ISSUE = 3;
+const POSTS_PER_ISSUE = 5;
 const SEND_GAP_MS = 600; // Resend allows two requests per second
 const TIME_BUDGET_MS = 110_000; // stay under the function's wall-clock limit
 const STALE_MS = 5 * 60_000; // a "sending" issue older than this may be resumed
@@ -97,6 +100,8 @@ type Post = {
   teaser: string | null;
   excerpt: string | null;
   source: string | null;
+  image_url: string | null;
+  image_credit: string | null;
   published_at: string;
 };
 type Subscriber = {
@@ -138,11 +143,11 @@ type SectionLinks = Partial<Record<Lang, Partial<Record<"fun_fact" | "pos" | "bu
 // The fixed words around each issue's written content.
 const COPY = {
   es: {
+    summary: "Resumen",
+    readTime: (m: number) => `Lectura: ${m} min`,
+    button: "Leer más en eltoaster.com",
     funFact: "Dato curioso",
     news: "Lo que pasó en la industria",
-    readMore: "Leer más en el blog →",
-    moreNews: "Ver todas las noticias en el blog →",
-    onBlog: "Seguir leyendo en eltoaster.com →",
     pos: "Tu punto de venta",
     business: "3 cosas que todo dueño debe saber",
     ctaTitle: "¿Platicamos 15 minutos?",
@@ -163,11 +168,11 @@ const COPY = {
     testButton: "Revisar y enviar",
   },
   en: {
+    summary: "Summary",
+    readTime: (m: number) => `Read time: ${m} min`,
+    button: "Read more at eltoaster.com",
     funFact: "Fun fact",
     news: "What happened in the industry",
-    readMore: "Read more on the blog →",
-    moreNews: "See all the news on the blog →",
-    onBlog: "Keep reading at eltoaster.com →",
     pos: "Your point of sale",
     business: "3 things every owner should know",
     ctaTitle: "Got 15 minutes?",
@@ -248,16 +253,10 @@ const MOBILE_CSS = `
     .cta { padding:22px 16px !important; }
     .btn { display:block !important; padding-left:12px !important; padding-right:12px !important; }
     .legal { font-size:12px !important; }
-    .ff-img { display:block !important; width:100% !important; margin:0 0 14px 0 !important; }
-    .ff-img img { width:100% !important; height:210px !important; object-fit:cover; }
-    .ff-txt { display:block !important; max-width:none !important; }
   }`;
 
 const label = (text: string) =>
   `<div style="font-size:11px;letter-spacing:0.09em;text-transform:uppercase;color:#d63e00;font-weight:800;margin:0 0 10px 0;">${text}</div>`;
-
-const textLink = (href: string, text: string) =>
-  `<a href="${esc(href)}" style="font-size:13px;font-weight:700;color:#d63e00;text-decoration:none;">${text}</a>`;
 
 function render(
   sub: Subscriber,
@@ -274,37 +273,89 @@ function render(
   const unsubscribeUrl = `${SITE_URL}/#unsubscribe/t/${sub.unsubscribe_token}`;
   const oneClickUrl = `${SUPABASE_URL}/functions/v1/unsubscribe?t=${sub.unsubscribe_token}`;
 
-  const funFactText = `
-    <div style="font-size:18px;font-weight:800;color:#0d0d0d;line-height:1.3;margin-bottom:8px;">${esc(c.fun_fact.title)}</div>
-    <div style="font-size:14.5px;line-height:1.6;color:#5b5651;margin-bottom:10px;">${esc(c.fun_fact.body)}</div>
-    ${textLink(blog(links.fun_fact), t.onBlog)}`;
+  // Each note in full, its text split into paragraphs, ending in a button
+  // that opens the post on eltoaster.com.
+  const paras = (text: string | null | undefined, size = "14.5px") =>
+    String(text || "")
+      .split(/\n{2,}/)
+      .map((p) => p.trim())
+      .filter(Boolean)
+      .map(
+        (p) =>
+          `<p style="font-size:${size};line-height:1.6;color:#5b5651;margin:0 0 12px 0;">${esc(p).replace(/\n/g, "<br />")}</p>`
+      )
+      .join("");
+  const button = (href: string) => `
+      <div style="text-align:center;margin:18px 0 4px 0;">
+        <a class="btn" href="${esc(href)}" style="display:inline-block;background:#FF4C00;color:#ffffff;text-decoration:none;font-weight:800;font-size:14px;letter-spacing:0.04em;text-transform:uppercase;padding:13px 26px;border-radius:10px;text-align:center;">${t.button}</a>
+      </div>`;
+  const noteTitle = (text: string) =>
+    `<div style="font-size:18px;font-weight:800;color:#0d0d0d;line-height:1.3;margin:0 0 12px 0;">${esc(text)}</div>`;
+  const photo = (src: string, alt: string, href: string) =>
+    `<a href="${esc(href)}"><img src="${esc(src)}" alt="${esc(alt)}" width="526" style="display:block;width:100%;max-width:526px;height:auto;border-radius:12px;margin:0 0 14px 0;" /></a>`;
+  const credit = (text?: string) =>
+    text ? `<div style="font-size:11px;line-height:1.4;color:#8f8880;margin:-8px 0 12px 0;">${esc(text)}</div>` : "";
 
-  // Two inline blocks: side by side when there is room for both (150 + 300),
-  // wrapping to photo-above-text when there isn't. This needs no media query,
-  // so it also holds in mail programs that drop the stylesheet. Phones that
-  // keep it get the photo as a banner the full width of the text.
-  const funFact = c.fun_fact.image_url
-    ? `
-    <div style="font-size:0;">
-      <div class="ff-img" style="display:inline-block;vertical-align:top;width:150px;margin:0 16px 12px 0;">
-        <a href="${esc(blog(links.fun_fact))}"><img src="${esc(c.fun_fact.image_url)}" alt="${esc(c.fun_fact.image_alt || c.fun_fact.title)}" width="150" style="display:block;width:150px;height:auto;border-radius:10px;" /></a>
-      </div>
-      <div class="ff-txt" style="display:inline-block;vertical-align:top;width:100%;max-width:300px;font-size:14.5px;">${funFactText}</div>
-    </div>
-    ${
-      c.fun_fact.image_credit
-        ? `<div style="font-size:11px;line-height:1.4;color:#8f8880;margin-top:8px;">${esc(c.fun_fact.image_credit)}</div>`
-        : ""
-    }`
-    : funFactText;
+  const ffHref = blog(links.fun_fact);
+  const posHref = blog(links.pos);
+  const bizHref = blog(links.business);
+
+  // ---- Summary: every note in one line, linked, before the notes themselves.
+  const sumHeading = (text: string) =>
+    `<div style="font-size:15px;font-weight:800;color:#0d0d0d;text-decoration:underline;margin:0 0 8px 0;">${text}</div>`;
+  const sumItem = (href: string, text: string) =>
+    `<div style="font-size:14.5px;line-height:1.45;margin:0 0 7px 0;color:#0d0d0d;">&#9656;&nbsp;<a href="${esc(href)}" style="color:#0d0d0d;text-decoration:none;">${esc(text)}</a></div>`;
+  const sumRule = `<div style="border-top:1px solid #d6d0c7;margin:14px 0;font-size:0;line-height:0;">&nbsp;</div>`;
+
+  // Reading time for what the email itself shows, at 200 words a minute.
+  const shown = [
+    c.fun_fact.title, c.fun_fact.body,
+    ...mine.flatMap((p) => [p.title, p.excerpt || ""]),
+    c.pos.title, c.pos.body,
+    ...c.business.flatMap((b) => [b.title, b.body]),
+  ].join(" ");
+  const minutes = Math.max(1, Math.round(shown.split(/\s+/).filter(Boolean).length / 200));
+
+  const summary = `
+      <div class="box" style="border:1px solid #d6d0c7;border-radius:12px;padding:18px 20px;">
+        <div style="font-size:19px;font-weight:800;color:#0d0d0d;margin:0 0 10px 0;">${t.summary}</div>
+        <div style="border-top:1px solid #d6d0c7;font-size:0;line-height:0;">&nbsp;</div>
+        <div style="font-size:12.5px;color:#5b5651;margin:10px 0 0 0;">${t.readTime(minutes)}</div>
+        ${sumRule}
+        ${sumHeading(t.funFact)}
+        ${sumItem(ffHref, c.fun_fact.title)}
+        ${sumRule}
+        ${sumHeading(t.news)}
+        ${mine.map((p) => sumItem(blog(p.id), p.title)).join("")}
+        ${sumRule}
+        ${sumHeading(t.pos)}
+        ${sumItem(posHref, c.pos.title)}
+        ${sumRule}
+        ${sumHeading(t.business)}
+        ${c.business.map((b) => sumItem(bizHref, b.title)).join("")}
+      </div>`;
+
+  // ---- The notes in full.
+  const funFact = `
+      <div class="box" style="background:#fff7f2;border-radius:12px;padding:18px 20px;">
+        ${label(t.funFact)}
+        ${noteTitle(c.fun_fact.title)}
+        ${c.fun_fact.image_url ? photo(c.fun_fact.image_url, c.fun_fact.image_alt || c.fun_fact.title, ffHref) : ""}
+        ${credit(c.fun_fact.image_credit)}
+        ${paras(c.fun_fact.body)}
+        ${button(ffHref)}
+      </div>`;
 
   const news = mine
     .map(
       (p) => `
-      <div style="border:1px solid #e8e2d9;border-radius:12px;padding:14px 16px;margin-bottom:10px;">
-        <div style="font-size:15.5px;font-weight:800;color:#0d0d0d;line-height:1.3;margin-bottom:5px;">${esc(p.title)}</div>
-        <div style="font-size:14px;line-height:1.5;color:#5b5651;margin-bottom:8px;">${esc(teaserOf(p))}</div>
-        ${textLink(blog(p.id), t.readMore)}
+      <div class="box" style="border:1px solid #e8e2d9;border-radius:12px;padding:18px 20px;margin-bottom:14px;">
+        ${p.source ? `<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#8f8880;font-weight:700;margin:0 0 6px 0;">${esc(p.source)}</div>` : ""}
+        ${noteTitle(p.title)}
+        ${p.image_url ? photo(p.image_url, p.title, blog(p.id)) : ""}
+        ${credit(p.image_credit || undefined)}
+        ${paras(p.excerpt || teaserOf(p), "14px")}
+        ${button(blog(p.id))}
       </div>`
     )
     .join("");
@@ -372,10 +423,10 @@ function render(
             </div>
             <div class="card" style="background:#ffffff;border:1px solid #e8e2d9;border-top:0;border-radius:0 0 16px 16px;padding:26px 26px 28px;">
 
-              <div class="box" style="background:#fff7f2;border-radius:12px;padding:18px 20px;">
-                ${label(t.funFact)}
-                ${funFact}
-              </div>
+              ${summary}
+
+              ${divider}
+              ${funFact}
 
               ${divider}
               ${label(t.news)}
@@ -385,18 +436,17 @@ function render(
                   : ""
               }
               ${news}
-              ${textLink(blog(), t.moreNews)}
 
               ${divider}
               ${label(t.pos)}
-              <div style="font-size:17px;font-weight:800;color:#0d0d0d;line-height:1.3;margin-bottom:8px;">${esc(c.pos.title)}</div>
-              <div style="font-size:14.5px;line-height:1.6;color:#5b5651;margin-bottom:10px;">${esc(c.pos.body)}</div>
-              ${textLink(blog(links.pos), t.onBlog)}
+              ${noteTitle(c.pos.title)}
+              ${paras(c.pos.body)}
+              ${button(posHref)}
 
               ${divider}
               ${label(t.business)}
               <table role="presentation" width="100%" style="width:100%;">${business}</table>
-              ${textLink(blog(links.business), t.onBlog)}
+              ${button(bizHref)}
 
               <div class="cta" style="background:#0d0d0d;border-radius:14px;padding:24px 22px;text-align:center;margin-top:24px;">
                 <div style="font-size:18px;font-weight:800;color:#ffffff;margin-bottom:6px;">${t.ctaTitle}</div>
@@ -614,7 +664,7 @@ Deno.serve(async (req: Request) => {
     const live = subs.filter((s) => !s.is_test);
 
     const postsRes = await db(
-      `blog_posts?id=in.(${send.post_ids.join(",")})&select=id,lang,title,teaser,excerpt,source,published_at`
+      `blog_posts?id=in.(${send.post_ids.join(",")})&select=id,lang,title,teaser,excerpt,source,image_url,image_credit,published_at`
     );
     const posts: Post[] = postsRes.ok ? await postsRes.json() : [];
     const ready = contentReady(send);

@@ -44,16 +44,37 @@ export const content = {
     },
 
     calc: {
-      eyebrow: "Calculadora",
-      h2: "Haz el número tú mismo",
-      lede: "Mueve las barras con tus datos reales. La fórmula viene del estudio de Harvard Business School sobre reseñas de Yelp y ventas.",
       rating: "Tu calificación actual en Yelp",
       target: "A dónde podrías llegar",
       revenue: "Ventas anuales aproximadas",
-      resultLabel: "Oportunidad anual estimada",
-      rangeText: (lo, hi) => `Rango realista: entre <b>${lo}</b> y <b>${hi}</b> al año, según qué tan rápido se muevan las reseñas.`,
       note: "Cálculo basado en Luca, M. (Harvard Business School, 2011): un cambio de una estrella se asocia con un cambio de 5–9% en ingresos. Es una estimación para orientar la conversación, no una promesa de resultados.",
-      zero: "Sube tu meta por encima de tu calificación actual para ver la oportunidad.",
+    },
+
+    calcPage: {
+      eyebrow: "Calculadora de reseñas",
+      h1: "¿Cuánto dinero te están costando tus reseñas?",
+      lede: "Pon tu calificación de Yelp y tus ventas, y te digo cuánto estás dejando ir cada año. La fórmula viene del estudio de Harvard Business School sobre reseñas de Yelp y ventas.",
+      gateTitle: "Desbloquea la calculadora",
+      gateLede: "Déjame tus datos y entras de inmediato.",
+      name: "Nombre",
+      email: "Correo electrónico",
+      phone: "Celular",
+      phonePlaceholder: "(480) 555-0123",
+      unlock: "Entrar a la calculadora",
+      unlocking: "Entrando…",
+      gateNote: "Al continuar aceptas que Mario Padilla te contacte sobre tu resultado. Sin spam.",
+      privacy: "Aviso de Privacidad",
+      gateError: "No se pudo guardar. Revisa tus datos e inténtalo de nuevo.",
+      phoneError: "Escribe un celular de 10 dígitos.",
+      hello: (n) => `Hola, ${n}. Pon tus números:`,
+      ratingHint: "Elige",
+      revenueHint: "Elige un rango",
+      calculate: "Calcular mi oportunidad perdida",
+      resultLabel: "Oportunidad perdida al año",
+      tapAgain: "Toca la cifra",
+      lostLine: (lo, hi) => `Entre <b>${lo}</b> y <b>${hi}</b> al año se te van por no estar en tu meta de calificación.`,
+      cta: "Pedir mi diagnóstico gratis",
+      ctaLede: "Te digo exactamente qué arreglar primero para recuperar esa cifra.",
     },
 
     diag: {
@@ -323,7 +344,7 @@ export const content = {
       sections: [
         {
           h: "Qué información recopilo",
-          p: "Cuando llenas el formulario de diagnóstico gratuito, recopilo: nombre del restaurante, tu nombre, correo electrónico, teléfono (opcional), ciudad, código postal, dirección, tipo de restaurante y el reto que nos compartas. Si aceptas recibir correos de marketing, guardo esa preferencia y la fecha en que la diste.",
+          p: "Cuando llenas el formulario de diagnóstico gratuito, recopilo: nombre del restaurante, tu nombre, correo electrónico, teléfono (opcional), ciudad, código postal, dirección, tipo de restaurante y el reto que nos compartas. Si aceptas recibir correos de marketing, guardo esa preferencia y la fecha en que la diste. Para usar la calculadora de reseñas recopilo tu nombre, correo electrónico y celular.",
         },
         {
           h: "Para qué la uso",
@@ -398,16 +419,37 @@ export const content = {
     },
 
     calc: {
-      eyebrow: "Calculator",
-      h2: "Run the number yourself",
-      lede: "Move the sliders with your real figures. The formula comes from Harvard Business School research on Yelp reviews and revenue.",
       rating: "Your current Yelp rating",
       target: "Where you could get to",
       revenue: "Approximate annual revenue",
-      resultLabel: "Estimated annual opportunity",
-      rangeText: (lo, hi) => `Realistic range: between <b>${lo}</b> and <b>${hi}</b> a year, depending on how fast the reviews move.`,
       note: "Based on Luca, M. (Harvard Business School, 2011): a one-star change is associated with a 5–9% change in revenue. This is an estimate to frame the conversation, not a promise of results.",
-      zero: "Set your target above your current rating to see the opportunity.",
+    },
+
+    calcPage: {
+      eyebrow: "Review calculator",
+      h1: "How much money are your reviews costing you?",
+      lede: "Enter your Yelp rating and your sales, and I'll show you how much you're leaving behind every year. The formula comes from Harvard Business School research on Yelp reviews and revenue.",
+      gateTitle: "Unlock the calculator",
+      gateLede: "Leave your details and you're in right away.",
+      name: "Name",
+      email: "Email",
+      phone: "Cell phone",
+      phonePlaceholder: "(480) 555-0123",
+      unlock: "Open the calculator",
+      unlocking: "Opening…",
+      gateNote: "By continuing you agree that Mario Padilla may contact you about your result. No spam.",
+      privacy: "Privacy Notice",
+      gateError: "That didn't save. Check your details and try again.",
+      phoneError: "Enter a 10-digit cell phone number.",
+      hello: (n) => `Hi, ${n}. Enter your numbers:`,
+      ratingHint: "Choose",
+      revenueHint: "Choose a range",
+      calculate: "Calculate my lost opportunity",
+      resultLabel: "Opportunity lost per year",
+      tapAgain: "Tap the number",
+      lostLine: (lo, hi) => `Between <b>${lo}</b> and <b>${hi}</b> a year slips away by not being at your target rating.`,
+      cta: "Get my free diagnostic",
+      ctaLede: "I'll tell you exactly what to fix first to win that money back.",
     },
 
     diag: {
@@ -677,7 +719,7 @@ export const content = {
       sections: [
         {
           h: "What I collect",
-          p: "When you fill out the free diagnostic form, I collect: restaurant name, your name, email address, phone (optional), city, ZIP code, street address, restaurant type, and whatever challenge you share. If you opt in to marketing emails, I store that preference and the date you gave it.",
+          p: "When you fill out the free diagnostic form, I collect: restaurant name, your name, email address, phone (optional), city, ZIP code, street address, restaurant type, and whatever challenge you share. If you opt in to marketing emails, I store that preference and the date you gave it. To use the review calculator, I collect your name, email address and cell phone.",
         },
         {
           h: "How I use it",

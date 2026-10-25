@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { content } from "./content.js";
 import { supabase } from "./supabase.js";
 import lasCulichisLogo from "./assets/clients/las-culichis.jpg";
@@ -22,6 +22,10 @@ const LINKEDIN = "https://www.linkedin.com/in/mario-padilla-57145839/";
 const CAL_URL = "https://cal.com/mario-padilla-tirado-hnho7v/15-minutos-chat-free-restaurant-diagnostic";
 const POS_LEARN_MORE_URL =
   "https://pos.toasttab.com/lp/get-started?utm_medium=paid&utm_source=sembb&utm_campaign=tpos-b2bsmb-paid-1139094559993298-exabrandxx-acq-sembb-cousa&utm_term=point%20of%20sale%20toast&_bt=&_bm=e&_bn=o&device=c&utm_campaign_id=352125627&utm_adgroup_id=1139094559993298&msclkid=7b495c0779221c10f9df36b04aa2d98f&utm_content=Toast%20POS";
+
+// The calculator used to be a section of the landing page; old links in sent
+// emails and newsletters still point at #calculadora.
+if (window.location.hash === "#calculadora") window.location.replace("/calculator");
 
 /* ---------------- helpers ---------------- */
 
@@ -174,7 +178,7 @@ function Nav({ lang, setLang, t }) {
   const links = [
     { href: "#dolores", label: t.nav.how },
     { href: "#blog", label: t.nav.blog },
-    { href: "#calculadora", label: t.nav.calc },
+    { href: "/calculator", label: t.nav.calc },
   ];
 
   return (
@@ -302,7 +306,7 @@ function Hero({ t }) {
           <p className="lede">{t.hero.lede}</p>
 
           <div className="hero-cta">
-            <a className="btn dark" href="#calculadora">
+            <a className="btn dark" href="/calculator">
               <CalculatorIcon />
               {t.hero.cta2}
             </a>
@@ -368,109 +372,393 @@ function Problem({ t }) {
   );
 }
 
-function Calculator({ t }) {
-  const [current, setCurrent] = useState(3.8);
-  const [target, setTarget] = useState(4.4);
-  const [revenue, setRevenue] = useState(900000);
+/* ---------------- calculator page (/calculator) ---------------- */
 
-  const { lo, hi, mid, delta } = useMemo(() => {
-    const d = Math.max(0, target - current);
+const prefersReducedMotion = () =>
+  window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+
+/** Confetti and coins exploding out of (x, y), drawn on a throwaway canvas. */
+function burst(x, y) {
+  if (prefersReducedMotion()) return;
+  const canvas = document.createElement("canvas");
+  canvas.className = "burst-canvas";
+  canvas.setAttribute("aria-hidden", "true");
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext("2d");
+  ctx.scale(dpr, dpr);
+
+  const colors = ["#ff4c00", "#ff6a2e", "#ffb800", "#ffd76a", "#d63e00", "#0d0d0d"];
+  const parts = Array.from({ length: 110 }, (_, i) => {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 5 + Math.random() * 11;
     return {
-      delta: d,
-      lo: revenue * d * 0.05,
-      mid: revenue * d * 0.07,
-      hi: revenue * d * 0.09,
+      x,
+      y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 5,
+      rot: Math.random() * Math.PI,
+      spin: (Math.random() - 0.5) * 0.45,
+      w: 5 + Math.random() * 6,
+      h: 9 + Math.random() * 9,
+      color: colors[i % colors.length],
+      coin: i % 7 === 0,
     };
-  }, [current, target, revenue]);
+  });
 
-  const pct = (v, min, max) => ((v - min) / (max - min)) * 100 + "%";
+  const life = 1900;
+  const start = performance.now();
+  const frame = (now) => {
+    const elapsed = now - start;
+    ctx.clearRect(0, 0, w, h);
+    ctx.globalAlpha = Math.max(0, 1 - elapsed / life);
+    for (const p of parts) {
+      p.vy += 0.32;
+      p.vx *= 0.986;
+      p.vy *= 0.986;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.spin;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      if (p.coin) {
+        ctx.fillStyle = "#ffb800";
+        ctx.beginPath();
+        ctx.arc(0, 0, 10, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#9a5a00";
+        ctx.font = "800 13px Inter, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("$", 0, 1);
+      } else {
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      }
+      ctx.restore();
+    }
+    if (elapsed < life) requestAnimationFrame(frame);
+    else canvas.remove();
+  };
+  requestAnimationFrame(frame);
+}
+
+const CALC_RATINGS = Array.from({ length: 25 }, (_, i) => +(2.5 + i * 0.1).toFixed(1)); // 2.5–4.9
+const CALC_REVENUES = [250000, 500000, 750000, 1000000, 1500000, 2000000, 3000000, 5000000];
+const CALC_UNLOCK_KEY = "calcUnlocked";
+
+/** Name, email and cell phone before the calculator opens. Remembered in this
+ *  browser so a returning visitor goes straight in. */
+function CalculatorGate({ t, lang, onUnlock }) {
+  const [form, setForm] = useState({ name: "", email: "", phone: "" });
+  const [state, setState] = useState("idle"); // idle | sending | error
+  const [phoneError, setPhoneError] = useState(false);
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  async function submit(e) {
+    e.preventDefault();
+    if (state === "sending") return;
+    const digits = form.phone.replace(/\D/g, "");
+    if (digits.length < 10 || digits.length > 15) {
+      setPhoneError(true);
+      return;
+    }
+    setPhoneError(false);
+    if (!supabase) {
+      setState("error");
+      return;
+    }
+    setState("sending");
+    const name = form.name.trim();
+    const { error } = await supabase.from("calculator_leads").insert([
+      { name, email: form.email.trim(), phone: form.phone.trim(), preferred_language: lang },
+    ]);
+    if (error) {
+      setState("error");
+      return;
+    }
+    const first = name.split(/\s+/)[0];
+    try {
+      localStorage.setItem(CALC_UNLOCK_KEY, first);
+    } catch {
+      /* storage unavailable — they still get in for this visit */
+    }
+    onUnlock(first);
+  }
 
   return (
-    <section id="calculadora">
-      <div className="wrap">
-        <Reveal className="sec-head">
-          <p className="eyebrow">{t.calc.eyebrow}</p>
-          <h2>{t.calc.h2}</h2>
-          <p className="lede">{t.calc.lede}</p>
-        </Reveal>
+    <Reveal className="form-card calc-gate">
+      <h2 className="calc-gate-title">{t.calcPage.gateTitle}</h2>
+      <p className="calc-gate-lede">{t.calcPage.gateLede}</p>
+      <form onSubmit={submit}>
+        {state === "error" && (
+          <div className="alert err" role="alert">
+            {t.calcPage.gateError}
+          </div>
+        )}
+        <div className="inp">
+          <label htmlFor="cg-name">{t.calcPage.name}</label>
+          <input id="cg-name" required autoComplete="name" value={form.name} onChange={set("name")} />
+        </div>
+        <div className="inp">
+          <label htmlFor="cg-email">{t.calcPage.email}</label>
+          <input
+            id="cg-email"
+            type="email"
+            required
+            autoComplete="email"
+            value={form.email}
+            onChange={set("email")}
+          />
+        </div>
+        <div className="inp">
+          <label htmlFor="cg-phone">{t.calcPage.phone}</label>
+          <input
+            id="cg-phone"
+            type="tel"
+            required
+            inputMode="tel"
+            autoComplete="tel"
+            placeholder={t.calcPage.phonePlaceholder}
+            aria-invalid={phoneError || undefined}
+            aria-describedby={phoneError ? "cg-phone-err" : undefined}
+            value={form.phone}
+            onChange={set("phone")}
+          />
+          {phoneError && (
+            <p id="cg-phone-err" className="inp-note warn">
+              {t.calcPage.phoneError}
+            </p>
+          )}
+        </div>
+        <button className="btn" type="submit" disabled={state === "sending"}>
+          {state === "sending" ? t.calcPage.unlocking : t.calcPage.unlock}
+        </button>
+        <p className="formnote">
+          {t.calcPage.gateNote} <a href="/#privacy">{t.calcPage.privacy}</a>
+        </p>
+      </form>
+    </Reveal>
+  );
+}
 
-        <Reveal className="calc">
-          <div className="calc-panel">
-            <div className="field">
-              <label htmlFor="cur">
-                {t.calc.rating}
-                <b>{current.toFixed(1)}</b>
-              </label>
-              <Stars value={current} />
-              <input
-                id="cur"
-                type="range"
-                min="2.5"
-                max="4.9"
-                step="0.1"
-                value={current}
-                style={{ "--pct": pct(current, 2.5, 4.9), marginTop: 12 }}
-                onChange={(e) => {
-                  const v = +e.target.value;
-                  setCurrent(v);
-                  if (target < v) setTarget(Math.min(5, v + 0.1));
-                }}
-              />
-            </div>
+function CalculatorTool({ t, name }) {
+  const [current, setCurrent] = useState("");
+  const [target, setTarget] = useState("");
+  const [revenue, setRevenue] = useState("");
+  // Totals stay hidden until the button is pressed; editing any input hides
+  // them again, so a number on screen always matches the inputs above it.
+  const [result, setResult] = useState(null);
+  const [shown, setShown] = useState(0);
+  const [pop, setPop] = useState(0);
+  const resultRef = useRef(null);
+  const bigRef = useRef(null);
 
-            <div className="field">
-              <label htmlFor="tgt">
-                {t.calc.target}
-                <b>{target.toFixed(1)}</b>
-              </label>
-              <Stars value={target} />
-              <input
-                id="tgt"
-                type="range"
-                min="2.6"
-                max="5"
-                step="0.1"
-                value={target}
-                style={{ "--pct": pct(target, 2.6, 5), marginTop: 12 }}
-                onChange={(e) => setTarget(+e.target.value)}
-              />
-            </div>
+  const targets = CALC_RATINGS.concat(5).filter((r) => current === "" || r > +current);
+  const ready = current !== "" && target !== "" && revenue !== "";
 
-            <div className="field">
-              <label htmlFor="rev">
-                {t.calc.revenue}
-                <b>{usdCompact(revenue)}</b>
-              </label>
-              <input
-                id="rev"
-                type="range"
-                min="150000"
-                max="5000000"
-                step="50000"
-                value={revenue}
-                style={{ "--pct": pct(revenue, 150000, 5000000) }}
-                onChange={(e) => setRevenue(+e.target.value)}
-              />
+  const change = (setter) => (e) => {
+    setter(e.target.value);
+    setResult(null);
+  };
+
+  function calculate(e) {
+    e.preventDefault();
+    if (!ready) return;
+    // The target list only offers ratings above the current one, so delta > 0.
+    const delta = +target - +current;
+    setResult({
+      lo: +revenue * delta * 0.05,
+      mid: +revenue * delta * 0.07,
+      hi: +revenue * delta * 0.09,
+    });
+  }
+
+  const explode = () => {
+    const r = bigRef.current?.getBoundingClientRect();
+    if (!r) return;
+    burst(r.left + r.width / 2, r.top + r.height / 2);
+    setPop((n) => n + 1);
+  };
+
+  // Count up from zero, then let it explode.
+  useEffect(() => {
+    setShown(0);
+    setPop(0);
+    if (!result) return;
+    resultRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (prefersReducedMotion()) {
+      setShown(result.mid);
+      return;
+    }
+    let raf;
+    const duration = 1400;
+    const delay = 350;
+    const start = performance.now() + delay;
+    const tick = (now) => {
+      const p = Math.min(1, Math.max(0, (now - start) / duration));
+      setShown(result.mid * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) raf = requestAnimationFrame(tick);
+      else explode();
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [result]);
+
+  return (
+    <div className="calc">
+      <Reveal className="calc-panel">
+        <form onSubmit={calculate}>
+          <p className="calc-hello">{t.calcPage.hello(name)}</p>
+
+          <div className="field">
+            <label htmlFor="cur">
+              {t.calc.rating}
+              {current !== "" && <Stars value={+current} />}
+            </label>
+            <div className="inp">
+              <select id="cur" required value={current} onChange={(e) => {
+                const v = e.target.value;
+                setCurrent(v);
+                if (target !== "" && +target <= +v) setTarget("");
+                setResult(null);
+              }}>
+                <option value="" disabled>{t.calcPage.ratingHint}</option>
+                {CALC_RATINGS.map((r) => (
+                  <option key={r} value={r}>{r.toFixed(1)}</option>
+                ))}
+              </select>
             </div>
           </div>
 
-          <div className="result">
-            <p className="eyebrow">{t.calc.resultLabel}</p>
-            <div className="big">{usd(mid)}</div>
-            {delta > 0 ? (
-              <p
-                className="range"
-                dangerouslySetInnerHTML={{
-                  __html: t.calc.rangeText(usd(lo), usd(hi)),
-                }}
-              />
-            ) : (
-              <p className="range">{t.calc.zero}</p>
-            )}
-            <p className="note">{t.calc.note}</p>
+          <div className="field">
+            <label htmlFor="tgt">
+              {t.calc.target}
+              {target !== "" && <Stars value={+target} />}
+            </label>
+            <div className="inp">
+              <select id="tgt" required value={target} onChange={change(setTarget)}>
+                <option value="" disabled>{t.calcPage.ratingHint}</option>
+                {targets.map((r) => (
+                  <option key={r} value={r}>{r.toFixed(1)}</option>
+                ))}
+              </select>
+            </div>
           </div>
-        </Reveal>
+
+          <div className="field">
+            <label htmlFor="rev">{t.calc.revenue}</label>
+            <div className="inp">
+              <select id="rev" required value={revenue} onChange={change(setRevenue)}>
+                <option value="" disabled>{t.calcPage.revenueHint}</option>
+                {CALC_REVENUES.map((v) => (
+                  <option key={v} value={v}>{usdCompact(v)}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <button className="btn btn-lg calc-go" type="submit" disabled={!ready}>
+            {t.calcPage.calculate}
+          </button>
+        </form>
+      </Reveal>
+
+      <div className={`result${result ? " revealed" : ""}`} ref={resultRef}>
+        <p className="eyebrow">{t.calcPage.resultLabel}</p>
+
+        {!result && (
+          <div className="big calc-locked" aria-hidden="true">
+            $ ? ? ?
+          </div>
+        )}
+
+        {result && (
+          <>
+            <button
+              type="button"
+              ref={bigRef}
+              key={pop}
+              className={`big calc-number${pop ? " pop" : ""}`}
+              onClick={explode}
+              aria-label={usd(result.mid)}
+            >
+              {usd(shown)}
+            </button>
+            <p className="calc-tap">{t.calcPage.tapAgain}</p>
+            <p
+              className="range"
+              dangerouslySetInnerHTML={{ __html: t.calcPage.lostLine(usd(result.lo), usd(result.hi)) }}
+            />
+            <div className="calc-cta">
+              <a className="btn" href="/#empezar">
+                {t.calcPage.cta}
+              </a>
+              <p>{t.calcPage.ctaLede}</p>
+            </div>
+          </>
+        )}
+
+
+        <p className="note">{t.calc.note}</p>
       </div>
+    </div>
+  );
+}
+
+function CalculatorPage({ t, lang }) {
+  const [name, setName] = useState(() => {
+    try {
+      return localStorage.getItem(CALC_UNLOCK_KEY) || "";
+    } catch {
+      return "";
+    }
+  });
+
+  // This page lives at /calculator, but every in-page link on the site is a
+  // bare #anchor meant for the landing page. A <base> makes them resolve to
+  // "/#anchor" here, so the shared nav and footer keep working unchanged.
+  useEffect(() => {
+    const base = document.createElement("base");
+    base.href = "/";
+    document.head.prepend(base);
+    return () => base.remove();
+  }, []);
+
+  useEffect(() => {
+    const prev = document.title;
+    document.title = `${t.calcPage.eyebrow} · El Toaster`;
+    return () => {
+      document.title = prev;
+    };
+  }, [t]);
+
+  const head = (
+    <Reveal className="sec-head">
+      <p className="eyebrow">{t.calcPage.eyebrow}</p>
+      <h1 className="calc-h1">{t.calcPage.h1}</h1>
+      <p className="lede">{t.calcPage.lede}</p>
+    </Reveal>
+  );
+
+  return (
+    <section className="calc-page">
+      {name ? (
+        <div className="wrap">
+          {head}
+          <CalculatorTool t={t} name={name} />
+        </div>
+      ) : (
+        <div className="wrap form-grid calc-locked-grid">
+          {head}
+          <CalculatorGate t={t} lang={lang} onUnlock={setName} />
+        </div>
+      )}
     </section>
   );
 }
@@ -1673,7 +1961,7 @@ function Footer({ t, lang }) {
           >
             LinkedIn
           </a>
-          <a href="#calculadora">{t.nav.calc}</a>
+          <a href="/calculator">{t.nav.calc}</a>
           <a href="#diagnostico">{t.nav.diag}</a>
           <a href="#privacy">{t.privacy.title}</a>
         </div>
@@ -1728,6 +2016,10 @@ export default function App() {
   const [hash, setHash] = useState(() => window.location.hash);
   useEffect(() => {
     const onHash = () => {
+      if (window.location.hash === "#calculadora") {
+        window.location.replace("/calculator");
+        return;
+      }
       setRoute(routeFromHash());
       setHash(window.location.hash);
     };
@@ -1752,6 +2044,21 @@ export default function App() {
     const target = hash.length > 1 ? document.getElementById(hash.slice(1)) : null;
     if (target) target.scrollIntoView({ behavior: "instant" });
   }, [hash, route]);
+
+  // A real path rather than a #route, so the address people share reads
+  // eltoaster.com/calculator. vercel.json rewrites it to index.html.
+  if (window.location.pathname.replace(/\/+$/, "") === "/calculator") {
+    return (
+      <>
+        <Nav lang={lang} setLang={setLang} t={t} />
+        <main>
+          <CalculatorPage t={t} lang={lang} />
+        </main>
+        <Footer t={t} lang={lang} />
+        <MobileBar t={t} />
+      </>
+    );
+  }
 
   if (route === "privacy") {
     return (
@@ -1809,7 +2116,6 @@ export default function App() {
         <Stats t={t} />
         <VideoIntro t={t} />
         <Problem t={t} />
-        <Calculator t={t} />
         <MidCta t={t} />
         <Diagnostic t={t} />
         <Steps t={t} />

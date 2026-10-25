@@ -14,6 +14,20 @@ export const content = {
       t1: "Sin costo",
       t2: "Resultados en 48 horas",
       t3: "En español o inglés",
+      dash: {
+        place: "Tu restaurante",
+        sample: "Ejemplo",
+        rating: "Calificación",
+        chart: "Ingresos",
+        newReviews: "Reseñas 5★",
+        visits: "Visitas al perfil",
+        revenue: "Extra al año",
+        toasts: [
+          { src: "Google", text: "Las mejores enchiladas de Phoenix." },
+          { src: "Yelp", text: "Rápidos, amables y todo delicioso." },
+          { src: "Google", text: "Ya es nuestro lugar de cada viernes." },
+        ],
+      },
     },
 
     stats: [
@@ -389,6 +403,20 @@ export const content = {
       t1: "No cost",
       t2: "Results in 48 hours",
       t3: "In English or Spanish",
+      dash: {
+        place: "Your restaurant",
+        sample: "Example",
+        rating: "Rating",
+        chart: "Revenue",
+        newReviews: "5★ reviews",
+        visits: "Profile visits",
+        revenue: "Extra per year",
+        toasts: [
+          { src: "Google", text: "Best enchiladas in Phoenix." },
+          { src: "Yelp", text: "Fast, friendly and everything was delicious." },
+          { src: "Google", text: "Our new Friday night spot." },
+        ],
+      },
     },
 
     stats: [

@@ -256,38 +256,183 @@ function Nav({ lang, setLang, t }) {
   );
 }
 
-/** Silent food loop beside the hero copy. It's decoration, so visitors who
- *  ask for reduced motion get the still poster instead of playback. */
-function HeroVideo() {
-  const [still] = useState(
-    () => window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false
-  );
+/* Hero dashboard: a sample restaurant's rating climbing, reviews arriving,
+   revenue rising. The figures match the calculator (3.8 → 4.5 stars on $1M
+   in sales is about $49,000 a year), so the two pages tell the same story. */
+const HD_CYCLE = 10000;
+const HD_POINTS = [74, 70, 76, 64, 69, 57, 61, 48, 52, 38, 31, 14];
+const HD_W = 300;
+const HD_H = 110;
+
+const hdEase = (p) => 1 - Math.pow(1 - p, 3);
+const hdSpan = (e, start, dur) => hdEase(Math.min(1, Math.max(0, (e - start) / dur)));
+
+function HeroDashboard({ t }) {
+  const d = t.hero.dash;
+  const [still] = useState(prefersReducedMotion);
+  const [cycle, setCycle] = useState(0);
+  const [leaving, setLeaving] = useState(false);
+  // Milliseconds into the current cycle; the counters are driven from it.
+  const [e, setE] = useState(still ? Infinity : 0);
+  const ref = useRef(null);
+
+  // Loop, but only while someone can see it: off screen or in a background
+  // tab it holds on the finished picture instead of fading out unseen.
+  useEffect(() => {
+    if (still) return;
+    let visible = true;
+    let timer;
+    const io = new IntersectionObserver(([en]) => {
+      visible = en.isIntersecting;
+    });
+    io.observe(ref.current);
+    const next = () => {
+      if (!visible || document.hidden) {
+        timer = setTimeout(next, 1000);
+        return;
+      }
+      setLeaving(true);
+      timer = setTimeout(() => {
+        setLeaving(false);
+        setCycle((c) => c + 1);
+        timer = setTimeout(next, HD_CYCLE);
+      }, 600);
+    };
+    timer = setTimeout(next, HD_CYCLE);
+    return () => {
+      io.disconnect();
+      clearTimeout(timer);
+    };
+  }, [still]);
+
+  useEffect(() => {
+    if (still) return;
+    let raf;
+    const t0 = performance.now();
+    const tick = (now) => {
+      const el = now - t0;
+      setE(el);
+      if (el < 5200) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [cycle, still]);
+
+  const rating = 3.8 + 0.7 * hdSpan(e, 200, 2400);
+  const line = hdSpan(e, 400, 2800);
+  const reviews = Math.round(128 * hdSpan(e, 2400, 1600));
+  const visits = Math.round(34 * hdSpan(e, 2600, 1600));
+  const revenue = 49000 * hdSpan(e, 2800, 1800);
+  const done = e >= 4600;
+
+  const step = HD_W / (HD_POINTS.length - 1);
+  const pts = HD_POINTS.map((y, i) => [i * step, y]);
+  const path = pts.map(([x, y], i) => `${i ? "L" : "M"}${x} ${y}`).join(" ");
+  // Where the line is being drawn right now, for the glowing head.
+  const at = line * (pts.length - 1);
+  const i0 = Math.min(pts.length - 2, Math.floor(at));
+  const f = at - i0;
+  const head = [
+    pts[i0][0] + (pts[i0 + 1][0] - pts[i0][0]) * f,
+    pts[i0][1] + (pts[i0 + 1][1] - pts[i0][1]) * f,
+  ];
+
   return (
-    <div className="hero-media" aria-hidden="true">
-      {still ? (
-        <img src="/video/hero-flautas-poster.jpg" alt="" width="1280" height="720" />
-      ) : (
-        <video
-          // React sets `muted` as a property, not the attribute iOS Safari
-          // checks before allowing autoplay, so set both and start it by hand.
-          ref={(el) => {
-            if (!el) return;
-            el.defaultMuted = true;
-            el.muted = true;
-            el.play().catch(() => {});
-          }}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster="/video/hero-flautas-poster.jpg"
-          width="1280"
-          height="720"
-        >
-          <source src="/video/hero-flautas.mp4" type="video/mp4" />
-        </video>
-      )}
+    <div
+      className={`hero-media hero-dash${leaving ? " leaving" : ""}${still ? " still" : ""}`}
+      ref={ref}
+      aria-hidden="true"
+    >
+      <div className="hd-body" key={cycle}>
+        <div className="hd-top">
+          <span className="hd-place">
+            <span className="hd-dot" />
+            {d.place}
+          </span>
+          <span className="hd-sample">{d.sample}</span>
+        </div>
+
+        <div className="hd-rating-row">
+          <div className="hd-rating">
+            <span className="hd-label">{d.rating}</span>
+            <b className="hd-score">{rating.toFixed(1)}</b>
+            <span className="hd-stars">
+              ★★★★★
+              <span style={{ width: `${(rating / 5) * 100}%` }}>★★★★★</span>
+            </span>
+          </div>
+          <div className="hd-feed">
+            {d.toasts.map((r, i) => (
+              <div
+                key={i}
+                className={`hd-toast${i === d.toasts.length - 1 ? " last" : ""}`}
+                style={{ animationDelay: `${600 + i * 2600}ms` }}
+              >
+                <span className="hd-toast-head">
+                  <span className="hd-toast-stars">★★★★★</span>
+                  <span className="hd-src">{r.src}</span>
+                </span>
+                <span className="hd-toast-text">“{r.text}”</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="hd-chart">
+          <span className="hd-label">{d.chart}</span>
+          <span className={`hd-badge${line >= 1 ? " on" : ""}`}>+{usdCompact(49000)}</span>
+          <div className="hd-plot">
+            <svg viewBox={`0 0 ${HD_W} ${HD_H}`} preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="hdFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stopColor="#ff4c00" stopOpacity="0.45" />
+                  <stop offset="1" stopColor="#ff4c00" stopOpacity="0" />
+                </linearGradient>
+                <clipPath id="hdClip">
+                  {/* Padded so the line's rounded ends and glow aren't cut off. */}
+                  <rect x="-8" y="-12" width={HD_W * line + 8} height={HD_H + 24} />
+                </clipPath>
+              </defs>
+              {[28, 55, 82].map((y) => (
+                <line key={y} className="hd-grid" x1="0" x2={HD_W} y1={y} y2={y} />
+              ))}
+              <path
+                d={`${path} L${HD_W} ${HD_H} L0 ${HD_H} Z`}
+                fill="url(#hdFill)"
+                clipPath="url(#hdClip)"
+              />
+              <path className="hd-line" d={path} clipPath="url(#hdClip)" />
+            </svg>
+            {/* Kept outside the stretched SVG so the dot stays round. */}
+            <span
+              className={`hd-head${line >= 1 ? " peak" : ""}`}
+              style={{ left: `${(head[0] / HD_W) * 100}%`, top: `${(head[1] / HD_H) * 100}%` }}
+            />
+          </div>
+        </div>
+
+        <div className="hd-metrics">
+          <div className="hd-metric">
+            <b>+{reviews}</b>
+            <span>{d.newReviews}</span>
+          </div>
+          <div className="hd-metric">
+            <b>+{visits}%</b>
+            <span>{d.visits}</span>
+          </div>
+          <div className={`hd-metric hot${done ? " landed" : ""}`}>
+            <b>+{usd(revenue)}</b>
+            <span>{d.revenue}</span>
+            {done && (
+              <span className="hd-pips">
+                {["$", "★", "$", "★", "$", "★"].map((c, i) => (
+                  <i key={i}>{c}</i>
+                ))}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -297,7 +442,7 @@ function Hero({ t }) {
     <section className="hero" id="top">
       <div className="hero-glow" aria-hidden="true" />
       <div className="wrap hero-grid">
-        <HeroVideo />
+        <HeroDashboard t={t} />
         <Reveal className="hero-copy">
           <p className="eyebrow">{t.hero.eyebrow}</p>
           <h1>

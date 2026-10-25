@@ -554,9 +554,8 @@ section { padding-block: clamp(72px, 11vw, 132px); }
   border: 0;
   padding: 0;
   font-family: inherit;
-  text-align: left;
+  text-align: center;
   cursor: pointer;
-  align-self: flex-start;
   position: relative;
   z-index: 1;
 }
@@ -582,8 +581,20 @@ section { padding-block: clamp(72px, 11vw, 132px); }
   0% { box-shadow: 0 0 0 0 rgb(255 76 0 / 55%), var(--shadow-lg); }
   100% { box-shadow: 0 0 0 26px rgb(255 76 0 / 0%), var(--shadow-lg); }
 }
-.calc-cta { margin-top: 24px; position: relative; z-index: 1; }
-.calc-cta p { margin-top: 10px; font-size: 0.88rem; color: #b9b2ab; }
+.calc-cta {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.calc-cta .btn { width: 100%; max-width: 340px; justify-content: center; }
+.calc-cta p { margin-top: 12px; max-width: 32ch; font-size: 0.88rem; color: #b9b2ab; }
+
+/* On the calculator page the result card reads top to bottom, centered. */
+.calc .result { align-items: center; text-align: center; }
+.calc .result .range { max-width: 34ch; }
 
 .burst-canvas {
   position: fixed;

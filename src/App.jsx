@@ -637,6 +637,18 @@ function CalculatorTool({ t, name }) {
           </div>
 
           <div className="field">
+            <label htmlFor="rev">{t.calc.revenue}</label>
+            <div className="inp">
+              <select id="rev" required value={revenue} onChange={change(setRevenue)}>
+                <option value="" disabled>{t.calcPage.revenueHint}</option>
+                {CALC_REVENUES.map((v) => (
+                  <option key={v} value={v}>{usdCompact(v)}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="field">
             <label htmlFor="tgt">
               {t.calc.target}
               {target !== "" && <Stars value={+target} />}
@@ -646,18 +658,6 @@ function CalculatorTool({ t, name }) {
                 <option value="" disabled>{t.calcPage.ratingHint}</option>
                 {targets.map((r) => (
                   <option key={r} value={r}>{r.toFixed(1)}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="field">
-            <label htmlFor="rev">{t.calc.revenue}</label>
-            <div className="inp">
-              <select id="rev" required value={revenue} onChange={change(setRevenue)}>
-                <option value="" disabled>{t.calcPage.revenueHint}</option>
-                {CALC_REVENUES.map((v) => (
-                  <option key={v} value={v}>{usdCompact(v)}</option>
                 ))}
               </select>
             </div>

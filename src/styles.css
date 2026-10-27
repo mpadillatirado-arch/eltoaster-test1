@@ -721,6 +721,128 @@ section { padding-block: clamp(72px, 11vw, 132px); }
 
 /* ---------- Problem list ---------- */
 
+/* Desktop: the loss chart (ProblemChart) sits beside the heading. */
+.problem-visual { display: none; }
+@media (min-width: 1000px) {
+  .problem-top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+    align-items: center;
+    gap: clamp(40px, 5vw, 72px);
+    margin-bottom: clamp(40px, 6vw, 68px);
+  }
+  .problem-top .sec-head { margin-bottom: 0; }
+  .problem-visual { display: block; }
+}
+
+/* ProblemChart: the site's light card, with the loss in brand orange. */
+.pc {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: clamp(22px, 2.6vw, 30px);
+  font-variant-numeric: tabular-nums;
+}
+.pc::before {
+  content: "";
+  position: absolute;
+  right: -25%;
+  top: -35%;
+  width: 70%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--orange), transparent 68%);
+  opacity: 0.1;
+  pointer-events: none;
+}
+.pc-body { position: relative; animation: hd-in 0.6s var(--ease); transition: opacity 0.5s var(--ease), transform 0.5s var(--ease); }
+.pc.leaving .pc-body { opacity: 0; transform: translateY(-8px); }
+
+.pc-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.pc-place { display: inline-flex; align-items: center; gap: 9px; font-size: 0.86rem; font-weight: 700; }
+.pc-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); animation: hd-ping 1.8s ease-out infinite; }
+.pc-chip {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 3px 9px;
+}
+
+.pc-big {
+  margin-top: 18px;
+  font-size: clamp(2.8rem, 4.6vw, 3.9rem);
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--orange);
+  transform-origin: left center;
+}
+.pc-big.landed { animation: pc-pop 0.6s var(--ease); }
+@keyframes pc-pop { 35% { transform: scale(1.06); } }
+.pc-sub { margin-top: 8px; font-size: 0.86rem; color: var(--text-2); line-height: 1.45; max-width: 34ch; }
+
+.pc-chart {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(5px, 0.8vw, 9px);
+  height: 150px;
+  margin-top: 22px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+.pc-col { position: relative; }
+.pc-sold, .pc-gone { position: absolute; left: 0; right: 0; }
+.pc-sold { bottom: 0; background: var(--ink); border-radius: 2px; }
+.pc-gone {
+  margin-bottom: 3px;
+  border-radius: 5px 5px 2px 2px;
+  background: repeating-linear-gradient(-45deg, var(--orange) 0 4px, color-mix(in srgb, var(--orange) 35%, transparent) 4px 8px);
+  box-shadow: 0 0 0 1.5px var(--orange) inset;
+}
+.pc-m { position: absolute; left: 0; right: 0; bottom: -20px; text-align: center; font-size: 0.64rem; font-weight: 700; color: var(--text-3); }
+.pc-legend { display: flex; gap: 18px; margin-top: 30px; font-size: 0.74rem; color: var(--text-2); }
+.pc-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.pc-legend i { width: 11px; height: 11px; border-radius: 3px; }
+.pc-legend i.sold { background: var(--ink); }
+.pc-legend i.gone { background: repeating-linear-gradient(-45deg, var(--orange) 0 3px, color-mix(in srgb, var(--orange) 35%, transparent) 3px 6px); box-shadow: 0 0 0 1.5px var(--orange) inset; }
+
+/* Rating ruler: you slide down, the gap to the average fills in orange. */
+.pc-gauge { margin-top: 20px; padding-top: 18px; border-top: 1px dashed var(--line); }
+.pc-gauge-head { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.8rem; font-weight: 700; color: var(--text-2); }
+.pc-gauge-head b { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.03em; color: var(--text); }
+.pc-gauge-head em { font-style: normal; color: var(--orange); font-size: 1.1rem; }
+.pc-track { position: relative; height: 10px; margin-top: 30px; border-radius: 100px; background: color-mix(in srgb, var(--ink) 9%, transparent); }
+.pc-gap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 100px;
+  background: repeating-linear-gradient(-45deg, var(--orange) 0 4px, color-mix(in srgb, var(--orange) 45%, transparent) 4px 8px);
+}
+.pc-you, .pc-avg { position: absolute; top: 50%; transform: translate(-50%, -50%); }
+.pc-you { width: 20px; height: 20px; border-radius: 50%; background: var(--surface); border: 4px solid var(--orange); box-shadow: 0 2px 8px rgb(0 0 0 / 18%); }
+.pc-avg { width: 3px; height: 26px; border-radius: 2px; background: var(--ink); }
+.pc-avg small {
+  position: absolute;
+  bottom: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.pc-scale { display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.64rem; color: var(--text-3); }
+
+.pc.still .pc-body, .pc.still .pc-dot, .pc.still .pc-big.landed { animation: none; }
+
 .problems { display: grid; gap: 14px; }
 .problem {
   display: grid;

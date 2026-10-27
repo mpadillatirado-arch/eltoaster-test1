@@ -271,22 +271,29 @@ const HD_H = 110;
 const hdEase = (p) => 1 - Math.pow(1 - p, 3);
 const hdSpan = (e, start, dur) => hdEase(Math.min(1, Math.max(0, (e - start) / dur)));
 
-function HeroDashboard({ t }) {
-  const d = t.hero.dash;
+/** Drives a looping card animation: `e` is milliseconds into the current
+    cycle (counted up for `runMs`), `cycle` keys the remount. */
+function useCardLoop(cycleMs, runMs) {
   const [still] = useState(prefersReducedMotion);
   const [cycle, setCycle] = useState(0);
   const [leaving, setLeaving] = useState(false);
-  // Milliseconds into the current cycle; the counters are driven from it.
   const [e, setE] = useState(still ? Infinity : 0);
   const ref = useRef(null);
 
   // Loop, but only while someone can see it: off screen or in a background
-  // tab it holds on the finished picture instead of fading out unseen.
+  // tab it holds on the finished picture instead of fading out unseen, and
+  // it starts over each time it scrolls into view.
   useEffect(() => {
     if (still) return;
     let visible = true;
     let timer;
     const io = new IntersectionObserver(([en]) => {
+      if (en.isIntersecting && !visible) {
+        clearTimeout(timer);
+        setLeaving(false);
+        setCycle((c) => c + 1);
+        timer = setTimeout(next, cycleMs);
+      }
       visible = en.isIntersecting;
     });
     io.observe(ref.current);
@@ -299,15 +306,15 @@ function HeroDashboard({ t }) {
       timer = setTimeout(() => {
         setLeaving(false);
         setCycle((c) => c + 1);
-        timer = setTimeout(next, HD_CYCLE);
+        timer = setTimeout(next, cycleMs);
       }, 600);
     };
-    timer = setTimeout(next, HD_CYCLE);
+    timer = setTimeout(next, cycleMs);
     return () => {
       io.disconnect();
       clearTimeout(timer);
     };
-  }, [still]);
+  }, [still, cycleMs]);
 
   useEffect(() => {
     if (still) return;
@@ -316,11 +323,29 @@ function HeroDashboard({ t }) {
     const tick = (now) => {
       const el = now - t0;
       setE(el);
-      if (el < 5200) raf = requestAnimationFrame(tick);
+      if (el < runMs) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [cycle, still]);
+  }, [cycle, still, runMs]);
+
+  return { still, cycle, leaving, e, ref };
+}
+
+function useMediaQuery(query) {
+  const [match, setMatch] = useState(() => window.matchMedia?.(query).matches ?? false);
+  useEffect(() => {
+    const mq = window.matchMedia(query);
+    const on = () => setMatch(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, [query]);
+  return match;
+}
+
+function HeroDashboard({ t }) {
+  const d = t.hero.dash;
+  const { still, cycle, leaving, e, ref } = useCardLoop(HD_CYCLE, 5200);
 
   const rating = 3.8 + 0.7 * hdSpan(e, 200, 2400);
   const line = hdSpan(e, 400, 2800);
@@ -500,15 +525,105 @@ function Stats({ t }) {
   );
 }
 
+/* What the problem costs, as a chart: twelve months of sales, each with the
+   slice that walked out on top, and the rating sliding under the category
+   average. 4.3 → 3.8 on $1M in sales is about $35,000 a year by the same
+   formula as the calculator. Light card, unlike the dark hero dashboard. */
+const PC_CYCLE = 10000;
+const PC_BARS = [58, 54, 62, 66, 70, 76, 73, 68, 63, 66, 72, 80];
+const pcPos = (r) => `${((r - 3) / 2) * 100}%`;
+
+function ProblemChart({ t }) {
+  const d = t.problem.leak;
+  const { still, cycle, leaving, e, ref } = useCardLoop(PC_CYCLE, 4800);
+
+  // Linear, so the total adds up month by month as the bars land.
+  const lost = 35000 * Math.min(1, Math.max(0, (e - 300) / 3340));
+  const rating = 4.3 - 0.5 * hdSpan(e, 600, 2600);
+  const done = e >= 3700;
+
+  return (
+    <div className={`pc${leaving ? " leaving" : ""}${still ? " still" : ""}`} ref={ref} aria-hidden="true">
+      <div className="pc-body" key={cycle}>
+        <div className="pc-top">
+          <span className="pc-place">
+            <span className="pc-dot" />
+            {d.place}
+          </span>
+          <span className="pc-chip">{d.sample}</span>
+        </div>
+
+        <div className={`pc-big${done ? " landed" : ""}`}>−{usd(lost)}</div>
+        <p className="pc-sub">{d.lost}</p>
+
+        <div className="pc-chart">
+          {PC_BARS.map((h, i) => {
+            const g = hdSpan(e, 300 + i * 240, 700);
+            return (
+              <div className="pc-col" key={i}>
+                <span className="pc-sold" style={{ height: `${h * g}%` }} />
+                <span className="pc-gone" style={{ bottom: `${h * g}%`, height: `${16 * g}%` }} />
+                <span className="pc-m">{d.months[i]}</span>
+              </div>
+            );
+          })}
+        </div>
+        <div className="pc-legend">
+          <span>
+            <i className="sold" />
+            {d.sold}
+          </span>
+          <span>
+            <i className="gone" />
+            {d.gone}
+          </span>
+        </div>
+
+        <div className="pc-gauge">
+          <div className="pc-gauge-head">
+            <span>{d.rating}</span>
+            <b>
+              {rating.toFixed(1)} <em>★</em>
+            </b>
+          </div>
+          <div className="pc-track">
+            <span className="pc-gap" style={{ left: pcPos(rating), width: `${((4.3 - rating) / 2) * 100}%` }} />
+            <span className="pc-you" style={{ left: pcPos(rating) }} />
+            <span className="pc-avg" style={{ left: pcPos(4.3) }}>
+              <small>
+                {d.avg} 4.3
+              </small>
+            </span>
+          </div>
+          <div className="pc-scale">
+            <span>3.0</span>
+            <span>4.0</span>
+            <span>5.0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Problem({ t }) {
+  // Desktop only: on phones the section stays text, as before.
+  const wide = useMediaQuery("(min-width: 1000px)");
   return (
     <section id="problema">
       <div className="wrap">
-        <Reveal className="sec-head">
-          <p className="eyebrow">{t.problem.eyebrow}</p>
-          <h2>{t.problem.h2}</h2>
-          <p className="lede">{t.problem.lede}</p>
-        </Reveal>
+        <div className="problem-top">
+          <Reveal className="sec-head">
+            <p className="eyebrow">{t.problem.eyebrow}</p>
+            <h2>{t.problem.h2}</h2>
+            <p className="lede">{t.problem.lede}</p>
+          </Reveal>
+          {wide && (
+            <Reveal className="problem-visual" delay={120}>
+              <ProblemChart t={t} />
+            </Reveal>
+          )}
+        </div>
 
         <div className="problems">
           {t.problem.items.map((it, i) => (

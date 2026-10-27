@@ -49,6 +49,16 @@ export const content = {
       eyebrow: "El problema",
       h2: "No es que no sepas cocinar. Es que nadie está midiendo lo que dicen de ti.",
       lede: "La mayoría de los restaurantes familiares en Phoenix compiten con comida excelente y una reputación en línea que nadie revisa. Estos son los tres huecos por donde se va el dinero.",
+      leak: {
+        place: "Tu restaurante",
+        sample: "Ejemplo · $1M al año",
+        lost: "en ventas que se van cada año porque nadie mide lo que dicen de ti",
+        months: ["E", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
+        sold: "Lo que vendes",
+        gone: "Lo que se va",
+        rating: "Tu calificación",
+        avg: "Promedio de tu categoría",
+      },
       items: [
         {
           h: "Estás por debajo del promedio y no lo sabes",
@@ -446,6 +456,16 @@ export const content = {
       eyebrow: "The problem",
       h2: "It's not the food. It's that nobody is measuring what people say about you.",
       lede: "Most family-run restaurants in Phoenix compete with excellent food and an online reputation nobody reviews. These are the three places the money leaks out.",
+      leak: {
+        place: "Your restaurant",
+        sample: "Example · $1M a year",
+        lost: "in sales walking out every year because nobody measures what people say about you",
+        months: ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
+        sold: "What you sell",
+        gone: "What walks out",
+        rating: "Your rating",
+        avg: "Category average",
+      },
       items: [
         {
           h: "You're below average and don't know it",

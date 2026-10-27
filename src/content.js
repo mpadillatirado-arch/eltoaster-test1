@@ -80,7 +80,7 @@ export const content = {
       privacy: "Aviso de Privacidad",
       gateError: "No se pudo guardar. Revisa tus datos e inténtalo de nuevo.",
       phoneError: "Escribe un celular de 10 dígitos.",
-      hello: (n) => `Hola, ${n}. Pon tus números:`,
+      fill: "Llena tus datos",
       ratingHint: "Elige",
       revenueHint: "Elige un rango",
       calculate: "Calcular",
@@ -124,7 +124,7 @@ export const content = {
         "Tus datos no se comparten ni se venden",
       ],
       quote: "Trabajo con dueños de restaurantes todos los días. La conversación siempre empieza igual: con datos, no con una presentación de ventas.",
-      quoteBy: "Mario Padilla · El Toaster",
+      quoteBy: "Mario Desde Zero",
       cityOptions: ["Phoenix", "Mesa", "Glendale", "Tempe", "Gilbert", "Chandler", "Cave Creek", "Queen Creek"],
       // Value is a stable English key so the diagnostic engine reads the same
       // format regardless of which language the visitor filled the form in.
@@ -205,8 +205,8 @@ export const content = {
       notFound: "No encontramos esa nota. Puede que ya no esté publicada.",
       original: (source) => `Leer la nota original${source ? ` en ${source}` : ""}`,
       sources: "De dónde sale esto",
-      by: "por Mario Padilla",
-      byline: "El Toaster · Escrito por mí, con las fuentes al final",
+      by: "Escrito por mí",
+      byline: "Mario Desde Zero · Escrito por mí, con las fuentes al final",
       prev: "Anterior",
       next: "Siguiente",
       pagesLabel: "Páginas del blog",
@@ -228,14 +228,14 @@ export const content = {
     },
 
     unsubscribe: {
-      title: "¿Darte de baja de los correos de El Toaster?",
+      title: "¿Darte de baja de mis correos?",
       body: "Dejarás de recibir el boletín y las promociones. Si pediste un diagnóstico, ese sí te llega.",
       button: "Sí, darme de baja",
       working: "Un momento…",
       doneTitle: "Listo, ya no recibirás más correos",
-      doneBody: "Te di de baja del boletín de El Toaster. Si cambias de opinión, puedes volver a suscribirte al final de la página principal.",
+      doneBody: "Te di de baja de mi boletín. Si cambias de opinión, puedes volver a suscribirte al final de la página principal.",
       missingTitle: "Este enlace ya no es válido",
-      missingBody: "Si quieres darte de baja, responde cualquier correo de El Toaster o escribe a mario@eltoaster.com y lo hago por ti.",
+      missingBody: "Si quieres darte de baja, responde cualquiera de mis correos o escribe a mario@eltoaster.com y lo hago por ti.",
       error: "No se pudo completar. Inténtalo de nuevo o escribe a mario@eltoaster.com.",
       back: "← Ir al sitio",
     },
@@ -354,7 +354,7 @@ export const content = {
       title: "Aviso de Privacidad",
       updated: "Última actualización: septiembre de 2026",
       intro:
-        "Este aviso explica qué información recopilo a través de El Toaster, para qué la uso, con quién la comparto y qué derechos tienes sobre tus datos, conforme a la ley de privacidad de California (CCPA/CPRA) y otras leyes estatales de privacidad de EE. UU. aplicables.",
+        "Este aviso explica qué información recopilo a través de este sitio (eltoaster.com), para qué la uso, con quién la comparto y qué derechos tienes sobre tus datos, conforme a la ley de privacidad de California (CCPA/CPRA) y otras leyes estatales de privacidad de EE. UU. aplicables.",
       sections: [
         {
           h: "Qué información recopilo",
@@ -469,7 +469,7 @@ export const content = {
       privacy: "Privacy Notice",
       gateError: "That didn't save. Check your details and try again.",
       phoneError: "Enter a 10-digit cell phone number.",
-      hello: (n) => `Hi, ${n}. Enter your numbers:`,
+      fill: "Fill in your details",
       ratingHint: "Choose",
       revenueHint: "Choose a range",
       calculate: "Calculate",
@@ -513,7 +513,7 @@ export const content = {
         "Your information is never shared or sold",
       ],
       quote: "I work with restaurant owners every day. The conversation always starts the same way: with data, not a sales deck.",
-      quoteBy: "Mario Padilla · El Toaster",
+      quoteBy: "Mario Desde Zero",
       cityOptions: ["Phoenix", "Mesa", "Glendale", "Tempe", "Gilbert", "Chandler", "Cave Creek", "Queen Creek"],
       // Value is a stable English key so the diagnostic engine reads the same
       // format regardless of which language the visitor filled the form in.
@@ -594,8 +594,8 @@ export const content = {
       notFound: "We couldn't find that story. It may no longer be published.",
       original: (source) => `Read the original story${source ? ` at ${source}` : ""}`,
       sources: "Where this comes from",
-      by: "by Mario Padilla",
-      byline: "El Toaster · Written by me, sources at the end",
+      by: "Written by me",
+      byline: "Mario Desde Zero · Written by me, sources at the end",
       prev: "Previous",
       next: "Next",
       pagesLabel: "Blog pages",
@@ -617,14 +617,14 @@ export const content = {
     },
 
     unsubscribe: {
-      title: "Unsubscribe from El Toaster emails?",
+      title: "Unsubscribe from my emails?",
       body: "You'll stop getting the newsletter and promotions. If you requested a diagnostic, you'll still receive it.",
       button: "Yes, unsubscribe me",
       working: "One moment…",
       doneTitle: "Done — you won't get more emails",
-      doneBody: "You're off the El Toaster newsletter. If you change your mind, you can subscribe again at the bottom of the home page.",
+      doneBody: "You're off my newsletter. If you change your mind, you can subscribe again at the bottom of the home page.",
       missingTitle: "This link is no longer valid",
-      missingBody: "If you want to unsubscribe, reply to any El Toaster email or write to mario@eltoaster.com and I'll do it for you.",
+      missingBody: "If you want to unsubscribe, reply to any of my emails or write to mario@eltoaster.com and I'll do it for you.",
       error: "Couldn't complete that. Try again or write to mario@eltoaster.com.",
       back: "← Go to the site",
     },
@@ -743,7 +743,7 @@ export const content = {
       title: "Privacy Notice",
       updated: "Last updated: September 2026",
       intro:
-        "This notice explains what information I collect through El Toaster, how I use it, who I share it with, and what rights you have over your data under the California Consumer Privacy Act (CCPA/CPRA) and other applicable U.S. state privacy laws.",
+        "This notice explains what information I collect through this site (eltoaster.com), how I use it, who I share it with, and what rights you have over your data under the California Consumer Privacy Act (CCPA/CPRA) and other applicable U.S. state privacy laws.",
       sections: [
         {
           h: "What I collect",

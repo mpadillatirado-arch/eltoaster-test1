@@ -7,6 +7,7 @@ import sushinoLogo from "./assets/clients/sushino.jpg";
 import elChakaLogo from "./assets/clients/el-chaka.jpg";
 import las15SalsasLogo from "./assets/clients/las-15-salsas.png";
 import marioAvatar from "./assets/mario-avatar.webp";
+import marioFace from "./assets/mario-avatar-face.webp";
 import posTerminal from "./assets/pos-terminal.webp";
 
 const CLIENT_LOGOS = {
@@ -185,7 +186,7 @@ function Nav({ lang, setLang, t }) {
     <header className="nav" data-stuck={stuck}>
       <div className="wrap nav-in">
         <a className="logo" href="#top">
-          <span className="mark">MP</span>
+          <img className="mark" src={marioFace} alt="" />
           El&nbsp;Toaster
         </a>
 
@@ -759,7 +760,7 @@ function CalculatorTool({ t, name }) {
     <div className="calc">
       <Reveal className="calc-panel">
         <form onSubmit={calculate}>
-          <p className="calc-hello">{t.calcPage.hello(name)}</p>
+          <p className="calc-hello">{t.calcPage.fill}</p>
 
           <div className="field">
             <label htmlFor="cur">
@@ -877,7 +878,7 @@ function CalculatorPage({ t, lang }) {
 
   useEffect(() => {
     const prev = document.title;
-    document.title = `${t.calcPage.eyebrow} · El Toaster`;
+    document.title = `${t.calcPage.eyebrow} · Mario Desde Zero`;
     return () => {
       document.title = prev;
     };
@@ -1091,7 +1092,7 @@ const fmtDate = (d, lang) =>
 
 const POSTS_PER_PAGE = 6;
 
-/** El Toaster's own posts (anything that is not outside news) carry Mario's
+/** Mario's own posts (anything that is not outside news) carry Mario's
  *  face and name, so they read as his and not as a relayed story. */
 const isOwnPost = (p) => Boolean(p.kind) && p.kind !== "news";
 
@@ -1161,9 +1162,9 @@ function Blog({ t, lang, page }) {
                     )}
                     {isOwnPost(p) && (
                       <span className="blog-brand">
-                        <img src={marioAvatar} alt="" />
+                        <img src={marioFace} alt="" />
                         <span>
-                          <strong>El Toaster</strong>
+                          <strong>Mario Desde Zero</strong>
                           {t.blog.by}
                         </span>
                       </span>
@@ -1571,9 +1572,7 @@ function LeadForm({ t, lang }) {
           <blockquote className="quote">
             <p>“{t.form.quote}”</p>
             <footer>
-              <span className="mark" aria-hidden="true">
-                MP
-              </span>
+              <img className="mark" src={marioFace} alt="" />
               {t.form.quoteBy}
             </footer>
           </blockquote>

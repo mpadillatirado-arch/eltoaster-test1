@@ -187,7 +187,10 @@ function Nav({ lang, setLang, t }) {
       <div className="wrap nav-in">
         <a className="logo" href="#top">
           <img className="mark" src={marioFace} alt="" />
-          El&nbsp;Toaster
+          <span className="logo-text">
+            El&nbsp;Toaster
+            <small>{t.brand.by}</small>
+          </span>
         </a>
 
         <nav className="nav-links">
@@ -445,6 +448,11 @@ function Hero({ t }) {
       <div className="wrap hero-grid">
         <HeroDashboard t={t} />
         <Reveal className="hero-copy">
+          {/* Visitors arrive from Desde Zero's socials: say where they landed. */}
+          <p className="hero-brand">
+            <span aria-hidden="true" />
+            {t.brand.pill}
+          </p>
           <p className="eyebrow">{t.hero.eyebrow}</p>
           <h1>
             {t.hero.h1a} <span className="hand">{t.hero.h1b}</span>
@@ -878,7 +886,7 @@ function CalculatorPage({ t, lang }) {
 
   useEffect(() => {
     const prev = document.title;
-    document.title = `${t.calcPage.eyebrow} · Mario Desde Zero`;
+    document.title = `${t.calcPage.eyebrow} · ${t.brand.full}`;
     return () => {
       document.title = prev;
     };
@@ -2096,7 +2104,18 @@ function Footer({ t, lang }) {
           <Newsletter t={t} lang={lang} />
         </div>
 
-        <div className="foot-links" style={{ marginTop: 34 }}>
+        <div className="foot-brand">
+          <img className="mark" src={marioFace} alt="" />
+          <div>
+            <p className="logo-text">
+              El&nbsp;Toaster
+              <small>{t.brand.by}</small>
+            </p>
+            <p className="foot-brand-line">{t.brand.foot}</p>
+          </div>
+        </div>
+
+        <div className="foot-links" style={{ marginTop: 28 }}>
           <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
           <a
             href={LINKEDIN}
@@ -2112,7 +2131,7 @@ function Footer({ t, lang }) {
 
         <div className="foot-bot">
           <span>
-            © {new Date().getFullYear()} Mario Padilla · {t.foot.rights}
+            © {new Date().getFullYear()} Desde Zero · Mario Padilla · {t.foot.rights}
           </span>
           <span style={{ maxWidth: "62ch" }}>{t.foot.disclaimer}</span>
         </div>

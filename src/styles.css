@@ -196,6 +196,16 @@ section { padding-block: clamp(72px, 11vw, 132px); }
   font-size: 1.05rem;
 }
 
+/* "El Toaster" with "by Desde Zero" under it: the sub-brand and its parent. */
+.logo-text { display: flex; flex-direction: column; line-height: 1.05; margin: 0; }
+.logo-text small {
+  margin-top: 3px;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-3);
+}
+
 /* Mario's avatar, used as the logo mark in the nav and on the quote. */
 .mark {
   width: 38px;
@@ -328,6 +338,31 @@ section { padding-block: clamp(72px, 11vw, 132px); }
   opacity: 0.14;
   pointer-events: none;
   filter: blur(6px);
+}
+
+.hero-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 18px;
+  padding: 7px 14px 7px 11px;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  background: var(--surface);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-2);
+  box-shadow: var(--shadow-sm);
+}
+@media (max-width: 480px) {
+  .hero-brand { font-size: 0.76rem; padding: 6px 12px 6px 10px; gap: 8px; }
+}
+.hero-brand span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--orange);
+  flex: none;
 }
 
 .hero h1 {
@@ -1011,6 +1046,18 @@ ul { list-style: none; padding: 0; margin: 0; }
 .foot-top { display: flex; flex-wrap: wrap; gap: 34px; justify-content: space-between; align-items: start; }
 .foot h3 { color: #fff; font-size: 1.6rem; max-width: 20ch; line-height: 1.12; }
 .foot-links { display: flex; flex-wrap: wrap; gap: 12px 30px; font-size: 0.93rem; }
+.foot-brand {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 44px;
+  padding-top: 32px;
+  border-top: 1px solid #262626;
+}
+.foot-brand .mark { width: 46px; height: 46px; box-shadow: 0 0 0 2px var(--ink), 0 0 0 3.5px var(--orange); }
+.foot-brand .logo-text { color: #fff; font-weight: 800; font-size: 1.05rem; letter-spacing: -0.02em; }
+.foot-brand .logo-text small { color: #8d8781; }
+.foot-brand-line { margin-top: 6px; max-width: 60ch; font-size: 0.88rem; color: #a9a29b; }
 .foot-bot {
   margin-top: 44px; padding-top: 24px;
   border-top: 1px solid #262626;

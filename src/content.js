@@ -3,6 +3,14 @@
 
 export const content = {
   es: {
+    // El Toaster is the restaurant side of Desde Zero, Mario's main brand.
+    brand: {
+      by: "por Desde Zero",
+      full: "El Toaster por Desde Zero",
+      pill: "El Toaster es el lado restaurantero de Desde Zero",
+      foot: "Diagnósticos de reputación, sistemas POS y todo lo que tiene que ver con restaurantes. Un proyecto de Desde Zero.",
+    },
+
     nav: { how: "POS System", blog: "Blog", calc: "Calculadora", diag: "El diagnóstico", cta: "Diagnóstico gratis", news: "Newsletter", menu: "Menú" },
 
     hero: {
@@ -268,7 +276,7 @@ export const content = {
       h: "Entérate de lo que pasa en tu industria antes que tu competencia.",
       cta: "Pedir diagnóstico gratis",
       rights: "Hecho en Phoenix, Arizona.",
-      disclaimer: "Sitio personal de Mario Padilla. Las estimaciones de ingresos son orientativas y no constituyen una garantía de resultados.",
+      disclaimer: "Las estimaciones de ingresos son orientativas y no constituyen una garantía de resultados.",
     },
 
     quick: {
@@ -392,6 +400,14 @@ export const content = {
   },
 
   en: {
+    // El Toaster is the restaurant side of Desde Zero, Mario's main brand.
+    brand: {
+      by: "by Desde Zero",
+      full: "El Toaster by Desde Zero",
+      pill: "El Toaster is the restaurant side of Desde Zero",
+      foot: "Reputation diagnostics, POS systems and everything restaurant. A Desde Zero project.",
+    },
+
     nav: { how: "POS System", blog: "Blog", calc: "Calculator", diag: "The diagnostic", cta: "Free diagnostic", news: "Newsletter", menu: "Menu" },
 
     hero: {
@@ -657,7 +673,7 @@ export const content = {
       h: "Know what's happening in your industry before your competition does.",
       cta: "Get a free diagnostic",
       rights: "Made in Phoenix, Arizona.",
-      disclaimer: "Personal site of Mario Padilla. Revenue estimates are directional and are not a guarantee of results.",
+      disclaimer: "Revenue estimates are directional and are not a guarantee of results.",
     },
 
     quick: {

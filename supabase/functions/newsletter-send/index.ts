@@ -462,8 +462,8 @@ function render(
                   </td>
                   <td valign="middle" style="font-size:14px;color:#5b5651;line-height:1.5;">
                     ${t.signOff}<br />
-                    <b style="color:#0d0d0d;">Mario Desde Zero</b><br />
-                    <span style="font-size:12.5px;color:#8f8880;">${lang === "en" ? "El Toaster by Desde Zero" : "El Toaster por Desde Zero"}</span>
+                    <b style="color:#0d0d0d;">Mario Padilla</b><br />
+                    <span style="font-size:12.5px;color:#8f8880;">El Toaster</span>
                   </td>
                 </tr>
               </table>

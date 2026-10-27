@@ -47,8 +47,9 @@ const MAILING_ADDRESS = (
 
 const SITE_URL = "https://eltoaster.com";
 // A JPG at a fixed address: mail programs don't all show WebP, and the site's
-// own copy of the avatar has a build hash in its name.
-const AVATAR_URL = `${SITE_URL}/mario-avatar.jpg`;
+// own copy of the avatar has a build hash in its name. El Toaster is Desde
+// Zero's restaurant side, so the newsletter carries the Desde Zero avatar.
+const AVATAR_URL = `${SITE_URL}/newsletter/avatar-desdezero.jpg`;
 const BOOKING_URL =
   "https://cal.com/mario-padilla-tirado-hnho7v/15-minutos-chat-free-restaurant-diagnostic";
 const FROM_EMAIL = "El Toaster <mario@eltoaster.com>";
@@ -412,11 +413,11 @@ function render(
               <table role="presentation">
                 <tr>
                   <td width="60" valign="middle" style="width:60px;padding:0 14px 0 0;">
-                    <a href="${SITE_URL}"><img src="${AVATAR_URL}" alt="Mario Padilla" width="54" height="54" style="display:block;width:54px;height:54px;border-radius:50%;border:3px solid #ffffff;" /></a>
+                    <a href="${SITE_URL}"><img src="${AVATAR_URL}" alt="Desde Zero" width="54" height="54" style="display:block;width:54px;height:54px;border-radius:50%;border:3px solid #ffffff;" /></a>
                   </td>
                   <td valign="middle" style="line-height:1.25;">
                     <a href="${SITE_URL}" style="color:#ffffff;font-size:22px;font-weight:800;text-decoration:none;">El Toaster</a><br />
-                    <span style="color:#ffffff;font-size:13.5px;">${lang === "en" ? "by Mario Padilla" : "por Mario Padilla"}</span>
+                    <span style="color:#ffffff;font-size:13.5px;">${lang === "en" ? "by Desde Zero" : "por Desde Zero"}</span>
                   </td>
                 </tr>
               </table>
@@ -457,12 +458,12 @@ function render(
               <table role="presentation" style="margin-top:24px;">
                 <tr>
                   <td width="56" valign="middle" style="width:56px;padding:0 12px 0 0;">
-                    <img src="${AVATAR_URL}" alt="Mario Padilla" width="56" height="56" style="display:block;width:56px;height:56px;border-radius:50%;" />
+                    <img src="${AVATAR_URL}" alt="Desde Zero" width="56" height="56" style="display:block;width:56px;height:56px;border-radius:50%;" />
                   </td>
                   <td valign="middle" style="font-size:14px;color:#5b5651;line-height:1.5;">
                     ${t.signOff}<br />
-                    <b style="color:#0d0d0d;">Mario Padilla</b><br />
-                    <span style="font-size:12.5px;color:#8f8880;">El Toaster</span>
+                    <b style="color:#0d0d0d;">Mario Desde Zero</b><br />
+                    <span style="font-size:12.5px;color:#8f8880;">${lang === "en" ? "El Toaster by Desde Zero" : "El Toaster por Desde Zero"}</span>
                   </td>
                 </tr>
               </table>

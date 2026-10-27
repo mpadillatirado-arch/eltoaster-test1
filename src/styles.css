@@ -346,13 +346,12 @@ section { padding-block: clamp(72px, 11vw, 132px); }
   gap: 9px;
   margin-bottom: 18px;
   padding: 7px 14px 7px 11px;
-  border: 1px solid var(--line);
   border-radius: 100px;
-  background: var(--surface);
+  background: var(--orange);
   font-size: 0.84rem;
-  font-weight: 600;
-  color: var(--text-2);
-  box-shadow: var(--shadow-sm);
+  font-weight: 700;
+  color: #fff;
+  box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--orange) 70%, transparent);
 }
 @media (max-width: 480px) {
   .hero-brand { font-size: 0.76rem; padding: 6px 12px 6px 10px; gap: 8px; }
@@ -361,7 +360,7 @@ section { padding-block: clamp(72px, 11vw, 132px); }
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--orange);
+  background: #fff;
   flex: none;
 }
 

@@ -1351,7 +1351,7 @@ function BlogPost({ t, lang, setLang, id }) {
     let cancelled = false;
     supabase
       .from("blog_posts")
-      .select("id,kind,lang,title,excerpt,source,image_url,image_credit,image_credit_url,external_url,source_links,published_at")
+      .select("id,kind,lang,send_id,title,excerpt,source,image_url,image_credit,image_credit_url,external_url,source_links,published_at")
       .eq("published", true)
       .eq("id", id)
       .maybeSingle()
@@ -1367,6 +1367,26 @@ function BlogPost({ t, lang, setLang, id }) {
       cancelled = true;
     };
   }, [id, setLang]);
+
+  // Switching language on a post opens the same story in the other language:
+  // newsletter sections pair by issue and section, news stories by their
+  // original link. With no counterpart the post stays as it is.
+  useEffect(() => {
+    if (!post || post.lang === lang || !["es", "en"].includes(post.lang)) return;
+    let q = supabase.from("blog_posts").select("id").eq("published", true).eq("lang", lang);
+    if (post.send_id) q = q.eq("send_id", post.send_id).eq("kind", post.kind);
+    else if (post.external_url) q = q.eq("external_url", post.external_url);
+    else return;
+    let cancelled = false;
+    q.limit(1)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!cancelled && data?.id) location.replace(`#blog/${data.id}`);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [post, lang]);
 
   return (
     <article className="blog-page blog-post">

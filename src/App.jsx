@@ -1172,7 +1172,7 @@ function Blog({ t, lang, page }) {
                       <span className="blog-brand">
                         <img src={marioFace} alt="" />
                         <span>
-                          <strong>Mario Desde Zero</strong>
+                          <strong>El Toaster</strong>
                           {t.blog.by}
                         </span>
                       </span>
@@ -1276,7 +1276,7 @@ function BlogPost({ t, lang, setLang, id }) {
               <p className="blog-byline">
                 <img src={marioAvatar} alt="" />
                 <span>
-                  <strong>Mario Padilla</strong>
+                  <strong>El Toaster</strong>
                   {t.blog.byline}
                 </span>
               </p>

@@ -7,7 +7,7 @@ export const content = {
     brand: {
       by: "por Desde Zero",
       full: "El Toaster por Desde Zero",
-      pill: "El Toaster es el lado restaurantero de Desde Zero",
+      pill: "El lado restaurantero de Desde Zero",
       foot: "Diagnósticos de reputación, sistemas POS y todo lo que tiene que ver con restaurantes. Un proyecto de Desde Zero.",
     },
 
@@ -414,7 +414,7 @@ export const content = {
     brand: {
       by: "by Desde Zero",
       full: "El Toaster by Desde Zero",
-      pill: "El Toaster is the restaurant side of Desde Zero",
+      pill: "The restaurant side of Desde Zero",
       foot: "Reputation diagnostics, POS systems and everything restaurant. A Desde Zero project.",
     },
 

@@ -471,10 +471,15 @@ function Hero({ t }) {
     <section className="hero" id="top">
       <div className="hero-glow" aria-hidden="true" />
       <div className="wrap hero-grid">
+        {/* Phones and tablets: the chart comes first, so the pill goes above it. */}
+        <p className="hero-brand hero-brand-top">
+          <span aria-hidden="true" />
+          {t.brand.pill}
+        </p>
         <HeroDashboard t={t} />
         <Reveal className="hero-copy">
           {/* Visitors arrive from Desde Zero's socials: say where they landed. */}
-          <p className="hero-brand">
+          <p className="hero-brand hero-brand-copy">
             <span aria-hidden="true" />
             {t.brand.pill}
           </p>

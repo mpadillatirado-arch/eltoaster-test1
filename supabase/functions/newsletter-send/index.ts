@@ -174,7 +174,6 @@ const COPY = {
     testTitle: "Prueba — esta edición todavía no se envía",
     testBody: (n: number, when: string | null) =>
       `Así la verán tus suscriptores. Si se ve bien, apruébala y saldrá a ${n} ${n === 1 ? "persona" : "personas"}${when ? ` el ${when}` : ""}.`,
-    early: "Primero para ti: estas notas llegan a mi blog después de este correo.",
     locale: "es-MX",
     testButton: "Revisar y enviar",
   },
@@ -200,7 +199,6 @@ const COPY = {
     testTitle: "Test — this issue has not been sent yet",
     testBody: (n: number, when: string | null) =>
       `This is what your subscribers will see. If it looks right, approve it and it goes to ${n} ${n === 1 ? "person" : "people"}${when ? ` on ${when}` : ""}.`,
-    early: "You read these first: they go up on my blog after this email.",
     locale: "en-US",
     testButton: "Review and send",
   },
@@ -442,11 +440,6 @@ function render(
 
               ${divider}
               ${label(t.news)}
-              ${
-                isFuture(ctx.send.blog_publish_at)
-                  ? `<div style="font-size:13px;line-height:1.5;color:#8f8880;margin:-4px 0 12px 0;">${t.early}</div>`
-                  : ""
-              }
               ${news}
 
               ${divider}

@@ -55,11 +55,12 @@ const BOOKING_URL =
 const FROM_EMAIL = "El Toaster <mario@eltoaster.com>";
 const REPLY_TO = "mario@eltoaster.com";
 
-// Mario's social channels, shown above the signature.
+// Mario's social channels, shown as icons above the signature. PNGs on the
+// site: mail programs don't show SVG.
 const SOCIALS = [
-  ["TikTok", "https://www.tiktok.com/@desdezeroenusa"],
-  ["YouTube", "https://www.youtube.com/@DesdeZeroenUSA"],
-  ["Facebook", "https://www.facebook.com/profile.php?id=61590665879779"],
+  ["TikTok", "https://www.tiktok.com/@desdezeroenusa", `${SITE_URL}/newsletter/icon-tiktok.png`],
+  ["YouTube", "https://www.youtube.com/@DesdeZeroenUSA", `${SITE_URL}/newsletter/icon-youtube.png`],
+  ["Facebook", "https://www.facebook.com/profile.php?id=61590665879779", `${SITE_URL}/newsletter/icon-facebook.png`],
 ];
 
 const POSTS_PER_ISSUE = 5;
@@ -151,8 +152,7 @@ type SectionLinks = Partial<Record<Lang, Partial<Record<"fun_fact" | "pos" | "bu
 // The fixed words around each issue's written content.
 const COPY = {
   es: {
-    socialTitle: "Sígueme en redes",
-    socialBody: "Comparto videos y más como Desde Zero en USA.",
+    socialTitle: "Sígueme en mis redes",
     summary: "Resumen",
     readTime: (m: number) => `Lectura: ${m} min`,
     button: "Leer más en eltoaster.com",
@@ -178,8 +178,7 @@ const COPY = {
     testButton: "Revisar y enviar",
   },
   en: {
-    socialTitle: "Follow me",
-    socialBody: "I share videos and more as Desde Zero en USA.",
+    socialTitle: "Follow me on social",
     summary: "Summary",
     readTime: (m: number) => `Read time: ${m} min`,
     button: "Read more at eltoaster.com",
@@ -467,9 +466,8 @@ function render(
               </div>
 
               <div style="border-top:1px solid #e8e2d9;margin:24px 0 0 0;padding:18px 0 0 0;">
-                <div style="font-size:15px;font-weight:800;color:#0d0d0d;margin:0 0 4px 0;">${t.socialTitle}</div>
-                <div style="font-size:13.5px;line-height:1.5;color:#5b5651;margin:0 0 10px 0;">${t.socialBody}</div>
-                ${SOCIALS.map(([name, url]) => `<a href="${url}" style="display:inline-block;background:#0d0d0d;color:#ffffff;text-decoration:none;font-weight:700;font-size:13px;padding:9px 16px;border-radius:100px;margin:0 6px 8px 0;">${name}</a>`).join("")}
+                <div style="font-size:15px;font-weight:800;color:#0d0d0d;margin:0 0 12px 0;">${t.socialTitle}</div>
+                ${SOCIALS.map(([name, url, icon]) => `<a href="${url}" style="display:inline-block;margin:0 10px 0 0;text-decoration:none;"><img src="${icon}" alt="${name}" width="36" height="36" style="display:block;width:36px;height:36px;border:0;" /></a>`).join("")}
               </div>
               <table role="presentation" style="margin-top:24px;">
                 <tr>

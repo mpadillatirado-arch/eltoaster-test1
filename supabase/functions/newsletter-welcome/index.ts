@@ -25,11 +25,12 @@ const AVATAR_URL = `${SITE_URL}/newsletter/avatar-desdezero.jpg`;
 const FROM_EMAIL = "Mario de El Toaster <mario@eltoaster.com>";
 const REPLY_TO = "mario@eltoaster.com";
 
-// Mario's social channels, shown above the signature.
+// Mario's social channels, shown as icons above the signature. PNGs on the
+// site: mail programs don't show SVG.
 const SOCIALS = [
-  ["TikTok", "https://www.tiktok.com/@desdezeroenusa"],
-  ["YouTube", "https://www.youtube.com/@DesdeZeroenUSA"],
-  ["Facebook", "https://www.facebook.com/profile.php?id=61590665879779"],
+  ["TikTok", "https://www.tiktok.com/@desdezeroenusa", `${SITE_URL}/newsletter/icon-tiktok.png`],
+  ["YouTube", "https://www.youtube.com/@DesdeZeroenUSA", `${SITE_URL}/newsletter/icon-youtube.png`],
+  ["Facebook", "https://www.facebook.com/profile.php?id=61590665879779", `${SITE_URL}/newsletter/icon-facebook.png`],
 ];
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -62,8 +63,7 @@ type Subscriber = {
 
 const COPY = {
   es: {
-    socialTitle: "Sígueme en redes",
-    socialBody: "Comparto videos y más como Desde Zero en USA.",
+    socialTitle: "Sígueme en mis redes",
     subject: "Te doy la bienvenida a El Toaster: esto es lo que te llega cada viernes",
     preheader: "Gracias por suscribirte. Al final te dejo una pregunta rápida.",
     hello: "¡Hola! Gracias por suscribirte.",
@@ -95,8 +95,7 @@ const COPY = {
     testTag: "[PRUEBA]",
   },
   en: {
-    socialTitle: "Follow me",
-    socialBody: "I share videos and more as Desde Zero en USA.",
+    socialTitle: "Follow me on social",
     subject: "Welcome to El Toaster: here's what lands in your inbox every Friday",
     preheader: "Thanks for subscribing. There's a quick question at the end.",
     hello: "Hi! Thanks for subscribing.",
@@ -239,9 +238,8 @@ function render(sub: Subscriber, lang: Lang, test: boolean) {
               ${p(t.ask)}
 
               <div style="border-top:1px solid #e8e2d9;margin:24px 0 0 0;padding:18px 0 0 0;">
-                <div style="font-size:15px;font-weight:800;color:#0d0d0d;margin:0 0 4px 0;">${t.socialTitle}</div>
-                <div style="font-size:13.5px;line-height:1.5;color:#5b5651;margin:0 0 10px 0;">${t.socialBody}</div>
-                ${SOCIALS.map(([name, url]) => `<a href="${url}" style="display:inline-block;background:#0d0d0d;color:#ffffff;text-decoration:none;font-weight:700;font-size:13px;padding:9px 16px;border-radius:100px;margin:0 6px 8px 0;">${name}</a>`).join("")}
+                <div style="font-size:15px;font-weight:800;color:#0d0d0d;margin:0 0 12px 0;">${t.socialTitle}</div>
+                ${SOCIALS.map(([name, url, icon]) => `<a href="${url}" style="display:inline-block;margin:0 10px 0 0;text-decoration:none;"><img src="${icon}" alt="${name}" width="36" height="36" style="display:block;width:36px;height:36px;border:0;" /></a>`).join("")}
               </div>
               <table role="presentation" style="margin-top:22px;">
                 <tr>

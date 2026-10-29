@@ -8,7 +8,7 @@ export const content = {
       by: "por Desde Zero",
       full: "El Toaster por Desde Zero",
       pill: "El lado restaurantero de Desde Zero",
-      foot: "Experto y consultor de restaurantes. Diagnóstico gratis de tus reseñas y sistemas POS que sí te hacen vender más. Una marca de Desde Zero.",
+      foot: "Experto en restaurantes y marketing digital. Diagnóstico gratis de tus reseñas y sistemas POS que sí te hacen vender más. Una marca de Desde Zero.",
     },
 
     nav: { how: "POS System", blog: "Blog", calc: "Calculadora", diag: "El diagnóstico", cta: "Diagnóstico gratis", news: "Newsletter", menu: "Menú" },
@@ -415,7 +415,7 @@ export const content = {
       by: "by Desde Zero",
       full: "El Toaster by Desde Zero",
       pill: "The restaurant side of Desde Zero",
-      foot: "Restaurant expert and consultant. Free review diagnostics and POS systems that actually help you sell more. A Desde Zero brand.",
+      foot: "Restaurant and digital marketing expert. Free review diagnostics and POS systems that actually help you sell more. A Desde Zero brand.",
     },
 
     nav: { how: "POS System", blog: "Blog", calc: "Calculator", diag: "The diagnostic", cta: "Free diagnostic", news: "Newsletter", menu: "Menu" },

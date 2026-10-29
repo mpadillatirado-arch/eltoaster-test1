@@ -59,6 +59,7 @@ const REPLY_TO = "mario@eltoaster.com";
 // site: mail programs don't show SVG.
 const SOCIALS = [
   ["TikTok", "https://www.tiktok.com/@desdezeroenusa", `${SITE_URL}/newsletter/icon-tiktok.png`],
+  ["Instagram", "https://www.instagram.com/desdezeroenusa/", `${SITE_URL}/newsletter/icon-instagram.png`],
   ["YouTube", "https://www.youtube.com/@DesdeZeroenUSA", `${SITE_URL}/newsletter/icon-youtube.png`],
   ["Facebook", "https://www.facebook.com/profile.php?id=61590665879779", `${SITE_URL}/newsletter/icon-facebook.png`],
 ];

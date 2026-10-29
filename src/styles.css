@@ -1186,6 +1186,20 @@ ul { list-style: none; padding: 0; margin: 0; }
 .foot-brand .logo-text { color: #fff; font-weight: 800; font-size: 1.05rem; letter-spacing: -0.02em; }
 .foot-brand .logo-text small { color: #8d8781; }
 .foot-brand-line { margin-top: 6px; max-width: 60ch; font-size: 0.88rem; color: #a9a29b; }
+.foot-social { display: flex; gap: 10px; margin-top: 16px; }
+.foot-social a {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #1f1f1f;
+  border: 1px solid #2e2e2e;
+  color: #fff;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.foot-social a:hover { background: var(--orange); border-color: var(--orange); color: #fff; transform: translateY(-2px); }
+.foot-social svg { width: 17px; height: 17px; fill: currentColor; }
 .foot-bot {
   margin-top: 44px; padding-top: 24px;
   border-top: 1px solid #262626;

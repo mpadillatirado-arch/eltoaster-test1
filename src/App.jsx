@@ -19,7 +19,17 @@ const CLIENT_LOGOS = {
 };
 
 const EMAIL = "mario@eltoaster.com";
-const LINKEDIN = "https://www.linkedin.com/in/mario-padilla-57145839/";
+// Desde Zero's channels, the same ones the newsletter shows.
+const SOCIALS = [
+  ["YouTube", "https://www.youtube.com/@DesdeZeroenUSA",
+    "M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8ZM9.7 15V9l5.8 3-5.8 3Z"],
+  ["Instagram", "https://www.instagram.com/desdezeroenusa/",
+    "M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3c1.2-.1 1.6-.1 4.8-.1ZM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7 1.2.1 1.6.1 4.9.1s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0Zm0 5.8a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.4-11.8a1.4 1.4 0 1 0 0 2.9 1.4 1.4 0 0 0 0-2.9Z"],
+  ["TikTok", "https://www.tiktok.com/@desdezeroenusa",
+    "M19.6 6.7a4.8 4.8 0 0 1-3.8-4.2V2h-3.4v13.7a2.9 2.9 0 0 1-5.2 1.7 2.9 2.9 0 0 1 3.2-4.5V9.4a6.3 6.3 0 0 0-5.4 10.7 6.3 6.3 0 0 0 10.8-4.4V8.7a8.2 8.2 0 0 0 4.8 1.5V6.8a4.8 4.8 0 0 1-1-.1Z"],
+  ["Facebook", "https://www.facebook.com/profile.php?id=61590665879779",
+    "M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12Z"],
+];
 const CAL_URL = "https://cal.com/mario-padilla-tirado-hnho7v/15-minutos-chat-free-restaurant-diagnostic";
 const POS_LEARN_MORE_URL =
   "https://pos.toasttab.com/lp/get-started?utm_medium=paid&utm_source=sembb&utm_campaign=tpos-b2bsmb-paid-1139094559993298-exabrandxx-acq-sembb-cousa&utm_term=point%20of%20sale%20toast&_bt=&_bm=e&_bn=o&device=c&utm_campaign_id=352125627&utm_adgroup_id=1139094559993298&msclkid=7b495c0779221c10f9df36b04aa2d98f&utm_content=Toast%20POS";
@@ -2252,20 +2262,18 @@ function Footer({ t, lang }) {
               <small>{t.brand.by}</small>
             </p>
             <p className="foot-brand-line">{t.brand.foot}</p>
+            <div className="foot-social">
+              {SOCIALS.map(([name, href, d]) => (
+                <a key={name} href={href} target="_blank" rel="noopener noreferrer" aria-label={name} title={name}>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d={d} /></svg>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
 
         <div className="foot-links" style={{ marginTop: 28 }}>
           <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
-          <a
-            href={LINKEDIN}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            LinkedIn
-          </a>
-          <a href="/calculator">{t.nav.calc}</a>
-          <a href="#diagnostico">{t.nav.diag}</a>
           <a href="#privacy">{t.privacy.title}</a>
         </div>
 

@@ -52,3 +52,9 @@ begin
   return new;
 end;
 $$;
+
+-- Two more general photos for the bank (food safety, guests posting food).
+insert into public.blog_stock_images (kind, image_url, author, license, credit_url) values
+  ('business', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/DSC00729_Rachel_Photographing_Food_%2814831137378%29.jpg/960px-DSC00729_Rachel_Photographing_Food_%2814831137378%29.jpg', 'Adam Dachis', 'CC BY 2.0', 'https://commons.wikimedia.org/wiki/File:DSC00729_Rachel_Photographing_Food_(14831137378).jpg'),
+  ('business', 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Food_thermometer_1.jpg/960px-Food_thermometer_1.jpg', 'U.S. Air Force', 'public', 'https://commons.wikimedia.org/wiki/File:Food_thermometer_1.jpg')
+on conflict (image_url) do nothing;

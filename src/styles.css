@@ -665,14 +665,20 @@ section { padding-block: clamp(72px, 11vw, 132px); }
 
 /* ---------- Stat strip ---------- */
 
-.stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 1px;
-  background: var(--line);
-  border-block: 1px solid var(--line);
+/* The lines run edge to edge, but the four stats sit on the same column as
+   the rest of the page, so the first number lines up with the headings. */
+.stats-band { border-block: 1px solid var(--line); }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); }
+.stat { padding: 40px 32px; }
+.stat + .stat { border-left: 1px solid var(--line); }
+.stat:first-child { padding-left: 0; }
+.stat:last-child { padding-right: 0; }
+@media (max-width: 900px) {
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stat:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .stat:nth-child(even) { padding-right: 0; }
+  .stat:nth-child(n + 3) { border-top: 1px solid var(--line); }
 }
-.stat { background: var(--paper); padding: 34px var(--gut); }
 .stat .n {
   font-size: clamp(2.1rem, 4.6vw, 3.1rem);
   font-weight: 900;
@@ -1342,8 +1348,8 @@ ul { list-style: none; padding: 0; margin: 0; }
   /* Center the stat numbers/labels in their boxes for a more symmetric grid,
      and keep only the first two stats (5–9% / 93%) as a single two-column
      row with the divider — dropping "48h" and "$0" entirely on mobile. */
-  .stat { text-align: center; }
-  .stats { grid-template-columns: 1fr 1fr; }
+  .stats.wrap { padding-inline: 0; }
+  .stat, .stat:nth-child(odd), .stat:nth-child(even) { text-align: center; padding: 34px var(--gut); }
   .stat:nth-child(n + 3) { display: none; }
 
   /* Drop the testimonial (and the role/company line in it) so mobile visitors

@@ -529,13 +529,15 @@ function Hero({ t }) {
 
 function Stats({ t }) {
   return (
-    <div className="stats">
-      {t.stats.map((s, i) => (
-        <Reveal key={i} className="stat" delay={i * 70}>
-          <div className="n">{s.n}</div>
-          <div className="l">{s.l}</div>
-        </Reveal>
-      ))}
+    <div className="stats-band">
+      <div className="wrap stats">
+        {t.stats.map((s, i) => (
+          <Reveal key={i} className="stat" delay={i * 70}>
+            <div className="n">{s.n}</div>
+            <div className="l">{s.l}</div>
+          </Reveal>
+        ))}
+      </div>
     </div>
   );
 }

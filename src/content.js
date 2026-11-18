@@ -373,7 +373,7 @@ export const content = {
       eyebrow: "Acerca de mí",
       h1a: "Hola, soy",
       h1b: "Mario",
-      sub: "Ayudo a restaurantes latinos a que más gente los encuentre: en redes, en Google y en su sistema de ventas.",
+      sub: "Ayudo a restaurantes latinos a que más gente los encuentre y a que vendan más: en redes, en Google y con su sistema de ventas.",
       sections: [
         {
           h: "Empecé desde zero",
@@ -840,7 +840,7 @@ export const content = {
       eyebrow: "About me",
       h1a: "Hi, I'm",
       h1b: "Mario",
-      sub: "I help Latino restaurants get found by more people: on social media, on Google and in their sales system.",
+      sub: "I help Latino restaurants get found by more people and sell more: on social media, on Google and with their sales system.",
       sections: [
         {
           h: "I started from zero",

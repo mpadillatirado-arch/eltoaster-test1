@@ -380,6 +380,7 @@ export const content = {
           p: [
             "En México tuve mi propio negocio: surtía lácteos a queserías, cremerías y neverías del norte del país. Sé lo que es levantarse temprano para sacar un negocio adelante.",
             "En 2020, en plena pandemia, llegué a Estados Unidos con mi esposa, mi hija y otra bebé en camino. Sin contactos y con un inglés que todavía se me trababa. Mi primer trabajo fue vender aires acondicionados a pura comisión… en invierno. Después trabajé en un banco y luego en ventas para la construcción. Poco a poco, sin parar.",
+            "Hoy soy papá de dos niñas, Marietta y Michelle. Ellas son mi inspiración.",
           ],
           img: "/about/mario-familia.jpg",
           alt: "Mario con sus dos hijas",
@@ -845,6 +846,7 @@ export const content = {
           p: [
             "Back in Mexico I ran my own business, delivering dairy to cheese shops, creameries and ice cream shops across the north of the country. I know what it takes to get up early and keep a business going.",
             "In 2020, in the middle of the pandemic, I came to the US with my wife, my daughter and a second baby on the way. No contacts, and English that still got stuck. My first job was selling air conditioners on commission only… in winter. Then I worked at a bank, and later in sales for the construction industry. Step by step, without stopping.",
+            "Today I'm the dad of two girls, Marietta and Michelle. They're my inspiration.",
           ],
           img: "/about/mario-familia.jpg",
           alt: "Mario with his two daughters",

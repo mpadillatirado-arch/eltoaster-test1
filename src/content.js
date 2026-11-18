@@ -398,8 +398,6 @@ export const content = {
           p: [
             "De nada sirve que te encuentren si tu sistema no te ayuda a vender. También soy consultor de Toast POS, así que te puedo orientar con pedidos en línea, programas de lealtad y lo que tu operación necesite. Sin presión: primero vemos qué te conviene.",
           ],
-          img: "/newsletter/2026-11-13-technology.jpg",
-          alt: "Un restaurante cobrando con su sistema de punto de venta",
         },
         {
           h: "Fuera del trabajo",
@@ -865,8 +863,6 @@ export const content = {
           p: [
             "Getting found doesn't help much if your system doesn't help you sell. I'm also a Toast POS consultant, so I can point you in the right direction on online ordering, loyalty programs and whatever your operation needs. No pressure: first we figure out what's right for you.",
           ],
-          img: "/newsletter/2026-11-13-technology.jpg",
-          alt: "A restaurant taking a payment on its point-of-sale system",
         },
         {
           h: "Outside of work",

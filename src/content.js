@@ -387,11 +387,11 @@ export const content = {
         {
           h: "Lo que hago hoy: que te encuentren",
           p: [
-            "Aquí empecé un negocio de marketing digital para el mercado latino, y es lo que más disfruto: que más gente vea tu restaurante y quiera ir.",
-            "Te ayudo con tus redes sociales, con tus reseñas en Google y Yelp, y con todo lo que un cliente ve antes de decidir dónde comer. Para hacerlo mejor, regresé a la escuela y saqué una maestría (MBA) en la Universidad de Illinois, enfocada en marketing digital y en entender los números.",
+            "Te puedo ayudar a que tu negocio tenga más visibilidad en internet: en tus redes sociales y en tus reseñas de Google y Yelp. Es lo que más disfruto: que más gente vea tu restaurante y quiera ir.",
+            "Para hacerlo mejor, regresé a la escuela y saqué una maestría (MBA) en la Universidad de Illinois, enfocada en marketing digital y en entender los números.",
           ],
-          img: "/newsletter/2026-11-13-facebook-hoax.jpg",
-          alt: "Clientas tomándose una selfie para redes sociales",
+          img: "/about/mario-illinois.jpg",
+          alt: "Mario en la escuela de negocios Gies de la Universidad de Illinois",
         },
         {
           h: "Y tus sistemas, también",
@@ -406,6 +406,8 @@ export const content = {
           p: [
             "Soy más feliz al aire libre: bici de montaña, caminatas y correr. Ya corrí un par de medios maratones y ahora voy por mi primer maratón completo.",
           ],
+          img: "/about/mario-maraton.jpg",
+          alt: "Mario con su medalla en el Maratón de Mesa",
         },
         {
           h: "Por qué hago esto",
@@ -852,11 +854,11 @@ export const content = {
         {
           h: "What I do today: help you get found",
           p: [
-            "Here I started a digital marketing business for the Latino market, and it's what I enjoy most: getting more people to see your restaurant and want to go.",
-            "I help you with your social media, your reviews on Google and Yelp, and everything a guest sees before deciding where to eat. To do it better, I went back to school and earned an MBA at the University of Illinois, focused on digital marketing and making sense of the numbers.",
+            "I can help your business get more visibility online: on your social media and in your Google and Yelp reviews. It's what I enjoy most: getting more people to see your restaurant and want to go.",
+            "To do it better, I went back to school and earned an MBA at the University of Illinois, focused on digital marketing and making sense of the numbers.",
           ],
-          img: "/newsletter/2026-11-13-facebook-hoax.jpg",
-          alt: "Guests taking a selfie for social media",
+          img: "/about/mario-illinois.jpg",
+          alt: "Mario at the Gies College of Business, University of Illinois",
         },
         {
           h: "And your systems, too",
@@ -871,6 +873,8 @@ export const content = {
           p: [
             "I'm happiest outdoors: mountain biking, hiking and running. I've run a couple of half marathons, and now I'm going for my first full one.",
           ],
+          img: "/about/mario-maraton.jpg",
+          alt: "Mario with his medal at the Mesa Marathon",
         },
         {
           h: "Why I do this",

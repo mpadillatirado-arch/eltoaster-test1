@@ -1,6 +1,8 @@
 {
   "rewrites": [
     { "source": "/calculator", "destination": "/index.html" },
-    { "source": "/calculator/", "destination": "/index.html" }
+    { "source": "/calculator/", "destination": "/index.html" },
+    { "source": "/about_me", "destination": "/index.html" },
+    { "source": "/about_me/", "destination": "/index.html" }
   ]
 }

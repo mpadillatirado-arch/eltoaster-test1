@@ -1598,6 +1598,69 @@ ul { list-style: none; padding: 0; margin: 0; }
 .checkbox-label a { color: var(--orange-deep); text-decoration: underline; }
 
 /* ---- Privacy policy page ---- */
+/* ---------- About me ---------- */
+
+.about-page { padding: clamp(48px, 8vw, 96px) 0 clamp(64px, 9vw, 112px); }
+.about-wrap { max-width: 760px; }
+.about-hero { margin-bottom: clamp(40px, 6vw, 64px); }
+.about-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #fde6db;
+  box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--orange);
+  margin-bottom: 22px;
+}
+.about-hero h1 { font-size: clamp(2.6rem, 7vw, 4.4rem); margin: 12px 0 18px; }
+.about-sec { margin-block: clamp(36px, 5vw, 52px); }
+.about-sec h2 { font-size: clamp(1.5rem, 3.4vw, 2rem); margin-bottom: 14px; }
+.about-sec p { color: var(--text-2); font-size: 1.06rem; line-height: 1.7; }
+.about-sec p + p { margin-top: 14px; }
+.about-photo { margin: 0; }
+.about-photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: center 12%;
+  border-radius: 22px;
+}
+.about-creds {
+  margin-top: clamp(48px, 7vw, 72px);
+  padding-top: clamp(32px, 5vw, 44px);
+  border-top: 1px solid var(--line);
+}
+.about-creds h2 { font-size: clamp(1.5rem, 3.4vw, 2rem); margin-bottom: 22px; }
+.about-creds-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.about-creds h3 {
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 10px;
+}
+.about-creds ul { margin: 0; padding: 0; list-style: none; }
+.about-creds li { color: var(--text-2); font-size: 0.95rem; line-height: 1.5; }
+.about-creds li + li { margin-top: 8px; }
+.about-cta {
+  margin-top: clamp(48px, 7vw, 72px);
+  padding: clamp(32px, 5vw, 48px);
+  border-radius: 26px;
+  border: 1px solid var(--line);
+  background: var(--ink);
+  color: #fff;
+}
+.about-cta h2 { font-size: clamp(1.8rem, 4.4vw, 2.6rem); margin-bottom: 14px; }
+.about-cta .lede { color: #c9c4be; margin-bottom: 26px; }
+.about-cta-btns { display: flex; flex-wrap: wrap; gap: 12px; }
+.about-cta .btn.ghost { --btn-fg: #fff; border-color: #fff; }
+@media (max-width: 700px) {
+  .about-creds-grid { grid-template-columns: 1fr; gap: 22px; }
+  .about-photo img { aspect-ratio: 4 / 3; }
+  .about-cta-btns .btn { width: 100%; justify-content: center; }
+}
+
 .privacy-page { padding: clamp(48px, 8vw, 96px) 0; }
 .privacy-page h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin: 18px 0 6px; }
 .privacy-page .updated { color: var(--text-3); font-size: 0.9rem; margin-bottom: 20px; }

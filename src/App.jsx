@@ -144,6 +144,12 @@ function Stars({ value }) {
 /** The signup lives in the footer. Where a footer is on the page, go to it and
  *  put the cursor in the field; elsewhere the link's own #newsletter takes the
  *  visitor to the landing page, which scrolls to it. */
+const pagePath = () => window.location.pathname.replace(/\/+$/, "");
+
+/** Landing-page anchors (#empezar, #blog…) only work on the landing page;
+ *  from /calculator or /about_me they have to go back to "/" first. */
+const homeHref = (hash) => (pagePath() === "" ? hash : "/" + hash);
+
 function goToNewsletter(e) {
   const box = document.getElementById("newsletter");
   if (!box) return;
@@ -156,7 +162,7 @@ function goToNewsletter(e) {
  *  else is pinned there, so it stays the main thing to tap. */
 function MobileBar({ t }) {
   return (
-    <a className="btn mobile-cta" href="#empezar">
+    <a className="btn mobile-cta" href={homeHref("#empezar")}>
       {t.nav.cta}
     </a>
   );
@@ -186,16 +192,22 @@ function Nav({ lang, setLang, t }) {
     };
   }, [menuOpen]);
 
+  const path = pagePath();
   const links = [
-    { href: "#dolores", label: t.nav.how },
-    { href: "#blog", label: t.nav.blog },
+    // Opens beside the landing page, so visitors don't lose their place.
+    ...(path === "/about_me" ? [] : [{ href: "/about_me", label: t.nav.about, newTab: true }]),
+    ...(path === "" ? [] : [{ href: "/", label: t.nav.home }]),
+    { href: homeHref("#dolores"), label: t.nav.how },
+    { href: homeHref("#blog"), label: t.nav.blog },
     { href: "/calculator", label: t.nav.calc },
   ];
+  const linkProps = (l) =>
+    l.newTab ? { target: "_blank", rel: "noopener noreferrer" } : {};
 
   return (
     <header className="nav" data-stuck={stuck}>
       <div className="wrap nav-in">
-        <a className="logo" href="#top">
+        <a className="logo" href={homeHref("#top")}>
           <img className="mark" src={marioFace} alt="" />
           <span className="logo-text">
             El&nbsp;Toaster
@@ -205,7 +217,7 @@ function Nav({ lang, setLang, t }) {
 
         <nav className="nav-links">
           {links.map((l) => (
-            <a key={l.href} href={l.href}>
+            <a key={l.href} href={l.href} {...linkProps(l)}>
               {l.label}
             </a>
           ))}
@@ -231,7 +243,7 @@ function Nav({ lang, setLang, t }) {
         <a className="btn gray" href="#newsletter" onClick={goToNewsletter}>
           {t.nav.news}
         </a>
-        <a className="btn" href="#empezar">
+        <a className="btn" href={homeHref("#empezar")}>
           {t.nav.cta}
         </a>
 
@@ -251,19 +263,10 @@ function Nav({ lang, setLang, t }) {
       {menuOpen && (
         <nav className="nav-mobile" aria-label={t.nav.menu}>
           {links.map((l) => (
-            <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)}>
+            <a key={l.href} href={l.href} {...linkProps(l)} onClick={() => setMenuOpen(false)}>
               {l.label}
             </a>
           ))}
-          <a
-            href="#newsletter"
-            onClick={(e) => {
-              setMenuOpen(false);
-              goToNewsletter(e);
-            }}
-          >
-            {t.nav.news}
-          </a>
         </nav>
       )}
     </header>
@@ -1987,6 +1990,79 @@ function LeadForm({ t, lang }) {
   );
 }
 
+/* /about_me: Mario's story, one column, text sections alternating with
+   photos, then a short list of credentials and the call to action. */
+function AboutPage({ t }) {
+  const a = t.about;
+  useEffect(() => {
+    const before = document.title;
+    document.title = a.title;
+    return () => {
+      document.title = before;
+    };
+  }, [a.title]);
+
+  return (
+    <section className="about-page">
+      <div className="wrap about-wrap">
+        <header className="about-hero">
+          <img className="about-avatar" src={marioAvatar} alt="" />
+          <p className="eyebrow">{a.eyebrow}</p>
+          <h1>
+            {a.h1a} <span className="hand">{a.h1b}</span>
+          </h1>
+          <p className="lede">{a.sub}</p>
+        </header>
+
+        {a.sections.map((s) => (
+          <div key={s.h}>
+            <Reveal className="about-sec">
+              <h2>{s.h}</h2>
+              {s.p.map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
+            </Reveal>
+            {s.img && (
+              <Reveal as="figure" className="about-photo">
+                <img src={s.img} alt={s.alt} loading="lazy" />
+              </Reveal>
+            )}
+          </div>
+        ))}
+
+        <Reveal className="about-creds">
+          <h2>{a.credsH}</h2>
+          <div className="about-creds-grid">
+            {a.creds.map(([h, items]) => (
+              <div key={h}>
+                <h3>{h}</h3>
+                <ul>
+                  {items.map((x) => (
+                    <li key={x}>{x}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+
+        <Reveal className="about-cta">
+          <h2>{a.ctaH}</h2>
+          <p className="lede">{a.ctaP}</p>
+          <div className="about-cta-btns">
+            <a className="btn" href={CAL_URL} target="_blank" rel="noopener noreferrer">
+              {a.cta}
+            </a>
+            <a className="btn ghost" href="/#empezar">
+              {a.cta2}
+            </a>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 function PrivacyPolicy({ t }) {
   return (
     <section className="privacy-page">
@@ -2276,7 +2352,7 @@ function Footer({ t, lang }) {
 
         <div className="foot-links" style={{ marginTop: 28 }}>
           <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
-          <a href="#privacy">{t.privacy.title}</a>
+          <a href={homeHref("#privacy")}>{t.privacy.title}</a>
         </div>
 
         <div className="foot-bot">
@@ -2366,6 +2442,19 @@ export default function App() {
         <Nav lang={lang} setLang={setLang} t={t} />
         <main>
           <CalculatorPage t={t} lang={lang} />
+        </main>
+        <Footer t={t} lang={lang} />
+        <MobileBar t={t} />
+      </>
+    );
+  }
+
+  if (window.location.pathname.replace(/\/+$/, "") === "/about_me") {
+    return (
+      <>
+        <Nav lang={lang} setLang={setLang} t={t} />
+        <main>
+          <AboutPage t={t} />
         </main>
         <Footer t={t} lang={lang} />
         <MobileBar t={t} />

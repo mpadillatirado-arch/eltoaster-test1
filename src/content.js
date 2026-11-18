@@ -11,7 +11,7 @@ export const content = {
       foot: "Experto en restaurantes y marketing digital. Diagnóstico gratis de tus reseñas y sistemas POS que sí te hacen vender más. Una marca de Desde Zero.",
     },
 
-    nav: { how: "POS System", blog: "Blog", calc: "Calculadora", diag: "El diagnóstico", cta: "Diagnóstico gratis", news: "Newsletter", menu: "Menú" },
+    nav: { how: "POS System", blog: "Blog", calc: "Calculadora", diag: "El diagnóstico", cta: "Diagnóstico gratis", news: "Newsletter", menu: "Menú", about: "Acerca de mí", home: "Inicio" },
 
     hero: {
       eyebrow: "Phoenix · Mesa · Glendale · Tempe · Gilbert · Chandler · Cave Creek · Queen Creek",
@@ -368,6 +368,64 @@ export const content = {
       linkText: "Aviso de Privacidad",
     },
 
+    about: {
+      title: "Acerca de mí · El Toaster",
+      eyebrow: "Acerca de mí",
+      h1a: "Hola, soy",
+      h1b: "Mario",
+      sub: "Ayudo a restaurantes latinos a que más gente los encuentre: en redes, en Google y en su sistema de ventas.",
+      sections: [
+        {
+          h: "Empecé desde zero",
+          p: [
+            "En México tuve mi propio negocio: surtía lácteos a queserías, cremerías y neverías del norte del país. Sé lo que es levantarse temprano para sacar un negocio adelante.",
+            "En 2020, en plena pandemia, llegué a Estados Unidos con mi esposa, mi hija y otra bebé en camino. Sin contactos y con un inglés que todavía se me trababa. Mi primer trabajo fue vender aires acondicionados a pura comisión… en invierno. Después trabajé en un banco y luego en ventas para la construcción. Poco a poco, sin parar.",
+          ],
+          img: "/about/mario.jpg",
+          alt: "Mario Padilla en un restaurante",
+        },
+        {
+          h: "Lo que hago hoy: que te encuentren",
+          p: [
+            "Aquí empecé un negocio de marketing digital para el mercado latino, y es lo que más disfruto: que más gente vea tu restaurante y quiera ir.",
+            "Te ayudo con tus redes sociales, con tus reseñas en Google y Yelp, y con todo lo que un cliente ve antes de decidir dónde comer. Para hacerlo mejor, regresé a la escuela y saqué una maestría (MBA) en la Universidad de Illinois, enfocada en marketing digital y en entender los números.",
+          ],
+          img: "/newsletter/2026-11-13-facebook-hoax.jpg",
+          alt: "Clientas tomándose una selfie para redes sociales",
+        },
+        {
+          h: "Y tus sistemas, también",
+          p: [
+            "De nada sirve que te encuentren si tu sistema no te ayuda a vender. También soy consultor de Toast POS, así que te puedo orientar con pedidos en línea, programas de lealtad y lo que tu operación necesite. Sin presión: primero vemos qué te conviene.",
+          ],
+          img: "/newsletter/2026-11-13-technology.jpg",
+          alt: "Un restaurante cobrando con su sistema de punto de venta",
+        },
+        {
+          h: "Fuera del trabajo",
+          p: [
+            "Soy más feliz al aire libre: bici de montaña, caminatas y correr. Ya corrí un par de medios maratones y ahora voy por mi primer maratón completo.",
+          ],
+        },
+        {
+          h: "Por qué hago esto",
+          p: [
+            "Quiero ayudar a un millón de latinos en este país a construir una vida mejor. Muchos de ellos tienen un restaurante. Ojalá pronto platiquemos del tuyo.",
+          ],
+        },
+      ],
+      credsH: "Mi preparación",
+      creds: [
+        ["Estudios", ["Ingeniería Industrial — Universidad Panamericana", "Maestría en Innovación Tecnológica — Universidad Panamericana", "MBA — University of Illinois"]],
+        ["Experiencia", ["Más de 16 años en ventas, en persona y en línea"]],
+        ["Certificaciones", ["Marketing Digital y Business Analytics — University of Illinois", "Miller-Heiman y Sandler (ventas)"]],
+      ],
+      ctaH: "¿Platicamos de tu restaurante?",
+      ctaP: "Agenda 15 minutos conmigo, sin compromiso. O pide tu diagnóstico gratis y te digo qué están diciendo de ti en línea.",
+      cta: "Agenda 15 minutos conmigo",
+      cta2: "Diagnóstico gratis",
+    },
+
     privacy: {
       title: "Aviso de Privacidad",
       updated: "Última actualización: septiembre de 2026",
@@ -418,7 +476,7 @@ export const content = {
       foot: "Restaurant and digital marketing expert. Free review diagnostics and POS systems that actually help you sell more. A Desde Zero brand.",
     },
 
-    nav: { how: "POS System", blog: "Blog", calc: "Calculator", diag: "The diagnostic", cta: "Free diagnostic", news: "Newsletter", menu: "Menu" },
+    nav: { how: "POS System", blog: "Blog", calc: "Calculator", diag: "The diagnostic", cta: "Free diagnostic", news: "Newsletter", menu: "Menu", about: "About me", home: "Home" },
 
     hero: {
       eyebrow: "Phoenix · Mesa · Glendale · Tempe · Gilbert · Chandler · Cave Creek · Queen Creek",
@@ -773,6 +831,64 @@ export const content = {
       label: (link) =>
         `I'd like to receive email tips, success stories and promotions about restaurant reputation (optional). I can unsubscribe anytime. See <a href="#privacy" target="_blank" rel="noopener noreferrer">${link}</a>.`,
       linkText: "Privacy Notice",
+    },
+
+    about: {
+      title: "About me · El Toaster",
+      eyebrow: "About me",
+      h1a: "Hi, I'm",
+      h1b: "Mario",
+      sub: "I help Latino restaurants get found by more people: on social media, on Google and in their sales system.",
+      sections: [
+        {
+          h: "I started from zero",
+          p: [
+            "Back in Mexico I ran my own business, delivering dairy to cheese shops, creameries and ice cream shops across the north of the country. I know what it takes to get up early and keep a business going.",
+            "In 2020, in the middle of the pandemic, I came to the US with my wife, my daughter and a second baby on the way. No contacts, and English that still got stuck. My first job was selling air conditioners on commission only… in winter. Then I worked at a bank, and later in sales for the construction industry. Step by step, without stopping.",
+          ],
+          img: "/about/mario.jpg",
+          alt: "Mario Padilla in a restaurant",
+        },
+        {
+          h: "What I do today: help you get found",
+          p: [
+            "Here I started a digital marketing business for the Latino market, and it's what I enjoy most: getting more people to see your restaurant and want to go.",
+            "I help you with your social media, your reviews on Google and Yelp, and everything a guest sees before deciding where to eat. To do it better, I went back to school and earned an MBA at the University of Illinois, focused on digital marketing and making sense of the numbers.",
+          ],
+          img: "/newsletter/2026-11-13-facebook-hoax.jpg",
+          alt: "Guests taking a selfie for social media",
+        },
+        {
+          h: "And your systems, too",
+          p: [
+            "Getting found doesn't help much if your system doesn't help you sell. I'm also a Toast POS consultant, so I can point you in the right direction on online ordering, loyalty programs and whatever your operation needs. No pressure: first we figure out what's right for you.",
+          ],
+          img: "/newsletter/2026-11-13-technology.jpg",
+          alt: "A restaurant taking a payment on its point-of-sale system",
+        },
+        {
+          h: "Outside of work",
+          p: [
+            "I'm happiest outdoors: mountain biking, hiking and running. I've run a couple of half marathons, and now I'm going for my first full one.",
+          ],
+        },
+        {
+          h: "Why I do this",
+          p: [
+            "I want to help a million Latinos in this country build a better life. Many of them run a restaurant. I hope we get to talk about yours soon.",
+          ],
+        },
+      ],
+      credsH: "My background",
+      creds: [
+        ["Education", ["Industrial Engineering — Universidad Panamericana", "Master's in Technology Innovation — Universidad Panamericana", "MBA — University of Illinois"]],
+        ["Experience", ["16+ years in sales, in person and online"]],
+        ["Certifications", ["Digital Marketing and Business Analytics — University of Illinois", "Miller-Heiman and Sandler (sales)"]],
+      ],
+      ctaH: "Want to talk about your restaurant?",
+      ctaP: "Book 15 minutes with me, no strings attached. Or ask for your free diagnostic and I'll show you what people are saying about you online.",
+      cta: "Book 15 minutes with me",
+      cta2: "Free diagnostic",
     },
 
     privacy: {

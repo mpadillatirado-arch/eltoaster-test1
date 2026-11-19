@@ -200,7 +200,6 @@ function Nav({ lang, setLang, t }) {
     ...(path === "" ? [] : [{ href: "/", label: t.nav.home }]),
     { href: homeHref("#dolores"), label: t.nav.how },
     { href: homeHref("#blog"), label: t.nav.blog },
-    { href: "/calculator", label: t.nav.calc },
     { href: "/rankings", label: t.nav.rankings },
   ];
   const linkProps = (l) =>
@@ -505,7 +504,7 @@ function Hero({ t }) {
           <p className="lede">{t.hero.lede}</p>
 
           <div className="hero-cta">
-            <a className="btn dark" href="/calculator">
+            <a className="btn green" href="/calculator">
               <CalculatorIcon />
               {t.hero.cta2}
             </a>
@@ -514,6 +513,8 @@ function Hero({ t }) {
               {t.nav.news}
             </a>
           </div>
+
+          <p className="hero-calc-note">{t.hero.calcNote}</p>
 
           <div className="trust">
             <span>

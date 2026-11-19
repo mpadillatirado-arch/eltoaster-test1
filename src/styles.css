@@ -157,6 +157,8 @@ section { padding-block: clamp(72px, 11vw, 132px); }
 
 .btn.dark { --btn-bg: var(--ink); --btn-fg: #fff; }
 .btn.dark:hover { box-shadow: 0 16px 32px -12px rgb(13 13 13 / 55%); }
+.btn.green { --btn-bg: #16a34a; --btn-fg: #fff; box-shadow: 0 12px 26px -12px rgb(22 163 74 / 60%); }
+.btn.green:hover { --btn-bg: #15803d; box-shadow: 0 16px 32px -12px rgb(22 163 74 / 65%); }
 .btn.gray { --btn-bg: #e3ded6; --btn-fg: #0d0d0d; box-shadow: none; }
 .btn.gray:hover { --btn-bg: #d6d0c7; box-shadow: 0 12px 24px -14px rgb(13 13 13 / 45%); }
 @media (prefers-color-scheme: dark) {
@@ -650,6 +652,8 @@ section { padding-block: clamp(72px, 11vw, 132px); }
   .hero-cta { gap: 8px; }
   .hero-cta .btn { padding: 14px 14px; gap: 8px; font-size: 0.92rem; white-space: nowrap; }
 }
+
+.hero-calc-note { margin-top: 12px; max-width: 46ch; font-size: 0.9rem; color: var(--text-2); }
 
 .trust {
   display: flex;
@@ -1360,6 +1364,7 @@ ul { list-style: none; padding: 0; margin: 0; }
 
   /* Center every standalone orange CTA button so they line up consistently. */
   .hero-cta { justify-content: center; text-align: center; }
+  .hero-calc-note { margin-inline: auto; text-align: center; }
   .midcta-in { justify-content: center; text-align: center; }
   .pains-cta-block { text-align: center; }
   .foot-top { justify-content: center; text-align: center; flex-direction: column; align-items: center; }

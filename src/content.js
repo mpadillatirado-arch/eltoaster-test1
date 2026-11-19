@@ -335,6 +335,11 @@ export const content = {
         { key: "sushino", name: "Sushino Mexican Roll", url: "https://sushinomexicanroll.com/" },
         { key: "el-chaka", name: "El Chaka Tacos y Más", url: "https://elchakarestaurantphx.com/" },
         { key: "las-15-salsas", name: "Las 15 Salsas", url: "https://las15salsas.com/" },
+        {
+          key: "el-molcajete",
+          name: "Mariscos El Molcajete",
+          url: "https://www.google.com/maps/search/?api=1&query=Mariscos+El+Molcajete+7420+W+Cactus+Rd+Peoria+AZ",
+        },
       ],
     },
 
@@ -840,6 +845,11 @@ export const content = {
         { key: "sushino", name: "Sushino Mexican Roll", url: "https://sushinomexicanroll.com/" },
         { key: "el-chaka", name: "El Chaka Tacos y Más", url: "https://elchakarestaurantphx.com/" },
         { key: "las-15-salsas", name: "Las 15 Salsas", url: "https://las15salsas.com/" },
+        {
+          key: "el-molcajete",
+          name: "Mariscos El Molcajete",
+          url: "https://www.google.com/maps/search/?api=1&query=Mariscos+El+Molcajete+7420+W+Cactus+Rd+Peoria+AZ",
+        },
       ],
     },
 

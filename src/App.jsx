@@ -7,6 +7,7 @@ import padelPalsLogo from "./assets/clients/padel-pals.jpg";
 import sushinoLogo from "./assets/clients/sushino.jpg";
 import elChakaLogo from "./assets/clients/el-chaka.jpg";
 import las15SalsasLogo from "./assets/clients/las-15-salsas.png";
+import elMolcajeteLogo from "./assets/clients/el-molcajete.webp";
 import marioAvatar from "./assets/mario-avatar.webp";
 import marioFace from "./assets/mario-avatar-face.webp";
 import posTerminal from "./assets/pos-terminal.webp";
@@ -17,6 +18,7 @@ const CLIENT_LOGOS = {
   sushino: sushinoLogo,
   "el-chaka": elChakaLogo,
   "las-15-salsas": las15SalsasLogo,
+  "el-molcajete": elMolcajeteLogo,
 };
 
 const EMAIL = "mario@eltoaster.com";

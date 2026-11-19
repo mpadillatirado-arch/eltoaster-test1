@@ -2066,32 +2066,46 @@ function AboutPage({ t }) {
 
 const RANK_UNLOCK_KEY = "rankingUnlocked";
 
-/** Name and email before the rest of a city's ranking opens. Remembered in
- *  this browser so a returning visitor sees the whole list. */
+function downloadFile(href) {
+  const a = document.createElement("a");
+  a.href = href;
+  a.download = href.split("/").pop();
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+/** Name, email and the newsletter opt-in before a ranking's PDF downloads.
+ *  Remembered in this browser, so later PDFs download straight away. */
 function RankingGate({ r, lang, city, onUnlock }) {
   const [form, setForm] = useState({ name: "", email: "" });
+  const [consent, setConsent] = useState(false);
   const [state, setState] = useState("idle"); // idle | sending | error
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
   async function submit(e) {
     e.preventDefault();
-    if (state === "sending") return;
+    if (state === "sending" || !consent) return;
     if (!supabase) {
       setState("error");
       return;
     }
     setState("sending");
+    const email = form.email.trim();
     const { error } = await supabase.from("ranking_leads").insert([
-      { name: form.name.trim(), email: form.email.trim(), city, preferred_language: lang },
+      { name: form.name.trim(), email, city, preferred_language: lang },
     ]);
     if (error) {
       setState("error");
       return;
     }
+    // They opted in, so they join the newsletter (an existing subscriber just
+    // gets "already" back). The download doesn't wait on it.
+    supabase.functions.invoke("newsletter-subscribe", { body: { email, lang } }).catch(() => {});
     try {
       localStorage.setItem(RANK_UNLOCK_KEY, "1");
     } catch {
-      /* storage unavailable — they still see it for this visit */
+      /* storage unavailable — they still get this download */
     }
     onUnlock();
   }
@@ -2122,12 +2136,28 @@ function RankingGate({ r, lang, city, onUnlock }) {
             onChange={set("email")}
           />
         </div>
-        <button className="btn" type="submit" disabled={state === "sending"}>
+        <div className="inp consent">
+          <label htmlFor="rg-consent" className="checkbox-label">
+            <input
+              id="rg-consent"
+              type="checkbox"
+              required
+              checked={consent}
+              onChange={(e) => setConsent(e.target.checked)}
+            />
+            <span>
+              {r.consent}{" "}
+              <a href="/#privacy" target="_blank" rel="noopener noreferrer">
+                {r.privacy}
+              </a>
+              .
+            </span>
+          </label>
+        </div>
+        <button className="btn" type="submit" disabled={state === "sending" || !consent}>
           {state === "sending" ? r.unlocking : r.unlock}
         </button>
-        <p className="formnote">
-          {r.gateNote} <a href="/#privacy">{r.privacy}</a>
-        </p>
+        <p className="formnote">{r.gateNote}</p>
       </form>
     </div>
   );
@@ -2179,8 +2209,23 @@ function RankingsPage({ t, lang }) {
       </div>
     </li>
   );
-  const toGate = () =>
-    document.getElementById("rank-gate")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  const [gateOpen, setGateOpen] = useState(false);
+  const [done, setDone] = useState(false);
+  useEffect(() => setDone(false), [catId, city]);
+
+  // Someone who already left their details gets the file right away; everyone
+  // else sees the form first.
+  const getPdf = () => {
+    if (unlocked) {
+      downloadFile(pdf);
+      setDone(true);
+      return;
+    }
+    setGateOpen(true);
+    requestAnimationFrame(() =>
+      document.getElementById("rank-gate")?.scrollIntoView({ behavior: "smooth", block: "center" })
+    );
+  };
 
   return (
     <section className="rank-page">
@@ -2231,42 +2276,56 @@ function RankingsPage({ t, lang }) {
               </select>
             </div>
 
-            <div className="rank-list-head">
-              <h2 className="rank-list-h">
-                {r.listH.replace("{n}", items.length)} <span className="hand">{cat.label[lang]}</span>{" "}
-                {r.listIn} {CITIES.find((c) => c.id === city).name}
-              </h2>
-              {unlocked && (
-                <a className="btn rank-pdf" href={pdf} download>
-                  {r.pdf}
-                </a>
-              )}
-            </div>
+            <h2 className="rank-list-h">
+              {r.listH.replace("{n}", items.length)} <span className="hand">{cat.label[lang]}</span>{" "}
+              {r.listIn} {CITIES.find((c) => c.id === city).name}
+            </h2>
 
-            {unlocked ? (
-              <ol className="rank-list">{items.map((it, i) => row(it, i + 1))}</ol>
-            ) : (
-              <>
-                <div className="rank-top-locked">
-                  <ol className="rank-list">{[1, 2, 3].map(ghost)}</ol>
-                  <button type="button" className="rank-top-chip" onClick={toGate}>
-                    {r.topLocked}
+            {/* The full list lives only in the PDF, so the page always shows
+                the same teaser: top 3 hidden, 4–6 open, the rest hidden. */}
+            <div className="rank-top-locked">
+              <ol className="rank-list">{[1, 2, 3].map(ghost)}</ol>
+              <button type="button" className="rank-top-chip" onClick={getPdf}>
+                {r.topLocked}
+              </button>
+            </div>
+            <ol className="rank-list rank-open">
+              {items.slice(FREE_FROM, FREE_TO).map((it, i) => row(it, FREE_FROM + i + 1))}
+            </ol>
+            <div className="rank-locked">
+              <ol className="rank-list">{[FREE_TO + 1, FREE_TO + 2, FREE_TO + 3].map(ghost)}</ol>
+              <p className="rank-locked-h">
+                {r.lockedH.replace("{n}", items.length - (FREE_TO - FREE_FROM))}
+              </p>
+              <div className="rank-pdf-box" id="rank-gate">
+                {!gateOpen && (
+                  <button type="button" className="btn rank-pdf" onClick={getPdf}>
+                    {r.pdf}
                   </button>
-                </div>
-                <ol className="rank-list rank-open">
-                  {items.slice(FREE_FROM, FREE_TO).map((it, i) => row(it, FREE_FROM + i + 1))}
-                </ol>
-                <div className="rank-locked">
-                  <ol className="rank-list">{[FREE_TO + 1, FREE_TO + 2, FREE_TO + 3].map(ghost)}</ol>
-                  <p className="rank-locked-h">
-                    {r.lockedH.replace("{n}", items.length - (FREE_TO - FREE_FROM))}
+                )}
+                {gateOpen && (
+                  <RankingGate
+                    r={r}
+                    lang={lang}
+                    city={city}
+                    onUnlock={() => {
+                      setUnlocked(true);
+                      setGateOpen(false);
+                      setDone(true);
+                      downloadFile(pdf);
+                    }}
+                  />
+                )}
+                {done && !gateOpen && (
+                  <p className="rank-done">
+                    {r.done}{" "}
+                    <a href={pdf} download>
+                      {r.again}
+                    </a>
                   </p>
-                  <div id="rank-gate">
-                    <RankingGate r={r} lang={lang} city={city} onUnlock={() => setUnlocked(true)} />
-                  </div>
-                </div>
-              </>
-            )}
+                )}
+              </div>
+            </div>
           </div>
         ) : (
           <div className="rank-soon">

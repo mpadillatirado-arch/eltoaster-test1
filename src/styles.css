@@ -1730,9 +1730,10 @@ ul { list-style: none; padding: 0; margin: 0; }
 }
 .rank-select select:focus-visible { outline: 3px solid color-mix(in srgb, var(--orange) 35%, transparent); outline-offset: 2px; }
 
-.rank-list-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-bottom: 14px; }
-.rank-list-head .rank-list-h { margin-bottom: 0; }
-.rank-pdf { flex: none; }
+.rank-pdf-box { text-align: center; scroll-margin: 120px; }
+.rank-pdf-box .rank-gate { text-align: left; }
+.rank-done { margin-top: 14px; color: var(--text-2); font-weight: 600; }
+.rank-done a { color: var(--orange-deep); text-decoration: underline; }
 
 .rank-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .rank-list + .rank-list,

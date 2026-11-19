@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { content } from "./content.js";
 import { supabase } from "./supabase.js";
-import { CITIES, RANKINGS, FREE_COUNT } from "./rankings.js";
+import { CITIES, RANKINGS, FREE_FROM, FREE_TO } from "./rankings.js";
 import lasCulichisLogo from "./assets/clients/las-culichis.jpg";
 import padelPalsLogo from "./assets/clients/padel-pals.jpg";
 import sushinoLogo from "./assets/clients/sushino.jpg";
@@ -2156,7 +2156,31 @@ function RankingsPage({ t, lang }) {
   const cats = RANKINGS[city];
   const cat = cats ? cats.find((c) => c.id === catId) || cats[0] : null;
   const items = cat ? cat.items : null;
-  const shown = items ? (unlocked ? items : items.slice(0, FREE_COUNT)) : [];
+  const pdf = cat ? `/rankings/top-${items.length}-${cat.id}-${city}-2026.pdf` : null;
+
+  const row = (it, n) => {
+    const meta = [it.dish, it.city && `${it.city}, AZ`].filter(Boolean).join(" · ");
+    return (
+      <li key={n} className={"rank-item" + (n <= 3 ? " top" : "")}>
+        <span className="rank-num">{n}</span>
+        <div className="rank-body">
+          <strong className="rank-name">{it.name}</strong>
+          {meta && <span className="rank-meta">{meta}</span>}
+        </div>
+      </li>
+    );
+  };
+  const ghost = (n) => (
+    <li key={n} className={"rank-item ghost" + (n <= 3 ? " top" : "")} aria-hidden="true">
+      <span className="rank-num">{n}</span>
+      <div className="rank-body">
+        <span className="rank-bar" />
+        <span className="rank-bar short" />
+      </div>
+    </li>
+  );
+  const toGate = () =>
+    document.getElementById("rank-gate")?.scrollIntoView({ behavior: "smooth", block: "center" });
 
   return (
     <section className="rank-page">
@@ -2194,56 +2218,54 @@ function RankingsPage({ t, lang }) {
 
         {items ? (
           <div className="rank-list-box">
-            <h2 className="rank-cities-h">{r.catsH}</h2>
-            <div className="rank-cats" role="tablist" aria-label={r.catsH}>
-              {cats.map((c) => (
-                <button
-                  key={c.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={cat.id === c.id}
-                  className="rank-cat"
-                  onClick={() => setCatId(c.id)}
-                >
-                  {c.label[lang]}
-                </button>
-              ))}
+            <label className="rank-cities-h rank-select-label" htmlFor="rank-cat">
+              {r.catsH}
+            </label>
+            <div className="rank-select">
+              <select id="rank-cat" value={cat.id} onChange={(e) => setCatId(e.target.value)}>
+                {cats.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {r.listH.replace("{n}", c.items.length)} {c.label[lang]}
+                  </option>
+                ))}
+              </select>
             </div>
-            <h2 className="rank-list-h">
-              {r.listH.replace("{n}", items.length)} <span className="hand">{cat.label[lang]}</span>{" "}
-              {r.listIn} {CITIES.find((c) => c.id === city).name}
-            </h2>
-            <ol className="rank-list">
-              {shown.map((it, i) => {
-                const meta = [it.dish, it.city && `${it.city}, AZ`].filter(Boolean).join(" · ");
-                return (
-                  <li key={it.name} className="rank-item">
-                    <span className="rank-num">{i + 1}</span>
-                    <div className="rank-body">
-                      <strong className="rank-name">{it.name}</strong>
-                      {meta && <span className="rank-meta">{meta}</span>}
-                    </div>
-                  </li>
-                );
-              })}
-            </ol>
 
-            {!unlocked && items.length > FREE_COUNT && (
-              <div className="rank-locked">
-                <ol className="rank-list rank-ghost" aria-hidden="true" start={FREE_COUNT + 1}>
-                  {[0, 1, 2].map((k) => (
-                    <li key={k} className="rank-item">
-                      <span className="rank-num">{FREE_COUNT + 1 + k}</span>
-                      <div className="rank-body">
-                        <span className="rank-bar" />
-                        <span className="rank-bar short" />
-                      </div>
-                    </li>
-                  ))}
+            <div className="rank-list-head">
+              <h2 className="rank-list-h">
+                {r.listH.replace("{n}", items.length)} <span className="hand">{cat.label[lang]}</span>{" "}
+                {r.listIn} {CITIES.find((c) => c.id === city).name}
+              </h2>
+              {unlocked && (
+                <a className="btn rank-pdf" href={pdf} download>
+                  {r.pdf}
+                </a>
+              )}
+            </div>
+
+            {unlocked ? (
+              <ol className="rank-list">{items.map((it, i) => row(it, i + 1))}</ol>
+            ) : (
+              <>
+                <div className="rank-top-locked">
+                  <ol className="rank-list">{[1, 2, 3].map(ghost)}</ol>
+                  <button type="button" className="rank-top-chip" onClick={toGate}>
+                    {r.topLocked}
+                  </button>
+                </div>
+                <ol className="rank-list rank-open">
+                  {items.slice(FREE_FROM, FREE_TO).map((it, i) => row(it, FREE_FROM + i + 1))}
                 </ol>
-                <p className="rank-locked-h">{r.lockedH.replace("{n}", items.length - FREE_COUNT)}</p>
-                <RankingGate r={r} lang={lang} city={city} onUnlock={() => setUnlocked(true)} />
-              </div>
+                <div className="rank-locked">
+                  <ol className="rank-list">{[FREE_TO + 1, FREE_TO + 2, FREE_TO + 3].map(ghost)}</ol>
+                  <p className="rank-locked-h">
+                    {r.lockedH.replace("{n}", items.length - (FREE_TO - FREE_FROM))}
+                  </p>
+                  <div id="rank-gate">
+                    <RankingGate r={r} lang={lang} city={city} onUnlock={() => setUnlocked(true)} />
+                  </div>
+                </div>
+              </>
             )}
           </div>
         ) : (

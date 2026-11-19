@@ -2152,8 +2152,10 @@ function RankingsPage({ t, lang }) {
     };
   }, [r.title]);
 
-  const cityInfo = CITIES.find((c) => c.id === city);
-  const items = RANKINGS[city];
+  const [catId, setCatId] = useState(null);
+  const cats = RANKINGS[city];
+  const cat = cats ? cats.find((c) => c.id === catId) || cats[0] : null;
+  const items = cat ? cat.items : null;
   const shown = items ? (unlocked ? items : items.slice(0, FREE_COUNT)) : [];
 
   return (
@@ -2192,27 +2194,38 @@ function RankingsPage({ t, lang }) {
 
         {items ? (
           <div className="rank-list-box">
+            <h2 className="rank-cities-h">{r.catsH}</h2>
+            <div className="rank-cats" role="tablist" aria-label={r.catsH}>
+              {cats.map((c) => (
+                <button
+                  key={c.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={cat.id === c.id}
+                  className="rank-cat"
+                  onClick={() => setCatId(c.id)}
+                >
+                  {c.label[lang]}
+                </button>
+              ))}
+            </div>
             <h2 className="rank-list-h">
-              {r.listH} <span className="hand">{cityInfo.name}</span>
+              {r.listH.replace("{n}", items.length)} <span className="hand">{cat.label[lang]}</span>{" "}
+              {r.listIn} {CITIES.find((c) => c.id === city).name}
             </h2>
             <ol className="rank-list">
-              {shown.map((it, i) => (
-                <li key={it.name} className="rank-item">
-                  <span className="rank-num">{i + 1}</span>
-                  <div className="rank-body">
-                    <strong className="rank-name">{it.name}</strong>
-                    <span className="rank-meta">
-                      {it.type[lang]} · {it.area}
-                    </span>
-                  </div>
-                  <div className="rank-score">
-                    <strong>★ {it.rating.toFixed(1)}</strong>
-                    <span>
-                      {it.reviews.toLocaleString(lang === "es" ? "es-MX" : "en-US")} {r.reviews}
-                    </span>
-                  </div>
-                </li>
-              ))}
+              {shown.map((it, i) => {
+                const meta = [it.dish, it.city && `${it.city}, AZ`].filter(Boolean).join(" · ");
+                return (
+                  <li key={it.name} className="rank-item">
+                    <span className="rank-num">{i + 1}</span>
+                    <div className="rank-body">
+                      <strong className="rank-name">{it.name}</strong>
+                      {meta && <span className="rank-meta">{meta}</span>}
+                    </div>
+                  </li>
+                );
+              })}
             </ol>
 
             {!unlocked && items.length > FREE_COUNT && (
@@ -2228,7 +2241,7 @@ function RankingsPage({ t, lang }) {
                     </li>
                   ))}
                 </ol>
-                <p className="rank-locked-h">{r.lockedH.replace("7", String(items.length - FREE_COUNT))}</p>
+                <p className="rank-locked-h">{r.lockedH.replace("{n}", items.length - FREE_COUNT)}</p>
                 <RankingGate r={r} lang={lang} city={city} onUnlock={() => setUnlocked(true)} />
               </div>
             )}

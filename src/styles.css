@@ -1700,10 +1700,26 @@ ul { list-style: none; padding: 0; margin: 0; }
 .rank-city.soon .rank-city-name { color: var(--text-2); }
 .rank-city[aria-selected="true"]:not(.soon) .rank-city-sub { color: var(--orange); }
 
+.rank-cats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: clamp(24px, 4vw, 34px); }
+.rank-cat {
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+.rank-cat:hover { border-color: var(--orange); }
+.rank-cat[aria-selected="true"] { background: var(--orange); border-color: var(--orange); color: #fff; }
+
 .rank-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .rank-item {
   display: grid;
-  grid-template-columns: 44px 1fr auto;
+  grid-template-columns: 44px 1fr;
   align-items: center;
   gap: 14px;
   padding: 14px 16px;
@@ -1754,7 +1770,7 @@ ul { list-style: none; padding: 0; margin: 0; }
 
 @media (max-width: 560px) {
   .rank-cities { grid-template-columns: 1fr 1fr; }
-  .rank-item { grid-template-columns: 36px 1fr auto; gap: 10px; padding: 12px; }
+  .rank-item { grid-template-columns: 36px 1fr; gap: 10px; padding: 12px; }
   .rank-num { width: 34px; height: 34px; font-size: 0.95rem; }
   .rank-name { font-size: 0.95rem; }
   .rank-owner .btn { width: 100%; justify-content: center; }

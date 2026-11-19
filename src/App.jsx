@@ -197,10 +197,10 @@ function Nav({ lang, setLang, t }) {
   const links = [
     // Opens beside the landing page, so visitors don't lose their place.
     ...(path === "/about_me" ? [] : [{ href: "/about_me", label: t.nav.about, newTab: true }]),
+    { href: "/rankings", label: t.nav.rankings },
     ...(path === "" ? [] : [{ href: "/", label: t.nav.home }]),
     { href: homeHref("#dolores"), label: t.nav.how },
     { href: homeHref("#blog"), label: t.nav.blog },
-    { href: "/rankings", label: t.nav.rankings },
   ];
   const linkProps = (l) =>
     l.newTab ? { target: "_blank", rel: "noopener noreferrer" } : {};

@@ -503,6 +503,7 @@ function Hero({ t }) {
           </h1>
           <p className="lede">{t.hero.lede}</p>
 
+          <p className="hero-calc-note">{t.hero.calcNote}</p>
           <div className="hero-cta">
             <a className="btn green" href="/calculator">
               <CalculatorIcon />
@@ -513,8 +514,6 @@ function Hero({ t }) {
               {t.nav.news}
             </a>
           </div>
-
-          <p className="hero-calc-note">{t.hero.calcNote}</p>
 
           <div className="trust">
             <span>

@@ -201,6 +201,7 @@ function Nav({ lang, setLang, t }) {
     { href: homeHref("#dolores"), label: t.nav.how },
     { href: homeHref("#blog"), label: t.nav.blog },
     { href: "/calculator", label: t.nav.calc },
+    { href: "/rankings", label: t.nav.rankings },
   ];
   const linkProps = (l) =>
     l.newTab ? { target: "_blank", rel: "noopener noreferrer" } : {};

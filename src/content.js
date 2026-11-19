@@ -11,7 +11,7 @@ export const content = {
       foot: "Experto en restaurantes y marketing digital. Diagnóstico gratis de tus reseñas y sistemas POS que sí te hacen vender más. Una marca de Desde Zero.",
     },
 
-    nav: { how: "POS System", blog: "Blog", calc: "Calculadora", diag: "El diagnóstico", cta: "Diagnóstico gratis", news: "Newsletter", menu: "Menú", about: "Acerca de mí", home: "Inicio" },
+    nav: { how: "POS System", blog: "Blog", calc: "Calculadora", diag: "El diagnóstico", cta: "Diagnóstico gratis", news: "Newsletter", menu: "Menú", about: "Acerca de mí", home: "Inicio", rankings: "Rankings" },
 
     hero: {
       eyebrow: "Phoenix · Mesa · Glendale · Tempe · Gilbert · Chandler · Cave Creek · Queen Creek",
@@ -512,7 +512,7 @@ export const content = {
       foot: "Restaurant and digital marketing expert. Free review diagnostics and POS systems that actually help you sell more. A Desde Zero brand.",
     },
 
-    nav: { how: "POS System", blog: "Blog", calc: "Calculator", diag: "The diagnostic", cta: "Free diagnostic", news: "Newsletter", menu: "Menu", about: "About me", home: "Home" },
+    nav: { how: "POS System", blog: "Blog", calc: "Calculator", diag: "The diagnostic", cta: "Free diagnostic", news: "Newsletter", menu: "Menu", about: "About me", home: "Home", rankings: "Rankings" },
 
     hero: {
       eyebrow: "Phoenix · Mesa · Glendale · Tempe · Gilbert · Chandler · Cave Creek · Queen Creek",

@@ -1857,6 +1857,8 @@ ul { list-style: none; padding: 0; margin: 0; }
   .rank-owner .btn,
   .rank-pdf { width: 100%; justify-content: center; }
   .rank-owner-points { flex-direction: column; align-items: flex-start; width: fit-content; }
+  .rank-owner { padding: 30px 18px; }
+  .rank-owner .btn { padding-inline: 14px; }
 }
 
 .privacy-page { padding: clamp(48px, 8vw, 96px) 0; }

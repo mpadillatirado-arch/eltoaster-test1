@@ -197,7 +197,8 @@ section { padding-block: clamp(72px, 11vw, 132px); }
 }
 
 /* "El Toaster" with "by Desde Zero" under it: the sub-brand and its parent. */
-.logo-text { display: flex; flex-direction: column; line-height: 1.05; margin: 0; }
+.logo { flex-shrink: 0; }
+.logo-text { display: flex; flex-direction: column; line-height: 1.05; margin: 0; white-space: nowrap; }
 .logo-text small {
   margin-top: 3px;
   font-size: 0.66rem;
@@ -229,6 +230,7 @@ section { padding-block: clamp(72px, 11vw, 132px); }
 .nav-links a:hover { color: var(--orange); }
 
 @media (max-width: 1200px) { .nav-links { display: none; } }
+@media (max-width: 1360px) { .nav-links { gap: 18px; } }
 
 .lang {
   display: flex;

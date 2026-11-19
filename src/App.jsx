@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { content } from "./content.js";
 import { supabase } from "./supabase.js";
+import { CITIES, RANKINGS, FREE_COUNT } from "./rankings.js";
 import lasCulichisLogo from "./assets/clients/las-culichis.jpg";
 import padelPalsLogo from "./assets/clients/padel-pals.jpg";
 import sushinoLogo from "./assets/clients/sushino.jpg";
@@ -2063,6 +2064,196 @@ function AboutPage({ t }) {
   );
 }
 
+const RANK_UNLOCK_KEY = "rankingUnlocked";
+
+/** Name and email before the rest of a city's ranking opens. Remembered in
+ *  this browser so a returning visitor sees the whole list. */
+function RankingGate({ r, lang, city, onUnlock }) {
+  const [form, setForm] = useState({ name: "", email: "" });
+  const [state, setState] = useState("idle"); // idle | sending | error
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  async function submit(e) {
+    e.preventDefault();
+    if (state === "sending") return;
+    if (!supabase) {
+      setState("error");
+      return;
+    }
+    setState("sending");
+    const { error } = await supabase.from("ranking_leads").insert([
+      { name: form.name.trim(), email: form.email.trim(), city, preferred_language: lang },
+    ]);
+    if (error) {
+      setState("error");
+      return;
+    }
+    try {
+      localStorage.setItem(RANK_UNLOCK_KEY, "1");
+    } catch {
+      /* storage unavailable — they still see it for this visit */
+    }
+    onUnlock();
+  }
+
+  return (
+    <div className="form-card rank-gate">
+      <h3>{r.gateTitle}</h3>
+      <p className="rank-gate-lede">{r.gateLede}</p>
+      <form onSubmit={submit}>
+        {state === "error" && (
+          <div className="alert err" role="alert">
+            {r.gateError}
+          </div>
+        )}
+        <div className="inp">
+          <label htmlFor="rg-name">{r.name}</label>
+          <input id="rg-name" required maxLength={120} autoComplete="name" value={form.name} onChange={set("name")} />
+        </div>
+        <div className="inp">
+          <label htmlFor="rg-email">{r.email}</label>
+          <input
+            id="rg-email"
+            type="email"
+            required
+            maxLength={254}
+            autoComplete="email"
+            value={form.email}
+            onChange={set("email")}
+          />
+        </div>
+        <button className="btn" type="submit" disabled={state === "sending"}>
+          {state === "sending" ? r.unlocking : r.unlock}
+        </button>
+        <p className="formnote">
+          {r.gateNote} <a href="/#privacy">{r.privacy}</a>
+        </p>
+      </form>
+    </div>
+  );
+}
+
+function RankingsPage({ t, lang }) {
+  const r = t.rankings;
+  const [city, setCity] = useState("phoenix");
+  const [unlocked, setUnlocked] = useState(() => {
+    try {
+      return localStorage.getItem(RANK_UNLOCK_KEY) === "1";
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    const before = document.title;
+    document.title = r.title;
+    return () => {
+      document.title = before;
+    };
+  }, [r.title]);
+
+  const cityInfo = CITIES.find((c) => c.id === city);
+  const items = RANKINGS[city];
+  const shown = items ? (unlocked ? items : items.slice(0, FREE_COUNT)) : [];
+
+  return (
+    <section className="rank-page">
+      <div className="wrap rank-wrap">
+        <header className="rank-hero">
+          <p className="eyebrow">{r.eyebrow}</p>
+          <h1>
+            {r.h1a} <span className="hand">{r.h1b}</span> {r.h1c}
+          </h1>
+          <p className="lede">{r.sub}</p>
+          <p className="rank-share">
+            {r.share} <strong>eltoaster.com/ranking</strong>
+          </p>
+        </header>
+
+        <h2 className="rank-cities-h">{r.citiesH}</h2>
+        <div className="rank-cities" role="tablist" aria-label={r.citiesH}>
+          {CITIES.map((c) => {
+            const live = Boolean(RANKINGS[c.id]);
+            return (
+              <button
+                key={c.id}
+                type="button"
+                role="tab"
+                aria-selected={city === c.id}
+                className={"rank-city" + (live ? "" : " soon")}
+                onClick={() => setCity(c.id)}
+              >
+                <span className="rank-city-name">{c.name}</span>
+                <span className="rank-city-sub">{live ? c.state : r.soon}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {items ? (
+          <div className="rank-list-box">
+            <h2 className="rank-list-h">
+              {r.listH} <span className="hand">{cityInfo.name}</span>
+            </h2>
+            <ol className="rank-list">
+              {shown.map((it, i) => (
+                <li key={it.name} className="rank-item">
+                  <span className="rank-num">{i + 1}</span>
+                  <div className="rank-body">
+                    <strong className="rank-name">{it.name}</strong>
+                    <span className="rank-meta">
+                      {it.type[lang]} · {it.area}
+                    </span>
+                  </div>
+                  <div className="rank-score">
+                    <strong>★ {it.rating.toFixed(1)}</strong>
+                    <span>
+                      {it.reviews.toLocaleString(lang === "es" ? "es-MX" : "en-US")} {r.reviews}
+                    </span>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            {!unlocked && items.length > FREE_COUNT && (
+              <div className="rank-locked">
+                <ol className="rank-list rank-ghost" aria-hidden="true" start={FREE_COUNT + 1}>
+                  {[0, 1, 2].map((k) => (
+                    <li key={k} className="rank-item">
+                      <span className="rank-num">{FREE_COUNT + 1 + k}</span>
+                      <div className="rank-body">
+                        <span className="rank-bar" />
+                        <span className="rank-bar short" />
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+                <p className="rank-locked-h">{r.lockedH.replace("7", String(items.length - FREE_COUNT))}</p>
+                <RankingGate r={r} lang={lang} city={city} onUnlock={() => setUnlocked(true)} />
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="rank-soon">
+            <h2>{r.soonH}</h2>
+            <p>{r.soonP}</p>
+            <button type="button" className="btn ghost" onClick={() => setCity("phoenix")}>
+              {r.soonBtn}
+            </button>
+          </div>
+        )}
+
+        <div className="about-cta rank-owner">
+          <p className="lede">{r.ownerP}</p>
+          <a className="btn" href="/#empezar">
+            {r.ownerBtn}
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function PrivacyPolicy({ t }) {
   return (
     <section className="privacy-page">
@@ -2442,6 +2633,20 @@ export default function App() {
         <Nav lang={lang} setLang={setLang} t={t} />
         <main>
           <CalculatorPage t={t} lang={lang} />
+        </main>
+        <Footer t={t} lang={lang} />
+        <MobileBar t={t} />
+      </>
+    );
+  }
+
+  // eltoaster.com/ranking is the short one to say out loud in videos.
+  if (["/rankings", "/ranking"].includes(window.location.pathname.replace(/\/+$/, ""))) {
+    return (
+      <>
+        <Nav lang={lang} setLang={setLang} t={t} />
+        <main>
+          <RankingsPage t={t} lang={lang} />
         </main>
         <Footer t={t} lang={lang} />
         <MobileBar t={t} />

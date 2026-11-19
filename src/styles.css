@@ -1700,7 +1700,7 @@ ul { list-style: none; padding: 0; margin: 0; }
 .rank-city.soon .rank-city-name { color: var(--text-2); }
 .rank-city[aria-selected="true"]:not(.soon) .rank-city-sub { color: var(--orange); }
 
-.rank-select-label { display: block; }
+.rank-select-label { display: block; font-weight: 800; letter-spacing: -0.02em; }
 .rank-select { position: relative; margin-bottom: clamp(26px, 4vw, 36px); }
 .rank-select::after {
   content: "";
@@ -1815,7 +1815,8 @@ ul { list-style: none; padding: 0; margin: 0; }
   .rank-item { grid-template-columns: 36px 1fr; gap: 10px; padding: 12px; }
   .rank-num { width: 34px; height: 34px; font-size: 0.95rem; }
   .rank-name { font-size: 0.95rem; }
-  .rank-owner .btn { width: 100%; justify-content: center; }
+  .rank-owner .btn,
+  .rank-pdf { width: 100%; justify-content: center; }
 }
 
 .privacy-page { padding: clamp(48px, 8vw, 96px) 0; }

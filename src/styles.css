@@ -361,9 +361,11 @@ section { padding-block: clamp(72px, 11vw, 132px); }
   .hero-brand { font-size: 0.76rem; padding: 6px 12px 6px 10px; gap: 8px; }
 }
 /* One pill per layout: above the chart when stacked, above the cities on desktop. */
-.hero-brand-top { justify-self: start; margin-bottom: -6px; }
+.hero-top-row { justify-self: start; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: -6px; }
+.hero-top-row .hero-brand { margin-bottom: 0; }
 .hero-brand-copy { display: none; }
 @media (min-width: 1000px) {
+  .hero-top-row { display: none; }
   .hero-brand-top { display: none; }
   .hero-brand-copy { display: inline-flex; }
 }
@@ -648,7 +650,7 @@ section { padding-block: clamp(72px, 11vw, 132px); }
 
 .hero-news { display: none; }
 @media (max-width: 620px) {
-  .hero-news { display: inline-flex; }
+  .hero-news { display: inline-flex; padding: 7px 14px; font-size: 0.76rem; }
   .hero-cta { gap: 8px; }
   .hero-cta .btn { padding: 14px 14px; gap: 8px; font-size: 0.92rem; white-space: nowrap; }
 }

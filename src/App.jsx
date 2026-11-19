@@ -488,10 +488,16 @@ function Hero({ t }) {
       <div className="hero-glow" aria-hidden="true" />
       <div className="wrap hero-grid">
         {/* Phones and tablets: the chart comes first, so the pill goes above it. */}
-        <p className="hero-brand hero-brand-top">
-          <span aria-hidden="true" />
-          {t.brand.pill}
-        </p>
+        <div className="hero-top-row">
+          <p className="hero-brand hero-brand-top">
+            <span aria-hidden="true" />
+            {t.brand.pill}
+          </p>
+          {/* Phones only: the nav has no room for it there. */}
+          <a className="btn gray hero-news" href="#newsletter" onClick={goToNewsletter}>
+            {t.nav.news}
+          </a>
+        </div>
         <HeroDashboard t={t} />
         <Reveal className="hero-copy">
           {/* Visitors arrive from Desde Zero's socials: say where they landed. */}
@@ -510,10 +516,6 @@ function Hero({ t }) {
             <a className="btn green" href="/calculator">
               <CalculatorIcon />
               {t.hero.cta2}
-            </a>
-            {/* Phones only: the nav has no room for it there. */}
-            <a className="btn gray hero-news" href="#newsletter" onClick={goToNewsletter}>
-              {t.nav.news}
             </a>
           </div>
 

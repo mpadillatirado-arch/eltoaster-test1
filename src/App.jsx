@@ -2347,8 +2347,8 @@ function RankingsPage({ t, lang }) {
               <li key={p}>{p}</li>
             ))}
           </ul>
-          <a className="btn btn-lg" href="/#empezar">
-            {r.ownerBtn} →
+          <a className="btn" href="/#empezar">
+            {r.ownerBtn}&nbsp;→
           </a>
         </div>
       </div>

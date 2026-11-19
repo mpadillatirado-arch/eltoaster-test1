@@ -185,7 +185,7 @@ function Nav({ lang, setLang, t }) {
     if (!menuOpen) return;
     const close = () => setMenuOpen(false);
     window.addEventListener("hashchange", close);
-    const mq = window.matchMedia("(min-width: 900px)");
+    const mq = window.matchMedia("(min-width: 1101px)");
     mq.addEventListener("change", close);
     return () => {
       window.removeEventListener("hashchange", close);

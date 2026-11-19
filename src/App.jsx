@@ -2339,9 +2339,16 @@ function RankingsPage({ t, lang }) {
         )}
 
         <div className="about-cta rank-owner">
+          <p className="rank-owner-eyebrow">{r.ownerEyebrow}</p>
+          <h2>{r.ownerH}</h2>
           <p className="lede">{r.ownerP}</p>
-          <a className="btn" href="/#empezar">
-            {r.ownerBtn}
+          <ul className="rank-owner-points">
+            {r.ownerPoints.map((p) => (
+              <li key={p}>{p}</li>
+            ))}
+          </ul>
+          <a className="btn btn-lg" href="/#empezar">
+            {r.ownerBtn} →
           </a>
         </div>
       </div>

@@ -458,8 +458,11 @@ export const content = {
       soonH: "Este ranking viene pronto",
       soonP: "Estoy terminando la lista de esta ciudad. Mientras, mira el de Phoenix.",
       soonBtn: "Ver Phoenix",
-      ownerP: "Te digo qué dicen tus reseñas de ti y qué cambiar para subir en el ranking. Sin costo.",
-      ownerBtn: "¿Tienes restaurante? Pide tu diagnóstico gratis.",
+      ownerEyebrow: "¿Tienes restaurante?",
+      ownerH: "¿Tu restaurante debería estar en esta lista?",
+      ownerP: "Te digo qué dicen de ti en Google y Yelp, y qué cambiar para que más gente te elija. Cada estrella en tus reseñas vale entre 5% y 9% de tus ventas.",
+      ownerPoints: ["Gratis y sin compromiso", "Te lo mando en 48 horas", "Solo llenas un formulario corto"],
+      ownerBtn: "Quiero mi diagnóstico gratis",
     },
 
     privacy: {
@@ -959,8 +962,11 @@ export const content = {
       soonH: "This ranking is coming soon",
       soonP: "I'm finishing this city's list. In the meantime, check out Phoenix.",
       soonBtn: "See Phoenix",
-      ownerP: "I'll tell you what your reviews say about you and what to change to move up. Free.",
-      ownerBtn: "Own a restaurant? Get your free diagnostic.",
+      ownerEyebrow: "Own a restaurant?",
+      ownerH: "Should your restaurant be on this list?",
+      ownerP: "I'll tell you what people say about you on Google and Yelp, and what to change so more people pick you. Every star in your reviews is worth 5% to 9% of your sales.",
+      ownerPoints: ["Free, no strings attached", "In your inbox within 48 hours", "Just fill out a short form"],
+      ownerBtn: "I want my free diagnostic",
     },
 
     privacy: {

@@ -2,12 +2,10 @@
  *
  * Phoenix lists come from the phoenix-food-rankings skill (published
  * Instagram rankings, Nov 2026 snapshot). Cities without lists show
- * "Coming soon". Only places FREE_FROM+1..FREE_TO are open (4-6); the
- * top 3 and the rest need a name and email (saved in public.ranking_leads).
+ * "Coming soon". The page shows every place; the PDF still asks for a name
+ * and email (saved in public.ranking_leads). How the order is decided is in
+ * src/RankingCriteria.jsx (from the phoenix-food-ranking-criteria skill).
  */
-
-export const FREE_FROM = 3;
-export const FREE_TO = 6;
 
 export const CITIES = [
   { id: "phoenix", name: "Phoenix", state: "AZ" },

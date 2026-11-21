@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback, lazy, Suspense } from "react"
 import { content } from "./content.js";
 import { supabase } from "./supabase.js";
 import { analyticsEnabled, startAnalytics, trackPage, track, setLanguage } from "./analytics.js";
-import { CITIES, RANKINGS, FREE_FROM, FREE_TO } from "./rankings.js";
+import { CITIES, RANKINGS } from "./rankings.js";
 import lasCulichisLogo from "./assets/clients/las-culichis.jpg";
 import padelPalsLogo from "./assets/clients/padel-pals.jpg";
 import sushinoLogo from "./assets/clients/sushino.jpg";
@@ -15,6 +15,8 @@ import posTerminal from "./assets/pos-terminal.webp";
 
 // The owner panel is only ever opened by one person, so it loads on its own.
 const AdminPage = lazy(() => import("./Admin.jsx"));
+// The ranking criteria only load when an owner opens them.
+const RankingCriteria = lazy(() => import("./RankingCriteria.jsx"));
 
 const CLIENT_LOGOS = {
   "las-culichis": lasCulichisLogo,
@@ -2233,17 +2235,10 @@ function RankingsPage({ t, lang }) {
       </li>
     );
   };
-  const ghost = (n) => (
-    <li key={n} className={"rank-item ghost" + (n <= 3 ? " top" : "")} aria-hidden="true">
-      <span className="rank-num">{n}</span>
-      <div className="rank-body">
-        <span className="rank-bar" />
-        <span className="rank-bar short" />
-      </div>
-    </li>
-  );
   const [gateOpen, setGateOpen] = useState(false);
   const [done, setDone] = useState(false);
+  const [critOpen, setCritOpen] = useState(false);
+  const closeCrit = useCallback(() => setCritOpen(false), []);
   useEffect(() => setDone(false), [catId, city]);
 
   // Someone who already left their details gets the file right away; everyone
@@ -2314,51 +2309,66 @@ function RankingsPage({ t, lang }) {
               {r.listIn} {CITIES.find((c) => c.id === city).name}
             </h2>
 
-            {/* The full list lives only in the PDF, so the page always shows
-                the same teaser: top 3 hidden, 4–6 open, the rest hidden. */}
-            <div className="rank-top-locked">
-              <ol className="rank-list">{[1, 2, 3].map(ghost)}</ol>
-              <button type="button" className="rank-top-chip" onClick={getPdf}>
-                {r.topLocked}
+            {/* For owners: how the order was decided, one tap away. */}
+            <div className="rank-crit-banner">
+              <span className="rank-crit-art" aria-hidden="true">
+                <i style={{ height: "100%" }} />
+                <i style={{ height: "64%" }} />
+                <i style={{ height: "30%" }} />
+              </span>
+              <div className="rank-crit-text">
+                <p className="rank-crit-eyebrow">{r.critBannerEyebrow}</p>
+                <strong>{r.critBannerH}</strong>
+                <span>{r.critBannerP}</span>
+              </div>
+              <button type="button" className="btn rank-crit-btn" onClick={() => setCritOpen(true)}>
+                {r.critBannerBtn}
               </button>
             </div>
-            <ol className="rank-list rank-open">
-              {items.slice(FREE_FROM, FREE_TO).map((it, i) => row(it, FREE_FROM + i + 1))}
+
+            {/* The whole list, the same as the Instagram post. */}
+            <ol className="rank-list rank-full" style={{ "--rows": Math.ceil(items.length / 2) }}>
+              {items.map((it, i) => row(it, i + 1))}
             </ol>
-            <div className="rank-locked">
-              <ol className="rank-list">{[FREE_TO + 1, FREE_TO + 2, FREE_TO + 3].map(ghost)}</ol>
-              <p className="rank-locked-h">
-                {r.lockedH.replace("{n}", items.length - (FREE_TO - FREE_FROM))}
-              </p>
-              <div className="rank-pdf-box" id="rank-gate">
-                {!gateOpen && (
-                  <button type="button" className="btn rank-pdf" onClick={getPdf}>
-                    {r.pdf}
-                  </button>
-                )}
-                {gateOpen && (
-                  <RankingGate
-                    r={r}
-                    lang={lang}
-                    city={city}
-                    onUnlock={() => {
-                      setUnlocked(true);
-                      setGateOpen(false);
-                      setDone(true);
-                      downloadFile(pdf);
-                    }}
-                  />
-                )}
-                {done && !gateOpen && (
-                  <p className="rank-done">
-                    {r.done}{" "}
-                    <a href={pdf} download>
-                      {r.again}
-                    </a>
-                  </p>
-                )}
-              </div>
+
+            <button type="button" className="rank-crit-link" onClick={() => setCritOpen(true)}>
+              {r.critLink}
+            </button>
+
+            <div className="rank-pdf-box" id="rank-gate">
+              {!gateOpen && (
+                <button type="button" className="btn ghost rank-pdf" onClick={getPdf}>
+                  {r.pdf}
+                </button>
+              )}
+              {gateOpen && (
+                <RankingGate
+                  r={r}
+                  lang={lang}
+                  city={city}
+                  onUnlock={() => {
+                    setUnlocked(true);
+                    setGateOpen(false);
+                    setDone(true);
+                    downloadFile(pdf);
+                  }}
+                />
+              )}
+              {done && !gateOpen && (
+                <p className="rank-done">
+                  {r.done}{" "}
+                  <a href={pdf} download>
+                    {r.again}
+                  </a>
+                </p>
+              )}
             </div>
+
+            {critOpen && (
+              <Suspense fallback={null}>
+                <RankingCriteria c={r.crit} ranking={cat.id} onClose={closeCrit} />
+              </Suspense>
+            )}
           </div>
         ) : (
           <div className="rank-soon">

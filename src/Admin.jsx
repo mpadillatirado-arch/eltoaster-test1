@@ -98,7 +98,7 @@ async function loadAll() {
     ),
     fetchAll("diagnostic_reports", "id,lead_id,status,weighted_score,created_at,sent_at,rejected_reason"),
     fetchAll("calculator_leads", "id,created_at,name,email,phone,preferred_language"),
-    fetchAll("ranking_leads", "id,created_at,name,email,city,preferred_language,category"),
+    fetchAll("ranking_leads", "id,created_at,name,email,city,preferred_language,category,purpose"),
     fetchAll("newsletter_subscribers", "id,created_at,email,lang,source,unsubscribed_at,unsubscribe_reason,is_test,welcomed_at"),
     fetchAll("privacy_requests", "id,created_at,request_type,email,details,status,resolved_at"),
   ]);
@@ -481,7 +481,9 @@ function Detail({ p, onClose }) {
             <ul className="adm-plain">
               {p.ranks.map((r) => (
                 <li key={r.id}>
-                  {RANK_LABEL[r.category] || (r.category ? r.category : "Categoría sin registrar")} · {cityLabel(r.city)} · {fmt(r.created_at)}
+                  {RANK_LABEL[r.category] || (r.category ? r.category : "Categoría sin registrar")} · {cityLabel(r.city)} ·{" "}
+                  {r.purpose === "criteria" ? "vio el criterio" : r.purpose === "pdf" ? "bajó el PDF" : ""}{r.purpose ? " · " : ""}
+                  {fmt(r.created_at)}
                 </li>
               ))}
             </ul>

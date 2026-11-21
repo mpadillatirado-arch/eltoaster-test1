@@ -29,129 +29,380 @@ export const RANKINGS = {
         {
           "name": "Taco Viva",
           "dish": "Adobada estilo TJ",
-          "city": null
-        },
-        {
-          "name": "Tacos Chiwas",
-          "dish": "Variado",
-          "city": null
+          "city": "Phoenix",
+          "score": {
+            "google": 4.7,
+            "yelp": 4.7,
+            "noYelp": false,
+            "award": "Best of Phoenix 2024",
+            "influencer": true,
+            "community": true,
+            "total": 98.0,
+            "prev": 1
+          }
         },
         {
           "name": "Los Vales",
           "dish": "Birria crujiente",
-          "city": null
-        },
-        {
-          "name": "Asadero Pitic",
-          "dish": "Asada sonorense",
-          "city": null
+          "city": "Phoenix",
+          "score": {
+            "google": 4.8,
+            "yelp": 4.5,
+            "noYelp": false,
+            "award": null,
+            "influencer": false,
+            "community": true,
+            "total": 94.9,
+            "prev": 3
+          }
         },
         {
           "name": "Ta'Carbon",
           "dish": "Asada sonorense",
-          "city": null
-        },
-        {
-          "name": "Taco Boys",
-          "dish": "Asada y tripa",
-          "city": null
-        },
-        {
-          "name": "Restaurante Lomas",
-          "dish": "Asada, cabeza y Minini",
-          "city": null
-        },
-        {
-          "name": "Tacos El Rojo",
-          "dish": "Adobada estilo TJ",
-          "city": null
-        },
-        {
-          "name": "Tacos Huicho",
-          "dish": "Al pastor estilo chilango",
-          "city": null
-        },
-        {
-          "name": "Tacos Chava",
-          "dish": "Asada tipo cebosito",
-          "city": null
-        },
-        {
-          "name": "Asadero Sonora",
-          "dish": "Asada sonorense",
-          "city": null
-        },
-        {
-          "name": "Tacos Lin",
-          "dish": "Al pastor",
-          "city": null
-        },
-        {
-          "name": "La Santísima",
-          "dish": "Taco de mole negro",
-          "city": null
-        },
-        {
-          "name": "Birrieria Tijuana",
-          "dish": "Birria estilo Tijuana",
-          "city": null
-        },
-        {
-          "name": "Unos Tacos y Birria",
-          "dish": "Birria de res",
-          "city": null
-        },
-        {
-          "name": "Tacos del Pepe",
-          "dish": "Asada sonorense",
-          "city": null
-        },
-        {
-          "name": "El Fundador",
-          "dish": "Campechano",
-          "city": null
-        },
-        {
-          "name": "Taco Chelo",
-          "dish": "Quesadillas",
-          "city": null
-        },
-        {
-          "name": "Mi Lindo Michoacán",
-          "dish": "Carnitas",
-          "city": null
-        },
-        {
-          "name": "Taquería El Trompo",
-          "dish": "Al pastor estilo chilango",
-          "city": null
-        },
-        {
-          "name": "Tacos Sahuaro",
-          "dish": "Tacos de la casa",
-          "city": null
-        },
-        {
-          "name": "Don Camarón",
-          "dish": "Taco de camarón",
-          "city": null
-        },
-        {
-          "name": "Santa Madre Taco Shop",
-          "dish": "Fish taco",
-          "city": null
-        },
-        {
-          "name": "La Frontera",
-          "dish": "Taco de carnitas",
-          "city": null
+          "city": "Phoenix, Glendale y Peoria",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.4,
+            "noYelp": false,
+            "award": "Best Carne Asada 2024",
+            "influencer": true,
+            "community": true,
+            "total": 94.4,
+            "prev": 5
+          }
         },
         {
           "name": "Tacos Calafia",
           "dish": "Adobada estilo TJ",
-          "city": null
+          "city": "Varias sucursales",
+          "score": {
+            "google": 4.7,
+            "yelp": 4.3,
+            "noYelp": false,
+            "award": "Best Al Pastor 2018",
+            "influencer": false,
+            "community": true,
+            "total": 93.8,
+            "prev": 24
+          }
+        },
+        {
+          "name": "Tacos Chiwas",
+          "dish": "Variado",
+          "city": "Phoenix y Mesa",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.5,
+            "noYelp": false,
+            "award": "Best Quesadilla 2020",
+            "influencer": false,
+            "community": false,
+            "total": 92.0,
+            "prev": 2
+          }
+        },
+        {
+          "name": "Restaurante Lomas",
+          "dish": "Asada, cabeza y Minini",
+          "city": "Chandler",
+          "score": {
+            "google": 4.8,
+            "yelp": 4.0,
+            "noYelp": false,
+            "award": null,
+            "influencer": false,
+            "community": true,
+            "total": 91.4,
+            "prev": 7
+          }
+        },
+        {
+          "name": "Asadero Sonora",
+          "dish": "Asada sonorense",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.5,
+            "noYelp": false,
+            "award": null,
+            "influencer": false,
+            "community": false,
+            "total": 91.3,
+            "prev": 11
+          }
+        },
+        {
+          "name": "Taco Chelo",
+          "dish": "Quesadillas",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.0,
+            "noYelp": false,
+            "award": "Best Quesadillas 2022",
+            "influencer": false,
+            "community": true,
+            "total": 90.8,
+            "prev": 17
+          }
+        },
+        {
+          "name": "Santa Madre Taco Shop",
+          "dish": "Fish taco",
+          "city": "Tempe",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.4,
+            "noYelp": false,
+            "award": null,
+            "influencer": false,
+            "community": false,
+            "total": 90.6,
+            "prev": 22
+          }
+        },
+        {
+          "name": "Don Camarón",
+          "dish": "Taco de camarón",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.4,
+            "noYelp": false,
+            "award": null,
+            "influencer": false,
+            "community": false,
+            "total": 90.6,
+            "prev": 21
+          }
+        },
+        {
+          "name": "Tacos Lin",
+          "dish": "Al pastor",
+          "city": "Glendale",
+          "score": {
+            "google": 4.8,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": null,
+            "influencer": false,
+            "community": true,
+            "total": 90.0,
+            "prev": 12
+          }
+        },
+        {
+          "name": "Birrieria Tijuana",
+          "dish": "Birria estilo Tijuana",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.4,
+            "noYelp": false,
+            "award": null,
+            "influencer": false,
+            "community": false,
+            "total": 89.3,
+            "prev": 13
+          }
+        },
+        {
+          "name": "Taco Boys",
+          "dish": "Asada y tripa",
+          "city": "Phoenix y Tempe",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.3,
+            "noYelp": false,
+            "award": null,
+            "influencer": true,
+            "community": false,
+            "total": 89.2,
+            "prev": 6
+          }
+        },
+        {
+          "name": "La Frontera",
+          "dish": "Taco de carnitas",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.4,
+            "yelp": 4.3,
+            "noYelp": false,
+            "award": null,
+            "influencer": false,
+            "community": true,
+            "total": 88.3,
+            "prev": 23
+          }
+        },
+        {
+          "name": "Taquería El Trompo",
+          "dish": "Al pastor estilo chilango",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.2,
+            "noYelp": false,
+            "award": null,
+            "influencer": false,
+            "community": false,
+            "total": 87.9,
+            "prev": 19
+          }
+        },
+        {
+          "name": "Tacos Sahuaro",
+          "dish": "Tacos de la casa",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.5,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": "Best Taco 2018",
+            "influencer": false,
+            "community": false,
+            "total": 87.1,
+            "prev": 20
+          }
+        },
+        {
+          "name": "Tacos del Pepe",
+          "dish": "Asada sonorense",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.4,
+            "yelp": 4.1,
+            "noYelp": false,
+            "award": null,
+            "influencer": false,
+            "community": true,
+            "total": 86.9,
+            "prev": 15
+          }
+        },
+        {
+          "name": "Unos Tacos y Birria",
+          "dish": "Birria de res",
+          "city": "Phoenix y Mesa",
+          "score": {
+            "google": 4.5,
+            "yelp": 3.9,
+            "noYelp": false,
+            "award": null,
+            "influencer": false,
+            "community": true,
+            "total": 86.2,
+            "prev": 14
+          }
+        },
+        {
+          "name": "Tacos El Güero",
+          "dish": "Taquería",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.5,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": null,
+            "influencer": false,
+            "community": true,
+            "total": 86.1,
+            "prev": null
+          }
+        },
+        {
+          "name": "Tacos El Rojo",
+          "dish": "Adobada estilo TJ",
+          "city": "Glendale y Peoria",
+          "score": {
+            "google": 4.3,
+            "yelp": 3.9,
+            "noYelp": false,
+            "award": null,
+            "influencer": true,
+            "community": true,
+            "total": 85.2,
+            "prev": 8
+          }
+        },
+        {
+          "name": "Asadero Pitic",
+          "dish": "Asada sonorense",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.3,
+            "yelp": 3.6,
+            "noYelp": false,
+            "award": null,
+            "influencer": true,
+            "community": true,
+            "total": 83.1,
+            "prev": 4
+          }
+        },
+        {
+          "name": "Tacos Chava",
+          "dish": "Asada tipo cebosito",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.4,
+            "yelp": 3.5,
+            "noYelp": false,
+            "award": null,
+            "influencer": false,
+            "community": true,
+            "total": 82.7,
+            "prev": 10
+          }
+        },
+        {
+          "name": "Tacos Huicho",
+          "dish": "Al pastor estilo chilango",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.2,
+            "yelp": 3.8,
+            "noYelp": false,
+            "award": null,
+            "influencer": false,
+            "community": true,
+            "total": 82.0,
+            "prev": 9
+          }
+        },
+        {
+          "name": "Mi Lindo Michoacán",
+          "dish": "Carnitas",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.1,
+            "yelp": 4.0,
+            "noYelp": false,
+            "award": null,
+            "influencer": false,
+            "community": false,
+            "total": 81.3,
+            "prev": 18
+          }
+        },
+        {
+          "name": "El Fundador",
+          "dish": "Campechano",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.2,
+            "yelp": 3.4,
+            "noYelp": false,
+            "award": "Best Taco Tuesday 2020",
+            "influencer": false,
+            "community": false,
+            "total": 80.4,
+            "prev": 16
+          }
         }
-      ]
+      ],
+      "method": "v2"
     },
     {
       "id": "hot-dogs",

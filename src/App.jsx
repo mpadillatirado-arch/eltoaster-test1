@@ -2111,7 +2111,9 @@ function downloadFile(href) {
 
 /** Name, email and the newsletter opt-in before a ranking's PDF downloads.
  *  Remembered in this browser, so later PDFs download straight away. */
-function RankingGate({ r, lang, city, onUnlock }) {
+/** One sign-up for both the criteria and the PDF: whoever leaves their
+ *  details for one is never asked again for the other in this browser. */
+function RankingGate({ r, lang, city, category, purpose, onUnlock }) {
   const [form, setForm] = useState({ name: "", email: "" });
   const [consent, setConsent] = useState(false);
   const [state, setState] = useState("idle"); // idle | sending | error
@@ -2127,7 +2129,7 @@ function RankingGate({ r, lang, city, onUnlock }) {
     setState("sending");
     const email = form.email.trim();
     const { error } = await supabase.from("ranking_leads").insert([
-      { name: form.name.trim(), email, city, preferred_language: lang, category: r.id },
+      { name: form.name.trim(), email, city, preferred_language: lang, category, purpose },
     ]);
     if (error) {
       setState("error");
@@ -2141,14 +2143,15 @@ function RankingGate({ r, lang, city, onUnlock }) {
     } catch {
       /* storage unavailable — they still get this download */
     }
-    track("generate_lead", { form: "ranking", ranking: r.id, city, site_language: lang });
+    track("generate_lead", { form: "ranking", ranking: category, purpose, city, site_language: lang });
     onUnlock();
   }
 
   return (
     <div className="form-card rank-gate">
-      <h3>{r.gateTitle}</h3>
-      <p className="rank-gate-lede">{r.gateLede}</p>
+      <h3>{r.gateFor[purpose].title}</h3>
+      <p className="rank-gate-lede">{r.gateFor[purpose].lede}</p>
+      <p className="rank-gate-both">{r.gateBoth}</p>
       <form onSubmit={submit}>
         {state === "error" && (
           <div className="alert err" role="alert">
@@ -2190,7 +2193,7 @@ function RankingGate({ r, lang, city, onUnlock }) {
           </label>
         </div>
         <button className="btn" type="submit" disabled={state === "sending" || !consent}>
-          {state === "sending" ? r.unlocking : r.unlock}
+          {state === "sending" ? r.unlocking : r.gateFor[purpose].btn}
         </button>
         <p className="formnote">{r.gateNote}</p>
       </form>
@@ -2224,7 +2227,9 @@ function RankingsPage({ t, lang }) {
   const pdf = cat ? `/rankings/top-${items.length}-${cat.id}-${city}-2026.pdf` : null;
 
   const row = (it, n) => {
-    const meta = [it.dish, it.city && `${it.city}, AZ`].filter(Boolean).join(" · ");
+    const meta = [it.dish, it.city && (/sucursales/i.test(it.city) ? it.city : `${it.city}, AZ`)]
+      .filter(Boolean)
+      .join(" · ");
     return (
       <li key={n} className={"rank-item" + (n <= 3 ? " top" : "")}>
         <span className="rank-num">{n}</span>
@@ -2241,19 +2246,30 @@ function RankingsPage({ t, lang }) {
   const closeCrit = useCallback(() => setCritOpen(false), []);
   useEffect(() => setDone(false), [catId, city]);
 
-  // Someone who already left their details gets the file right away; everyone
-  // else sees the form first.
+  // One sign-up opens both the criteria and the PDF. Someone who already left
+  // their details goes straight through; everyone else sees the form first.
+  const openCriteria = () => (unlocked ? setCritOpen(true) : setGateOpen("criteria"));
   const getPdf = () => {
-    if (unlocked) {
-      downloadFile(pdf);
-      setDone(true);
-      return;
-    }
-    setGateOpen(true);
-    requestAnimationFrame(() =>
-      document.getElementById("rank-gate")?.scrollIntoView({ behavior: "smooth", block: "center" })
-    );
+    if (!unlocked) return setGateOpen("pdf");
+    downloadFile(pdf);
+    setDone(true);
   };
+  const unlockedFor = (purpose) => {
+    setUnlocked(true);
+    setGateOpen(false);
+    if (purpose === "criteria") {
+      setCritOpen(true);
+    } else {
+      setDone(true);
+      downloadFile(pdf);
+    }
+  };
+  useEffect(() => {
+    if (!gateOpen) return undefined;
+    const onKey = (e) => e.key === "Escape" && setGateOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [gateOpen]);
 
   return (
     <section className="rank-page">
@@ -2321,7 +2337,7 @@ function RankingsPage({ t, lang }) {
                 <strong>{r.critBannerH}</strong>
                 <span>{r.critBannerP}</span>
               </div>
-              <button type="button" className="btn rank-crit-btn" onClick={() => setCritOpen(true)}>
+              <button type="button" className="btn rank-crit-btn" onClick={openCriteria}>
                 {r.critBannerBtn}
               </button>
             </div>
@@ -2331,30 +2347,15 @@ function RankingsPage({ t, lang }) {
               {items.map((it, i) => row(it, i + 1))}
             </ol>
 
-            <button type="button" className="rank-crit-link" onClick={() => setCritOpen(true)}>
+            <button type="button" className="rank-crit-link" onClick={openCriteria}>
               {r.critLink}
             </button>
 
             <div className="rank-pdf-box" id="rank-gate">
-              {!gateOpen && (
-                <button type="button" className="btn ghost rank-pdf" onClick={getPdf}>
-                  {r.pdf}
-                </button>
-              )}
-              {gateOpen && (
-                <RankingGate
-                  r={r}
-                  lang={lang}
-                  city={city}
-                  onUnlock={() => {
-                    setUnlocked(true);
-                    setGateOpen(false);
-                    setDone(true);
-                    downloadFile(pdf);
-                  }}
-                />
-              )}
-              {done && !gateOpen && (
+              <button type="button" className="btn ghost rank-pdf" onClick={getPdf}>
+                {r.pdf}
+              </button>
+              {done && (
                 <p className="rank-done">
                   {r.done}{" "}
                   <a href={pdf} download>
@@ -2364,9 +2365,32 @@ function RankingsPage({ t, lang }) {
               )}
             </div>
 
+            {gateOpen && (
+              <div className="crit-overlay" onClick={() => setGateOpen(false)}>
+                <div
+                  className="crit-panel rank-gate-panel"
+                  role="dialog"
+                  aria-modal="true"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button type="button" className="crit-x" onClick={() => setGateOpen(false)} aria-label={r.crit.close}>
+                    ×
+                  </button>
+                  <RankingGate
+                    r={r}
+                    lang={lang}
+                    city={city}
+                    category={cat.id}
+                    purpose={gateOpen}
+                    onUnlock={() => unlockedFor(gateOpen)}
+                  />
+                </div>
+              </div>
+            )}
+
             {critOpen && (
               <Suspense fallback={null}>
-                <RankingCriteria c={r.crit} ranking={cat.id} onClose={closeCrit} />
+                <RankingCriteria c={r.crit} ranking={cat.id} items={items} label={cat.label[lang]} onClose={closeCrit} />
               </Suspense>
             )}
           </div>

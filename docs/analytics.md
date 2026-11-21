@@ -1,13 +1,8 @@
 # Analytics (Google Analytics 4)
 
-Built and switched off. To turn it on, add the Measurement ID to `.env.production`
-and deploy:
-
-```
-VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
-```
-
-The ID is public (it is visible in any site that uses GA), so it is fine to commit.
+Live property: **El Toaster**, Measurement ID `G-JDSNBPBD56`, in the Google Analytics
+account "Supernova" (stream: https://www.eltoaster.com). The ID is public and lives in
+`.env.production` as `VITE_GA_MEASUREMENT_ID`. Remove that line to switch tracking off.
 With no ID, no Google script loads and every call in `src/analytics.js` does nothing.
 
 ## Rules it follows
@@ -53,9 +48,14 @@ UTM tags (`utm_*`) and `gclid` are kept on `page_location` so campaigns are attr
 
 `site_language` is also set as a user property on every visit.
 
-## To do once in GA4
+## GA4 settings
 
-1. Admin → Data streams → your stream → Enhanced measurement → Page views → gear → turn **off** "Page changes based on browser history events". Pages are sent by hand, so leaving it on double-counts blog and privacy views.
-2. Admin → Events → mark `generate_lead` (and optionally `sign_up`, `book_call`) as **key events**.
-3. Admin → Data collection → turn Google signals off if it is on, and keep data retention at 14 months.
-4. Register `form`, `section`, `cta`, `ranking`, `restaurant_type` and `page_name` as custom dimensions (event scope) to report on them.
+Already set when the property was created:
+
+- Enhanced measurement: "Page changes based on browser history events", Outbound clicks and File downloads are **off**, because the site sends `page_view`, `click` and `file_download` itself and they would be counted twice. Scrolls, site search, form interactions and video stay on.
+- Event data retention: 14 months (Google defaults to 2).
+
+Still to do, once the first data arrives (events only appear in GA after they are received):
+
+1. Admin → Data display → Events: star `generate_lead` (and optionally `sign_up`, `book_call`) as **key events**.
+2. Admin → Data display → Custom definitions: register `form`, `section`, `cta`, `ranking`, `restaurant_type` and `page_name` as event-scoped custom dimensions to report on them.

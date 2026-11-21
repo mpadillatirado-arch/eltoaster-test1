@@ -1,40 +1,44 @@
-# Fotos del blog y del newsletter (Pexels)
+# Fotos del blog y del newsletter (Unsplash)
 
-Las fotos de cada edición salen de Pexels, con una regla: **una foto no se repite**
+Las fotos de cada edición salen de Unsplash, con una regla: **una foto no se repite**
 en el blog. Cada noticia, el dato curioso, la nota de punto de venta y las "3 cosas"
 llevan su propia foto.
 
+(Se intentó Pexels primero, pero tiene cerradas las llaves nuevas de su API. Si
+reabre, el buscador y los índices de la base ya aceptan sus fotos también.)
+
 ## Cómo se garantiza
 
-- **Base de datos:** un índice único (`blog_posts_pexels_photo_once`) impide guardar la
-  misma foto de Pexels en dos publicaciones del mismo idioma. Se compara por el id de
-  la foto, así que cambiar el tamaño en la dirección no sirve para saltárselo. Las
-  fotos de archivo anteriores (Wikimedia) no entran en la regla.
-- **Al elegir:** `tools/blog-images/pexels-pick.mjs` busca en Pexels y deja fuera los
-  ids que ya se usaron (`--exclude`).
+- **Base de datos:** índices únicos (`blog_posts_unsplash_photo_once`, y el equivalente
+  para Pexels) impiden guardar la misma foto en dos publicaciones del mismo idioma. Se
+  compara por el id de la foto (`photo-…` en la dirección), así que cambiar el tamaño
+  no sirve para saltárselo. Las fotos de archivo anteriores (Wikimedia) no entran en la regla.
+- **Al elegir:** `tools/blog-images/unsplash-pick.mjs` busca en Unsplash y deja fuera las
+  fotos ya usadas (`--exclude`).
 - **Antes de enviar:** la función `image-review` manda a Mario un correo con todas las
   fotos de la edición, marca las repetidas y las publicaciones sin foto.
 
-## La llave de Pexels
+## La llave de Unsplash
 
-Es gratis: https://www.pexels.com/api/ . Guárdala en una sola línea en
+Es gratis. Crea una cuenta en https://unsplash.com/developers, registra una aplicación
+("New Application", uso: blog de un negocio) y copia el **Access Key**. Guárdalo en una
+sola línea en
 
 ```
-C:\Users\<tu usuario>\.claude\secrets\pexels.key
+C:\Users\<tu usuario>\.claude\secrets\unsplash.key
 ```
 
-(o en la variable de entorno `PEXELS_API_KEY`). No va en el repositorio ni en el chat.
-Pexels permite 200 búsquedas por hora, de sobra para una edición semanal.
+(o en la variable de entorno `UNSPLASH_ACCESS_KEY`). No va en el repositorio ni en el chat.
+Una aplicación nueva está en modo "demo": 50 búsquedas por hora, de sobra para una
+edición semanal. Las imágenes mismas no cuentan en ese límite.
 
-## Crédito
+## Reglas de Unsplash que seguimos
 
-Pexels pide acreditar al fotógrafo y enlazar a Pexels. Cada publicación guarda:
-
-| Campo | Valor |
-|---|---|
-| `image_url` | la foto (`src.large` de Pexels) |
-| `image_credit` | `Foto: <fotógrafo> / Pexels` (en inglés: `Photo: <fotógrafo> / Pexels`) |
-| `image_credit_url` | la página de la foto en Pexels |
+- **Se enlazan directo** desde `images.unsplash.com` (no se copian a nuestro servidor).
+- **Crédito:** cada publicación muestra "Foto: <fotógrafo> / Unsplash" enlazado al perfil
+  del fotógrafo en Unsplash, con las marcas `utm_source=eltoaster&utm_medium=referral`.
+- **Aviso de uso:** al elegir una foto se avisa a Unsplash
+  (`unsplash-pick.mjs --use <download_location>`), una vez por foto elegida.
 
 ## Dónde va la foto de cada sección
 

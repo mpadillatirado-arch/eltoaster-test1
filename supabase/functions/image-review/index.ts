@@ -33,8 +33,12 @@ const db = (path: string) =>
 const esc = (s: unknown) =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string));
 
-/** The same photo can be written with different size parameters: compare by id when there is one. */
-const photoKey = (url: string) => /\/photos\/(\d+)\//.exec(url)?.[1] ?? url.split("?")[0];
+/** The same photo can be written with different size parameters: compare by its id when there is one
+ *  (Pexels: /photos/<id>/, Unsplash: images.unsplash.com/photo-<id>). */
+const photoKey = (url: string) =>
+  /\/photos\/(\d+)\//.exec(url)?.[1] ??
+  /images\.unsplash\.com\/(photo-[A-Za-z0-9_-]+)/.exec(url)?.[1] ??
+  url.split("?")[0];
 
 type Item = {
   owner: string;

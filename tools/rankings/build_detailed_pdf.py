@@ -12,7 +12,7 @@ src = (wt / "src" / "rankings.js").read_text(encoding="utf-8")
 cats = json.loads(re.search(r"phoenix: (\[.*\]),\n\};", src, re.S).group(1))
 avatar = base64.b64encode(avatar_path.read_bytes()).decode()
 EDGE = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-MAX = 104
+DEFAULT_METHOD = {"google": 65, "yelp": 35, "award": 3, "influencer": 2, "community": 2, "max": 107, "reviewFactor": False}
 esc = html.escape
 
 CSS = """
@@ -49,7 +49,8 @@ tr.top td.pos { color: #FD5819; }
 td.nm b { font-weight: 700; font-size: 8.6pt; display: block; line-height: 1.12; }
 td.nm span { color: #6b645d; font-size: 6.6pt; line-height: 1.1; display: block; }
 td.chg { font-weight: 700; font-size: 7.6pt; width: 0.5in; white-space: nowrap; }
-td.st { font-weight: 600; font-size: 8pt; white-space: nowrap; width: 0.55in; }
+td.st { font-weight: 600; font-size: 8pt; white-space: nowrap; width: 0.6in; }
+td.st small { color: #8a827a; font-weight: 500; font-size: 6.4pt; margin-left: 2px; }
 td.st small { color: #8a827a; font-weight: 500; font-size: 6.6pt; }
 td.bn { width: 0.7in; white-space: nowrap; }
 .ic { display: inline-grid; place-items: center; width: 17px; height: 17px; margin-right: 2px; border-radius: 50%;
@@ -123,6 +124,8 @@ for c in cats:
         continue
     n = len(items)
     label = c["label"]["es"]
+    m = c.get("method") or DEFAULT_METHOD
+    MAX = m["max"]
     rows = []
     for i, it in enumerate(items, 1):
         s = it["score"]
@@ -136,12 +139,12 @@ for c in cats:
             f'<tr class="{"top" if i <= 3 else ""}"><td class="pos">{i:02d}</td>'
             f'<td class="nm"><b>{esc(it["name"])}</b><span>{esc(meta(it))}</span></td>'
             f'<td class="chg">{move(s.get("prev"), i)}</td>'
-            f'<td class="st">★ {s["google"]:.1f}</td>'
+            f'<td class="st">★ {s["google"]:.1f}' + (f'<small>({s["gReviews"]:,})</small>' if s.get("gReviews") is not None else "") + '</td>'
             f'<td class="st">{yelp}</td>'
             f'<td class="bn">{chips}</td>'
             f'<td class="sc"><span class="bar"><i style="width:{s["total"] / MAX * 100:.1f}%"></i></span><b>{s["total"]:.1f}</b></td></tr>')
 
-    awards = [(it["name"], it["score"]["award"]) for it in items if it["score"].get("award")]
+    awards = [(it["name"], it["score"]["award"]) for it in items if isinstance(it["score"].get("award"), str)]
     aw_html = "".join(f'<div><b>{esc(nm)}</b><span>Best of Phoenix®</span> · {esc(a)}</div>' for nm, a in awards)
 
     footer = (f'<footer><img src="data:image/png;base64,{avatar}" alt=""><div class="t"><b>Mario Padilla</b><br>'
@@ -159,22 +162,23 @@ for c in cats:
 <span>🏆 Premio</span><span>📣 Influencers</span><span>💬 Comunidad</span></div>
 <table><thead><tr><th>#</th><th>Lugar</th><th>Cambio</th><th>Google</th><th>Yelp</th><th>Bonos</th><th class="r">Puntaje</th></tr></thead>
 <tbody>{''.join(rows)}</tbody></table>
-<p class="note">Puntaje sobre 104: estrellas de Google y Yelp más bonos. Con varias sucursales se promedian las que están abiertas.</p>
+<p class="note">Puntaje sobre {MAX}: estrellas de Google y Yelp más bonos.{" Entre paréntesis, las reseñas en Google: con menos de 50 las estrellas cuentan al 92% y de 50 a 150 al 95%." if m["reviewFactor"] else " Con varias sucursales se promedian las que están abiertas."}</p>
 {footer}</div>
 
 <div class="page"><div class="blob b1"></div><div class="blob b2"></div>
 <div class="method"><div class="eyebrow">Metodología Desde Zero</div><h2>Así se ordenó</h2>
 <p class="intro">Combino lo que dicen tus clientes en <b>Google</b> y <b>Yelp</b> con <b>premios</b> y <b>recomendaciones</b>.
 Es una metodología viva: la sigo afinando con cada edición y con lo que ustedes me dicen.</p>
-<div class="pills"><div class="pl"><span>Google</span><b>65%</b></div><div class="pl"><span>Yelp</span><b>35%</b></div>
-<div class="pl"><span>Premio</span><b>+2</b></div><div class="pl"><span>Influencers</span><b>+1</b></div><div class="pl"><span>Comunidad</span><b>+1</b></div></div>
+<div class="pills"><div class="pl"><span>Google</span><b>{m["google"]}%</b></div><div class="pl"><span>Yelp</span><b>{m["yelp"]}%</b></div>
+<div class="pl"><span>Premio</span><b>+{m["award"]}</b></div><div class="pl"><span>Influencers</span><b>+{m["influencer"]}</b></div><div class="pl"><span>Comunidad</span><b>+{m["community"]}</b></div></div>
 <div class="how">
 <div><b>Tus estrellas en Google</b>Es lo que más pesa. Ahí te busca la mayoría antes de decidir a dónde ir.</div>
 <div><b>Tus estrellas en Yelp</b>Mucha gente compara aquí antes de salir a comer.</div>
 <div><b>Premios formales</b>Como el Best of Phoenix de Phoenix New Times. Guías y artículos no cuentan.</div>
-<div><b>Influencers y comunidad</b>Un punto extra por cada uno cuando te recomiendan.</div>
+<div><b>Influencers y comunidad</b>Puntos extra cuando te recomiendan creadores locales o mi comunidad.</div>
+{'<div style="grid-column:1/-1"><b>Cuántas reseñas tienes en Google</b>En este ranking también cuenta: con menos de 50 reseñas tus estrellas valen al 92%, de 50 a 150 al 95% y con más de 150, completas.</div>' if m["reviewFactor"] else ''}
 </div></div>
-<div class="sec"><div class="eyebrow">Premios considerados</div><h2>Los que tienen premio</h2><div class="aw">{aw_html}</div></div>
+{f'<div class="sec"><div class="eyebrow">Premios considerados</div><h2>Los que tienen premio</h2><div class="aw">{aw_html}</div></div>' if awards else ''}
 <div class="sec"><div class="eyebrow">Reglas</div><h2>Lo que no se puede comprar</h2><ul class="rules">
 <li>Nadie paga por aparecer ni por subir</li><li>Sin cadenas ni franquicias</li>
 <li>Solo lugares abiertos, revisados en Google Maps</li><li>Una sola marca por lugar en la lista</li></ul></div>

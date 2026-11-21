@@ -2390,7 +2390,14 @@ function RankingsPage({ t, lang }) {
 
             {critOpen && (
               <Suspense fallback={null}>
-                <RankingCriteria c={r.crit} ranking={cat.id} items={items} label={cat.label[lang]} onClose={closeCrit} />
+                <RankingCriteria
+                  c={r.crit}
+                  ranking={cat.id}
+                  items={items}
+                  label={cat.label[lang]}
+                  method={cat.method}
+                  onClose={closeCrit}
+                />
               </Suspense>
             )}
           </div>

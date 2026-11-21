@@ -37,7 +37,7 @@ export const RANKINGS = {
             "award": "Best of Phoenix 2024",
             "influencer": true,
             "community": true,
-            "total": 98.0,
+            "total": 101.0,
             "prev": 1
           }
         },
@@ -49,10 +49,10 @@ export const RANKINGS = {
             "google": 4.8,
             "yelp": 4.5,
             "noYelp": false,
-            "award": null,
-            "influencer": false,
+            "award": false,
+            "influencer": true,
             "community": true,
-            "total": 94.9,
+            "total": 97.9,
             "prev": 3
           }
         },
@@ -67,7 +67,7 @@ export const RANKINGS = {
             "award": "Best Carne Asada 2024",
             "influencer": true,
             "community": true,
-            "total": 94.4,
+            "total": 97.4,
             "prev": 5
           }
         },
@@ -82,7 +82,7 @@ export const RANKINGS = {
             "award": "Best Al Pastor 2018",
             "influencer": false,
             "community": true,
-            "total": 93.8,
+            "total": 95.8,
             "prev": 24
           }
         },
@@ -97,38 +97,8 @@ export const RANKINGS = {
             "award": "Best Quesadilla 2020",
             "influencer": false,
             "community": false,
-            "total": 92.0,
+            "total": 93.0,
             "prev": 2
-          }
-        },
-        {
-          "name": "Restaurante Lomas",
-          "dish": "Asada, cabeza y Minini",
-          "city": "Chandler",
-          "score": {
-            "google": 4.8,
-            "yelp": 4.0,
-            "noYelp": false,
-            "award": null,
-            "influencer": false,
-            "community": true,
-            "total": 91.4,
-            "prev": 7
-          }
-        },
-        {
-          "name": "Asadero Sonora",
-          "dish": "Asada sonorense",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.6,
-            "yelp": 4.5,
-            "noYelp": false,
-            "award": null,
-            "influencer": false,
-            "community": false,
-            "total": 91.3,
-            "prev": 11
           }
         },
         {
@@ -142,8 +112,53 @@ export const RANKINGS = {
             "award": "Best Quesadillas 2022",
             "influencer": false,
             "community": true,
-            "total": 90.8,
+            "total": 92.8,
             "prev": 17
+          }
+        },
+        {
+          "name": "Restaurante Lomas",
+          "dish": "Asada, cabeza y Minini",
+          "city": "Chandler",
+          "score": {
+            "google": 4.8,
+            "yelp": 4.0,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": true,
+            "total": 92.4,
+            "prev": 7
+          }
+        },
+        {
+          "name": "Asadero Sonora",
+          "dish": "Asada sonorense",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.5,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 91.3,
+            "prev": 11
+          }
+        },
+        {
+          "name": "Tacos Lin",
+          "dish": "Al pastor",
+          "city": "Glendale",
+          "score": {
+            "google": 4.8,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": true,
+            "total": 91.0,
+            "prev": 12
           }
         },
         {
@@ -154,7 +169,7 @@ export const RANKINGS = {
             "google": 4.6,
             "yelp": 4.4,
             "noYelp": false,
-            "award": null,
+            "award": false,
             "influencer": false,
             "community": false,
             "total": 90.6,
@@ -169,41 +184,11 @@ export const RANKINGS = {
             "google": 4.6,
             "yelp": 4.4,
             "noYelp": false,
-            "award": null,
+            "award": false,
             "influencer": false,
             "community": false,
             "total": 90.6,
             "prev": 21
-          }
-        },
-        {
-          "name": "Tacos Lin",
-          "dish": "Al pastor",
-          "city": "Glendale",
-          "score": {
-            "google": 4.8,
-            "yelp": 3.8,
-            "noYelp": true,
-            "award": null,
-            "influencer": false,
-            "community": true,
-            "total": 90.0,
-            "prev": 12
-          }
-        },
-        {
-          "name": "Birrieria Tijuana",
-          "dish": "Birria estilo Tijuana",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.5,
-            "yelp": 4.4,
-            "noYelp": false,
-            "award": null,
-            "influencer": false,
-            "community": false,
-            "total": 89.3,
-            "prev": 13
           }
         },
         {
@@ -214,11 +199,26 @@ export const RANKINGS = {
             "google": 4.5,
             "yelp": 4.3,
             "noYelp": false,
-            "award": null,
+            "award": false,
             "influencer": true,
             "community": false,
-            "total": 89.2,
+            "total": 90.2,
             "prev": 6
+          }
+        },
+        {
+          "name": "Birrieria Tijuana",
+          "dish": "Birria estilo Tijuana",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.4,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 89.3,
+            "prev": 13
           }
         },
         {
@@ -229,26 +229,11 @@ export const RANKINGS = {
             "google": 4.4,
             "yelp": 4.3,
             "noYelp": false,
-            "award": null,
+            "award": false,
             "influencer": false,
             "community": true,
-            "total": 88.3,
+            "total": 89.3,
             "prev": 23
-          }
-        },
-        {
-          "name": "Taquería El Trompo",
-          "dish": "Al pastor estilo chilango",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.5,
-            "yelp": 4.2,
-            "noYelp": false,
-            "award": null,
-            "influencer": false,
-            "community": false,
-            "total": 87.9,
-            "prev": 19
           }
         },
         {
@@ -262,8 +247,23 @@ export const RANKINGS = {
             "award": "Best Taco 2018",
             "influencer": false,
             "community": false,
-            "total": 87.1,
+            "total": 88.1,
             "prev": 20
+          }
+        },
+        {
+          "name": "Taquería El Trompo",
+          "dish": "Al pastor estilo chilango",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.2,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 87.9,
+            "prev": 19
           }
         },
         {
@@ -274,10 +274,10 @@ export const RANKINGS = {
             "google": 4.4,
             "yelp": 4.1,
             "noYelp": false,
-            "award": null,
+            "award": false,
             "influencer": false,
             "community": true,
-            "total": 86.9,
+            "total": 87.9,
             "prev": 15
           }
         },
@@ -289,26 +289,11 @@ export const RANKINGS = {
             "google": 4.5,
             "yelp": 3.9,
             "noYelp": false,
-            "award": null,
+            "award": false,
             "influencer": false,
             "community": true,
-            "total": 86.2,
+            "total": 87.2,
             "prev": 14
-          }
-        },
-        {
-          "name": "Tacos El Güero",
-          "dish": "Taquería",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.5,
-            "yelp": 3.8,
-            "noYelp": true,
-            "award": null,
-            "influencer": false,
-            "community": true,
-            "total": 86.1,
-            "prev": null
           }
         },
         {
@@ -319,11 +304,26 @@ export const RANKINGS = {
             "google": 4.3,
             "yelp": 3.9,
             "noYelp": false,
-            "award": null,
+            "award": false,
             "influencer": true,
             "community": true,
-            "total": 85.2,
+            "total": 87.2,
             "prev": 8
+          }
+        },
+        {
+          "name": "Tacos El Güero",
+          "dish": "Taquería",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.5,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": true,
+            "total": 87.1,
+            "prev": null
           }
         },
         {
@@ -334,10 +334,10 @@ export const RANKINGS = {
             "google": 4.3,
             "yelp": 3.6,
             "noYelp": false,
-            "award": null,
+            "award": false,
             "influencer": true,
             "community": true,
-            "total": 83.1,
+            "total": 85.1,
             "prev": 4
           }
         },
@@ -349,10 +349,10 @@ export const RANKINGS = {
             "google": 4.4,
             "yelp": 3.5,
             "noYelp": false,
-            "award": null,
+            "award": false,
             "influencer": false,
             "community": true,
-            "total": 82.7,
+            "total": 83.7,
             "prev": 10
           }
         },
@@ -364,26 +364,11 @@ export const RANKINGS = {
             "google": 4.2,
             "yelp": 3.8,
             "noYelp": false,
-            "award": null,
+            "award": false,
             "influencer": false,
             "community": true,
-            "total": 82.0,
+            "total": 83.0,
             "prev": 9
-          }
-        },
-        {
-          "name": "Mi Lindo Michoacán",
-          "dish": "Carnitas",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.1,
-            "yelp": 4.0,
-            "noYelp": false,
-            "award": null,
-            "influencer": false,
-            "community": false,
-            "total": 81.3,
-            "prev": 18
           }
         },
         {
@@ -397,12 +382,35 @@ export const RANKINGS = {
             "award": "Best Taco Tuesday 2020",
             "influencer": false,
             "community": false,
-            "total": 80.4,
+            "total": 81.4,
             "prev": 16
+          }
+        },
+        {
+          "name": "Mi Lindo Michoacán",
+          "dish": "Carnitas",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.1,
+            "yelp": 4.0,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 81.3,
+            "prev": 18
           }
         }
       ],
-      "method": "v2"
+      "method": {
+        "google": 65,
+        "yelp": 35,
+        "award": 3,
+        "influencer": 2,
+        "community": 2,
+        "max": 107,
+        "reviewFactor": false
+      }
     },
     {
       "id": "hot-dogs",
@@ -546,131 +554,440 @@ export const RANKINGS = {
       },
       "items": [
         {
-          "name": "Mariscos El Profe",
-          "dish": "Ceviche mixto y aguachile",
-          "city": "Phoenix"
+          "name": "Mariscos El Wicho",
+          "dish": "Aguachiles y cocteles",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.7,
+            "yelp": 4.6,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 93.5,
+            "prev": 23,
+            "gReviews": 324,
+            "yReviews": 102
+          }
+        },
+        {
+          "name": "Mariscos El Guayabas",
+          "dish": "Mariscos frescos",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.7,
+            "yelp": 5.0,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": true,
+            "total": 91.9,
+            "prev": null,
+            "gReviews": 33,
+            "yReviews": 1
+          }
         },
         {
           "name": "Los Arbolitos de Cajeme",
           "dish": "Aguachile estilo Sonora",
-          "city": "Phoenix"
+          "city": "Glendale",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.1,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 89.5,
+            "prev": 2,
+            "gReviews": 525,
+            "yReviews": 143
+          }
         },
         {
-          "name": "Mariscos El Cochorit",
-          "dish": "Campechana especial",
-          "city": "Phoenix"
-        },
-        {
-          "name": "Mariscos A Todo Mar",
-          "dish": "Aguachile rojo",
-          "city": "Phoenix"
-        },
-        {
-          "name": "Tacos y Mariscos El Sinaloa",
-          "dish": "Aguachile",
-          "city": "Phoenix"
-        },
-        {
-          "name": "Mariscos Playa Hermosa",
-          "dish": "Camarones locos",
-          "city": "Phoenix"
-        },
-        {
-          "name": "Mariscos Las Culichis",
-          "dish": "Mixtiadas estilo Culiacán",
-          "city": "Phoenix"
+          "name": "Don Clamatón",
+          "dish": "Clamatos y cocteles",
+          "city": "Peoria",
+          "score": {
+            "google": 4.5,
+            "yelp": 5.0,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 89.1,
+            "prev": null,
+            "gReviews": 85,
+            "yReviews": 3
+          }
         },
         {
           "name": "Marisco Boys",
           "dish": "Tostada de yellowtail",
-          "city": "Phoenix"
-        },
-        {
-          "name": "Mariscos Bahía de Guaymas",
-          "dish": "Empanadas de camarón",
-          "city": "Phoenix"
-        },
-        {
-          "name": "San Diego Bay",
-          "dish": "Molcajete de mariscos",
-          "city": "Guadalupe"
-        },
-        {
-          "name": "Mariscos El Dorado Sinaloa",
-          "dish": "Torre El Dorado",
-          "city": "Phoenix"
-        },
-        {
-          "name": "Mariscos El Rey",
-          "dish": "Aguachile bandera",
-          "city": "Mesa"
+          "city": "Phoenix",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.3,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 89.0,
+            "prev": 8,
+            "gReviews": 408,
+            "yReviews": 107
+          }
         },
         {
           "name": "Mariscos El Molcajete",
           "dish": "Molcajete",
-          "city": "Peoria"
+          "city": "Peoria",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.3,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 89.0,
+            "prev": 13,
+            "gReviews": 381,
+            "yReviews": 56
+          }
         },
         {
-          "name": "Ceviche 101",
-          "dish": "Taco 101 y tostadas",
-          "city": "Glendale"
-        },
-        {
-          "name": "Bertha's Los Mochis",
-          "dish": "Tacos de marlín",
-          "city": "Phoenix"
-        },
-        {
-          "name": "Mariscos Las Islitas",
-          "dish": "Estilo Nayarit",
-          "city": "Phoenix"
-        },
-        {
-          "name": "El Rey de los Ostiones",
-          "dish": "Ostiones preparados",
-          "city": "Phoenix"
-        },
-        {
-          "name": "El Wero Marisquero",
-          "dish": "Tostadas de mariscos",
-          "city": "Phoenix"
+          "name": "Mariscos Playa Hermosa",
+          "dish": "Camarones locos",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.4,
+            "yelp": 4.4,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 88.0,
+            "prev": 6,
+            "gReviews": 3464,
+            "yReviews": 1300
+          }
         },
         {
           "name": "Mariscos Ensenada",
           "dish": "Ceviche y micheladas",
-          "city": "Phoenix"
+          "city": "Phoenix",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.1,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 88.0,
+            "prev": 19,
+            "gReviews": 746,
+            "yReviews": 37
+          }
         },
         {
-          "name": "Chuchulukos El Sinaloa",
-          "dish": "Aguachile estilo Sinaloa",
-          "city": "Phoenix"
+          "name": "Mariscos Las Culichis",
+          "dish": "Mixtiadas estilo Culiacán",
+          "city": "Phoenix",
+          "score": {
+            "google": 5.0,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 88.0,
+            "prev": 7,
+            "gReviews": 22,
+            "yReviews": 0
+          }
         },
         {
-          "name": "Mariscos Vuelve a la Vida",
-          "dish": "Coctel Vuelve a la Vida",
-          "city": "Phoenix"
+          "name": "El Wero Marisquero",
+          "dish": "Tostadas de mariscos",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.3,
+            "yelp": 4.5,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 87.0,
+            "prev": 18,
+            "gReviews": 598,
+            "yReviews": 17
+          }
         },
         {
-          "name": "Vaca Lola",
-          "dish": "Cocina sinaloense",
-          "city": "Phoenix"
+          "name": "Mariscos El Profe",
+          "dish": "Ceviche mixto y aguachile",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.2,
+            "yelp": 5.0,
+            "noYelp": false,
+            "award": false,
+            "influencer": true,
+            "community": true,
+            "total": 87.0,
+            "prev": 1,
+            "gReviews": 40,
+            "yReviews": 1
+          }
         },
         {
-          "name": "Mariscos El Wicho",
-          "dish": "Aguachiles y cocteles",
-          "city": "Phoenix"
+          "name": "El Rey de los Ostiones",
+          "dish": "Ostiones preparados",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.4,
+            "yelp": 4.8,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 86.7,
+            "prev": 17,
+            "gReviews": 145,
+            "yReviews": 21
+          }
+        },
+        {
+          "name": "Tacos y Mariscos El Sinaloa",
+          "dish": "Aguachile",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.9,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 86.6,
+            "prev": 5,
+            "gReviews": 14,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Mariscos Bahía de Guaymas",
+          "dish": "Empanadas de camarón",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.3,
+            "yelp": 4.3,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 86.0,
+            "prev": 9,
+            "gReviews": 448,
+            "yReviews": 50
+          }
+        },
+        {
+          "name": "Bertha's Los Mochis",
+          "dish": "Tacos de marlín",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.3,
+            "yelp": 4.2,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 85.5,
+            "prev": 15,
+            "gReviews": 451,
+            "yReviews": 30
+          }
         },
         {
           "name": "Marisa's Seafood Cocina",
           "dish": "Ceviche de camarón",
-          "city": "Phoenix"
+          "city": "Phoenix",
+          "score": {
+            "google": 4.3,
+            "yelp": 4.1,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 85.0,
+            "prev": 24,
+            "gReviews": 675,
+            "yReviews": 113
+          }
+        },
+        {
+          "name": "San Diego Bay",
+          "dish": "Molcajete de mariscos",
+          "city": "Guadalupe",
+          "score": {
+            "google": 4.3,
+            "yelp": 4.0,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 84.5,
+            "prev": 10,
+            "gReviews": 402,
+            "yReviews": 124
+          }
+        },
+        {
+          "name": "Ceviche 101",
+          "dish": "Taco 101 y tostadas",
+          "city": "Glendale",
+          "score": {
+            "google": 4.2,
+            "yelp": 4.3,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 84.5,
+            "prev": 14,
+            "gReviews": 246,
+            "yReviews": 87
+          }
+        },
+        {
+          "name": "Mariscos El Dorado Sinaloa",
+          "dish": "Torre El Dorado",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.3,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 83.5,
+            "prev": 11,
+            "gReviews": 965,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Vaca Lola",
+          "dish": "Cocina sinaloense",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.3,
+            "yelp": 3.7,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 83.0,
+            "prev": 22,
+            "gReviews": 298,
+            "yReviews": 7
+          }
+        },
+        {
+          "name": "Mariscos La Capi",
+          "dish": "Ceviche y cocteles",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.1,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": true,
+            "community": true,
+            "total": 81.4,
+            "prev": null,
+            "gReviews": 66,
+            "yReviews": 2
+          }
+        },
+        {
+          "name": "Mariscos El Cochorit",
+          "dish": "Campechana especial",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.1,
+            "yelp": 3.0,
+            "noYelp": false,
+            "award": false,
+            "influencer": true,
+            "community": true,
+            "total": 80.5,
+            "prev": 3,
+            "gReviews": 528,
+            "yReviews": 8
+          }
+        },
+        {
+          "name": "Mariscos Las Islitas",
+          "dish": "Estilo Nayarit",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.1,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 80.5,
+            "prev": 16,
+            "gReviews": 293,
+            "yReviews": 0
+          }
         },
         {
           "name": "El Pacífico Mariscos",
           "dish": "Ceviche",
-          "city": "Phoenix"
+          "city": "Phoenix",
+          "score": {
+            "google": 4.1,
+            "yelp": 3.7,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 80.0,
+            "prev": 25,
+            "gReviews": 633,
+            "yReviews": 74
+          }
+        },
+        {
+          "name": "Mariscos Vuelve a la Vida",
+          "dish": "Coctel Vuelve a la Vida",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.0,
+            "yelp": 3.3,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 76.5,
+            "prev": 21,
+            "gReviews": 903,
+            "yReviews": 47
+          }
         }
-      ]
+      ],
+      "method": {
+        "google": 75,
+        "yelp": 25,
+        "award": 3,
+        "influencer": 2,
+        "community": 2,
+        "max": 107,
+        "reviewFactor": true
+      }
     },
     {
       "id": "chilaquiles",

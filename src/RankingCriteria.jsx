@@ -3,25 +3,18 @@ import { track } from "./analytics.js";
 
 /* "How this ranking was built", for restaurant owners on /rankings.
  *
- * Desde Zero's method, in plain words: Google and Yelp stars make the base
- * (65 / 35 out of 100, stars ÷ 5 × weight), plus small bonuses for a formal
- * award (+2), local influencers (+1) and the community (+1). Max 104.
- * Shown as a bar you can tap, a small calculator, the score of every place
- * when the ranking has them (tacos so far), and the rules money can't buy.
- * Internal details (fallbacks, ties, who assigns bonuses) stay out on purpose. */
+ * Desde Zero's method in plain words. Each ranking can carry its own weights
+ * (src/rankings.js → method): Google and Yelp stars make the base (stars ÷ 5
+ * × weight), plus bonuses for a formal award, local influencers and the
+ * community. Some rankings (mariscos) also scale the Google points by how many
+ * Google reviews a place has. Shown as a tappable bar, every place's score
+ * when the ranking has them, a small calculator, and the rules money can't
+ * buy. Internal details (fallbacks, ties, who assigns bonuses) stay out. */
 
-const PARTS = [
-  { key: "google", pts: 65, tone: "c-google" },
-  { key: "yelp", pts: 35, tone: "c-yelp" },
-];
-const BONUS = [
-  { key: "awards", pts: 2 },
-  { key: "influencers", pts: 1 },
-  { key: "community", pts: 1 },
-];
-const MAX = 104;
-const G = 65;
-const Y = 35;
+export const DEFAULT_METHOD = { google: 65, yelp: 35, award: 3, influencer: 2, community: 2, max: 107, reviewFactor: false };
+
+const reviewFactor = (m, reviews) =>
+  !m.reviewFactor || reviews == null ? 1 : reviews < 50 ? 0.92 : reviews <= 150 ? 0.95 : 1;
 
 /* Flat outline icons, drawn in currentColor so they follow the theme. */
 const ICONS = {
@@ -32,13 +25,13 @@ const ICONS = {
       <path d="M7 20V11M12 20V6M17 20v-6" />
     </>
   ),
-  awards: (
+  award: (
     <>
       <path d="M8 4h8v5a4 4 0 0 1-8 0z" />
       <path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4" />
     </>
   ),
-  influencers: (
+  influencer: (
     <>
       <rect x="3.5" y="7" width="13" height="11" rx="2.5" />
       <path d="M16.5 11l4-2.5v8l-4-2.5" />
@@ -78,10 +71,10 @@ function Icon({ name, size = 26 }) {
   );
 }
 
-function Score({ value, label }) {
+function Score({ value, max, label }) {
   const r = 44;
   const c = 2 * Math.PI * r;
-  const filled = Math.min(1, value / MAX);
+  const filled = Math.min(1, value / max);
   return (
     <div className="crit-score" aria-live="polite">
       <svg viewBox="0 0 100 100" width="132" height="132" aria-hidden="true">
@@ -105,6 +98,7 @@ function Score({ value, label }) {
 }
 
 const fold = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const fmtN = (n) => Number(n).toLocaleString("en-US");
 
 /** Movement against the previous edition of the list. */
 function Move({ prev, pos, c }) {
@@ -116,7 +110,7 @@ function Move({ prev, pos, c }) {
 }
 
 /** Every place with its score; tap one to see how it adds up. */
-function Scores({ c, items, label }) {
+function Scores({ c, m, items, label }) {
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(null);
   const rows = useMemo(() => items.map((it, i) => ({ ...it, pos: i + 1 })), [items]);
@@ -146,6 +140,7 @@ function Scores({ c, items, label }) {
           const s = r.score;
           const isOpen = open === r.pos;
           const multi = /,| y |sucursales/i.test(r.city || "");
+          const f = reviewFactor(m, s.gReviews);
           return (
             <li key={r.pos} className={"crit-row" + (isOpen ? " open" : "") + (r.pos <= 3 ? " top" : "")}>
               <button
@@ -167,39 +162,47 @@ function Scores({ c, items, label }) {
                   <span title="Yelp">{s.noYelp ? c.noYelp : `Y ★ ${s.yelp.toFixed(1)}`}</span>
                 </span>
                 <span className="crit-badges" aria-hidden="true">
-                  {s.award && <Icon name="awards" size={17} />}
-                  {s.influencer && <Icon name="influencers" size={17} />}
+                  {s.award && <Icon name="award" size={17} />}
+                  {s.influencer && <Icon name="influencer" size={17} />}
                   {s.community && <Icon name="community" size={17} />}
                 </span>
                 <span className="crit-total">
-                  <i style={{ width: `${(s.total / MAX) * 100}%` }} />
+                  <i style={{ width: `${(s.total / m.max) * 100}%` }} />
                   <b>{s.total.toFixed(1)}</b>
                 </span>
               </button>
               {isOpen && (
                 <div className="crit-break">
                   <div className="crit-break-line">
-                    <span>Google ★ {s.google.toFixed(1)}</span>
-                    <b>{((s.google / 5) * G).toFixed(1)}</b>
+                    <span>
+                      Google ★ {s.google.toFixed(1)}
+                      {s.gReviews != null && ` · ${fmtN(s.gReviews)} ${c.reviewsWord}`}
+                      {f < 1 && ` · ×${f}`}
+                    </span>
+                    <b>{((s.google / 5) * m.google * f).toFixed(1)}</b>
                   </div>
                   <div className="crit-break-line">
-                    <span>{s.noYelp ? c.yelpNeutral : `Yelp ★ ${s.yelp.toFixed(1)}`}</span>
-                    <b>{((s.yelp / 5) * Y).toFixed(1)}</b>
+                    <span>
+                      {s.noYelp ? c.yelpNeutral : `Yelp ★ ${s.yelp.toFixed(1)}`}
+                      {!s.noYelp && s.yReviews != null && ` · ${fmtN(s.yReviews)} ${c.reviewsWord}`}
+                    </span>
+                    <b>{((s.yelp / 5) * m.yelp).toFixed(1)}</b>
                   </div>
                   {s.award && (
                     <div className="crit-break-line bonus">
                       <span>
-                        <Icon name="awards" size={16} /> {c.bonus.awards.short}: {s.award}
+                        <Icon name="award" size={16} /> {c.bonus.award.short}
+                        {typeof s.award === "string" && `: ${s.award}`}
                       </span>
-                      <b>+2</b>
+                      <b>+{m.award}</b>
                     </div>
                   )}
                   {s.influencer && (
                     <div className="crit-break-line bonus">
                       <span>
-                        <Icon name="influencers" size={16} /> {c.bonus.influencers.short}
+                        <Icon name="influencer" size={16} /> {c.bonus.influencer.short}
                       </span>
-                      <b>+1</b>
+                      <b>+{m.influencer}</b>
                     </div>
                   )}
                   {s.community && (
@@ -207,13 +210,14 @@ function Scores({ c, items, label }) {
                       <span>
                         <Icon name="community" size={16} /> {c.bonus.community.short}
                       </span>
-                      <b>+1</b>
+                      <b>+{m.community}</b>
                     </div>
                   )}
                   <div className="crit-break-line total">
                     <span>{c.totalWord}</span>
                     <b>{s.total.toFixed(1)}</b>
                   </div>
+                  {f < 1 && <p className="crit-break-note">{f === 0.92 ? c.factorLow : c.factorMid}</p>}
                   {multi && <p className="crit-break-note">{c.multiNote}</p>}
                 </div>
               )}
@@ -230,12 +234,23 @@ function Scores({ c, items, label }) {
   );
 }
 
-export default function RankingCriteria({ c, ranking, items, label, onClose }) {
+export default function RankingCriteria({ c, ranking, items, label, method, onClose }) {
+  const m = method || DEFAULT_METHOD;
+  const parts = [
+    { key: "google", pts: m.google, tone: "c-google" },
+    { key: "yelp", pts: m.yelp, tone: "c-yelp" },
+  ];
+  const bonuses = [
+    { key: "award", pts: m.award },
+    { key: "influencer", pts: m.influencer },
+    { key: "community", pts: m.community },
+  ];
   const [active, setActive] = useState("google");
   const [google, setGoogle] = useState(4.5);
   const [yelp, setYelp] = useState(4.0);
+  const [reviews, setReviews] = useState(1);
   const [award, setAward] = useState(false);
-  const [influencers, setInfluencers] = useState(false);
+  const [influencer, setInfluencer] = useState(false);
   const [community, setCommunity] = useState(false);
   const touched = useRef(false);
   const panel = useRef(null);
@@ -255,7 +270,11 @@ export default function RankingCriteria({ c, ranking, items, label, onClose }) {
   }, [onClose, ranking]);
 
   const total =
-    (google / 5) * G + (yelp / 5) * Y + (award ? 2 : 0) + (influencers ? 1 : 0) + (community ? 1 : 0);
+    (google / 5) * m.google * (m.reviewFactor ? reviews : 1) +
+    (yelp / 5) * m.yelp +
+    (award ? m.award : 0) +
+    (influencer ? m.influencer : 0) +
+    (community ? m.community : 0);
 
   const tried = () => {
     if (touched.current) return;
@@ -264,8 +283,9 @@ export default function RankingCriteria({ c, ranking, items, label, onClose }) {
   };
 
   const info = c.parts[active] || c.bonus[active];
-  const activePts = PARTS.find((p) => p.key === active)?.pts ?? BONUS.find((b) => b.key === active)?.pts;
-  const isBonus = BONUS.some((b) => b.key === active);
+  const activePts = parts.find((p) => p.key === active)?.pts ?? bonuses.find((b) => b.key === active)?.pts;
+  const isBonus = bonuses.some((b) => b.key === active);
+  const perTenth = +(m.google / 50).toFixed(2);
 
   return (
     <div className="crit-overlay" onClick={onClose}>
@@ -289,7 +309,7 @@ export default function RankingCriteria({ c, ranking, items, label, onClose }) {
         {/* 1. What counts: a bar you can tap, plus the bonus chips. */}
         <div className="crit-bar-wrap">
           <div className="crit-bar" role="tablist" aria-label={c.barLabel}>
-            {PARTS.map((p) => (
+            {parts.map((p) => (
               <button
                 key={p.key}
                 type="button"
@@ -305,7 +325,7 @@ export default function RankingCriteria({ c, ranking, items, label, onClose }) {
             ))}
           </div>
           <div className="crit-bonus" role="tablist" aria-label={c.bonusLabel}>
-            {BONUS.map((b) => (
+            {bonuses.map((b) => (
               <button
                 key={b.key}
                 type="button"
@@ -329,11 +349,12 @@ export default function RankingCriteria({ c, ranking, items, label, onClose }) {
             <p className="crit-detail-pts">{isBonus ? `+${activePts} ${c.bonusWord}` : `${activePts}% ${c.ptsWord}`}</p>
             <h3>{info.h}</h3>
             <p>{info.p}</p>
+            {active === "google" && m.reviewFactor && <p className="crit-detail-extra">{c.factorNote}</p>}
           </div>
         </div>
 
         {/* 2. Every place with its score, when this ranking has them. */}
-        {hasScores && <Scores c={c} items={items} label={label} />}
+        {hasScores && <Scores c={c} m={m} items={items} label={label} />}
 
         {/* 3. Try it: move the stars and watch the score. */}
         <div className="crit-sim">
@@ -359,6 +380,31 @@ export default function RankingCriteria({ c, ranking, items, label, onClose }) {
                   }}
                 />
               </label>
+              {m.reviewFactor && (
+                <div className="crit-seg-pick">
+                  <span>{c.simReviews}</span>
+                  <div role="group" aria-label={c.simReviews}>
+                    {[
+                      [0.92, c.revLow],
+                      [0.95, c.revMid],
+                      [1, c.revHigh],
+                    ].map(([v, text]) => (
+                      <button
+                        key={v}
+                        type="button"
+                        className={reviews === v ? "on" : ""}
+                        aria-pressed={reviews === v}
+                        onClick={() => {
+                          tried();
+                          setReviews(v);
+                        }}
+                      >
+                        {text}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
               <label className="crit-range">
                 <span>
                   {c.simYelp} <b>{yelp.toFixed(1)} ★</b>
@@ -377,9 +423,9 @@ export default function RankingCriteria({ c, ranking, items, label, onClose }) {
               </label>
               <div className="crit-toggles">
                 {[
-                  [award, setAward, c.simAward, "awards", 2],
-                  [influencers, setInfluencers, c.simInfluencers, "influencers", 1],
-                  [community, setCommunity, c.simCommunity, "community", 1],
+                  [award, setAward, c.simAward, "award", m.award],
+                  [influencer, setInfluencer, c.simInfluencers, "influencer", m.influencer],
+                  [community, setCommunity, c.simCommunity, "community", m.community],
                 ].map(([on, set, text, icon, pts]) => (
                   <button
                     key={icon}
@@ -399,8 +445,8 @@ export default function RankingCriteria({ c, ranking, items, label, onClose }) {
               </div>
             </div>
             <div className="crit-sim-out">
-              <Score value={total} label={c.simOf} />
-              <p className="crit-tip">{c.simTip}</p>
+              <Score value={total} max={m.max} label={c.simOf.replace("{max}", m.max)} />
+              <p className="crit-tip">{c.simTip.replace("{x}", perTenth)}</p>
             </div>
           </div>
         </div>

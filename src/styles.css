@@ -2537,3 +2537,5 @@ a.blog-card:hover {
 .rank-gate-panel .rank-gate { max-width: none; box-shadow: none; border: 0; padding: 0; background: none; }
 .rank-gate-panel .rank-gate h3 { padding-right: 44px; }
 .rank-gate-both { margin: -8px 0 16px; font-size: 0.85rem; font-weight: 700; color: var(--orange-deep); }
+
+.crit-detail-extra { margin-top: 8px; font-size: 0.86rem; color: var(--text-2); padding-left: 10px; border-left: 3px solid var(--orange); }

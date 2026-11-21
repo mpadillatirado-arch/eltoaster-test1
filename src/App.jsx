@@ -758,6 +758,8 @@ function CalculatorGate({ t, lang, onUnlock }) {
   const [form, setForm] = useState({ name: "", email: "", phone: "" });
   const [state, setState] = useState("idle"); // idle | sending | error
   const [phoneError, setPhoneError] = useState(false);
+  // Optional and off by default: the calculator itself never signs anyone up.
+  const [news, setNews] = useState(false);
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
   async function submit(e) {
@@ -788,7 +790,13 @@ function CalculatorGate({ t, lang, onUnlock }) {
     } catch {
       /* storage unavailable — they still get in for this visit */
     }
-    track("generate_lead", { form: "calculator", site_language: lang });
+    // Only with the box ticked do they join the newsletter list.
+    if (news) {
+      supabase.functions
+        .invoke("newsletter-subscribe", { body: { email: form.email.trim(), lang, source: "calculator" } })
+        .catch(() => {});
+    }
+    track("generate_lead", { form: "calculator", newsletter_opt_in: news, site_language: lang });
     onUnlock(first);
   }
 
@@ -836,6 +844,12 @@ function CalculatorGate({ t, lang, onUnlock }) {
               {t.calcPage.phoneError}
             </p>
           )}
+        </div>
+        <div className="inp consent">
+          <label htmlFor="cg-news" className="checkbox-label">
+            <input id="cg-news" type="checkbox" checked={news} onChange={(e) => setNews(e.target.checked)} />
+            <span>{t.calcPage.newsOptIn}</span>
+          </label>
         </div>
         <button className="btn" type="submit" disabled={state === "sending"}>
           {state === "sending" ? t.calcPage.unlocking : t.calcPage.unlock}
@@ -2119,7 +2133,7 @@ function RankingGate({ r, lang, city, onUnlock }) {
     }
     // They opted in, so they join the newsletter (an existing subscriber just
     // gets "already" back). The download doesn't wait on it.
-    supabase.functions.invoke("newsletter-subscribe", { body: { email, lang } }).catch(() => {});
+    supabase.functions.invoke("newsletter-subscribe", { body: { email, lang, source: "ranking" } }).catch(() => {});
     try {
       localStorage.setItem(RANK_UNLOCK_KEY, "1");
     } catch {

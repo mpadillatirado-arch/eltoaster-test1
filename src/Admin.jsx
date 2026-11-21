@@ -53,6 +53,8 @@ const REPORT_STATUS = {
 const NEWS_SOURCE = {
   footer: "Formulario del sitio",
   diagnostic: "Pidió diagnóstico",
+  ranking: "Pidió un ranking",
+  calculator: "Usó la calculadora",
   seed: "Interno",
   optout: "Solo registró su baja",
 };

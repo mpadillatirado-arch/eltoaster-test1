@@ -1,7 +1,9 @@
-// Footer newsletter signup. Adds the address to the one mailing list through
-// newsletter_opt_in() — the same call a diagnostic lead's consent goes through
-// — and mirrors it into the Resend audience. Reports "already" so the form can
-// say so instead of silently doing nothing on a repeat signup.
+// Newsletter signup from the footer, the rankings download and the calculator.
+// Adds the address to the one mailing list through newsletter_opt_in() — the
+// same call a diagnostic lead's consent goes through — and mirrors it into the
+// Resend audience. `source` says which form it came from (footer when absent or
+// unknown). Reports "already" so the form can say so instead of silently doing
+// nothing on a repeat signup.
 
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
@@ -17,6 +19,9 @@ const CORS_HEADERS = {
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+// The only origins a browser may claim; anything else is recorded as footer.
+const SOURCES = ["footer", "ranking", "calculator"];
 
 const db = (path: string, init: RequestInit = {}) =>
   fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
@@ -39,7 +44,7 @@ Deno.serve(async (req: Request) => {
     new Response(JSON.stringify({ status }), { status: code, headers: jsonHeaders });
 
   try {
-    const { email, lang } = await req.json();
+    const { email, lang, source } = await req.json();
     const address = typeof email === "string" ? email.trim().toLowerCase() : "";
 
     if (!EMAIL_RE.test(address)) return reply("invalid", 400);
@@ -55,7 +60,7 @@ Deno.serve(async (req: Request) => {
       body: JSON.stringify({
         p_email: address,
         p_lang: lang === "en" ? "en" : "es",
-        p_source: "footer",
+        p_source: SOURCES.includes(source) ? source : "footer",
       }),
     });
 

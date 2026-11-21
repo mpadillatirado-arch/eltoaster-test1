@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, lazy, Suspense } from "react";
 import { content } from "./content.js";
 import { supabase } from "./supabase.js";
 import { CITIES, RANKINGS, FREE_FROM, FREE_TO } from "./rankings.js";
@@ -11,6 +11,9 @@ import elMolcajeteLogo from "./assets/clients/el-molcajete.webp";
 import marioAvatar from "./assets/mario-avatar.webp";
 import marioFace from "./assets/mario-avatar-face.webp";
 import posTerminal from "./assets/pos-terminal.webp";
+
+// The owner panel is only ever opened by one person, so it loads on its own.
+const AdminPage = lazy(() => import("./Admin.jsx"));
 
 const CLIENT_LOGOS = {
   "las-culichis": lasCulichisLogo,
@@ -2099,7 +2102,7 @@ function RankingGate({ r, lang, city, onUnlock }) {
     setState("sending");
     const email = form.email.trim();
     const { error } = await supabase.from("ranking_leads").insert([
-      { name: form.name.trim(), email, city, preferred_language: lang },
+      { name: form.name.trim(), email, city, preferred_language: lang, category: r.id },
     ]);
     if (error) {
       setState("error");
@@ -2731,6 +2734,16 @@ export default function App() {
     const target = hash.length > 1 ? document.getElementById(hash.slice(1)) : null;
     if (target) target.scrollIntoView({ behavior: "instant" });
   }, [hash, route]);
+
+  // Private owner panel. Access is checked by the database (see Admin.jsx),
+  // so this route only decides what to render.
+  if (window.location.pathname.replace(/\/+$/, "") === "/admin") {
+    return (
+      <Suspense fallback={null}>
+        <AdminPage />
+      </Suspense>
+    );
+  }
 
   // A real path rather than a #route, so the address people share reads
   // eltoaster.com/calculator. vercel.json rewrites it to index.html.

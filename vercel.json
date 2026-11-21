@@ -1,5 +1,10 @@
 {
+  "headers": [
+    { "source": "/admin", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }] }
+  ],
   "rewrites": [
+    { "source": "/admin", "destination": "/index.html" },
+    { "source": "/admin/", "destination": "/index.html" },
     { "source": "/calculator", "destination": "/index.html" },
     { "source": "/calculator/", "destination": "/index.html" },
     { "source": "/about_me", "destination": "/index.html" },

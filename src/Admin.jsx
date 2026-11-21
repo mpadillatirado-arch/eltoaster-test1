@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "./supabase.js";
 import { RANKINGS } from "./rankings.js";
+import { excludeThisBrowser } from "./analytics.js";
 import "./admin.css";
 
 /* eltoaster.com/admin — private panel for the site owner.
@@ -978,6 +979,7 @@ export default function Admin() {
 
   useEffect(() => {
     if (phase !== "ready") return;
+    excludeThisBrowser(); // the owner's own visits should never count in Analytics
     reload();
   }, [phase, reload]);
 

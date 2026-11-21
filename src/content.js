@@ -476,6 +476,10 @@ export const content = {
       updated: "Última actualización: septiembre de 2026",
       intro:
         "Este aviso explica qué información recopilo a través de este sitio (eltoaster.com), para qué la uso, con quién la comparto y qué derechos tienes sobre tus datos, conforme a la ley de privacidad de California (CCPA/CPRA) y otras leyes estatales de privacidad de EE. UU. aplicables.",
+      analytics: {
+        h: "Estadísticas del sitio",
+        p: "Uso Google Analytics para saber cuántas personas visitan el sitio y qué páginas ven. Recibe datos generales de la visita: la página, el tipo de navegador y dispositivo, tu ubicación aproximada y una dirección IP anonimizada. No recibe tu nombre, tu correo ni tu teléfono. No lo uso para publicidad ni para personalizar anuncios. Si tu navegador envía la señal Global Privacy Control o «No rastrear», no lo activo.",
+      },
       sections: [
         {
           h: "Qué información recopilo",
@@ -986,6 +990,10 @@ export const content = {
       updated: "Last updated: September 2026",
       intro:
         "This notice explains what information I collect through this site (eltoaster.com), how I use it, who I share it with, and what rights you have over your data under the California Consumer Privacy Act (CCPA/CPRA) and other applicable U.S. state privacy laws.",
+      analytics: {
+        h: "Site statistics",
+        p: "I use Google Analytics to see how many people visit the site and which pages they view. It receives general details of the visit: the page, browser and device type, your approximate location and an anonymized IP address. It does not receive your name, email or phone number. I don't use it for advertising or to personalize ads. If your browser sends the Global Privacy Control or \"Do Not Track\" signal, I don't turn it on.",
+      },
       sections: [
         {
           h: "What I collect",

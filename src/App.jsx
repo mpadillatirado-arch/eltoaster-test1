@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback, lazy, Suspense } from "react";
 import { content } from "./content.js";
 import { supabase } from "./supabase.js";
+import { analyticsEnabled, startAnalytics, trackPage, track, setLanguage } from "./analytics.js";
 import { CITIES, RANKINGS, FREE_FROM, FREE_TO } from "./rankings.js";
 import lasCulichisLogo from "./assets/clients/las-culichis.jpg";
 import padelPalsLogo from "./assets/clients/padel-pals.jpg";
@@ -787,6 +788,7 @@ function CalculatorGate({ t, lang, onUnlock }) {
     } catch {
       /* storage unavailable — they still get in for this visit */
     }
+    track("generate_lead", { form: "calculator", site_language: lang });
     onUnlock(first);
   }
 
@@ -871,6 +873,7 @@ function CalculatorTool({ t, name }) {
     if (!ready) return;
     // The target list only offers ratings above the current one, so delta > 0.
     const delta = +target - +current;
+    track("calculator_run", { rating_from: +current, rating_to: +target, site_language: lang });
     setResult({
       lo: +revenue * delta * 0.05,
       mid: +revenue * delta * 0.07,
@@ -1714,6 +1717,12 @@ function LeadForm({ t, lang }) {
     }
 
     setState("done");
+    track("generate_lead", {
+      form: "diagnostic",
+      restaurant_type: payload.restaurant_type,
+      newsletter_opt_in: marketingConsent,
+      site_language: lang,
+    });
 
     // Best-effort notification + marketing sync — never blocks or fails
     // the UI outcome, since the lead is already safely stored.
@@ -2116,6 +2125,7 @@ function RankingGate({ r, lang, city, onUnlock }) {
     } catch {
       /* storage unavailable — they still get this download */
     }
+    track("generate_lead", { form: "ranking", ranking: r.id, city, site_language: lang });
     onUnlock();
   }
 
@@ -2375,7 +2385,7 @@ function PrivacyPolicy({ t }) {
         <p className="updated">{t.privacy.updated}</p>
         <p className="lede">{t.privacy.intro}</p>
 
-        {t.privacy.sections.map((s, i) => (
+        {[...t.privacy.sections, ...(analyticsEnabled ? [t.privacy.analytics] : [])].map((s, i) => (
           <div key={i} className="privacy-sec">
             <h2>{s.h}</h2>
             <p>{s.p}</p>
@@ -2593,7 +2603,10 @@ function Newsletter({ t, lang }) {
       return;
     }
     setState(data.status === "already" ? "already" : data.status === "subscribed" ? "ok" : "error");
-    if (data.status === "subscribed") setEmail("");
+    if (data.status === "subscribed") {
+      track("sign_up", { method: "newsletter", site_language: lang });
+      setEmail("");
+    }
   }
 
   return (
@@ -2689,6 +2702,15 @@ export default function App() {
     }
   }, [lang]);
 
+  // Language changes are an event; the language itself rides along on every hit.
+  const lastLang = useRef(lang);
+  useEffect(() => {
+    setLanguage(lang);
+    if (lastLang.current === lang) return;
+    lastLang.current = lang;
+    track("language_change", { language: lang });
+  }, [lang]);
+
   const t = content[lang];
 
   const routeFromHash = () => {
@@ -2716,6 +2738,13 @@ export default function App() {
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
+
+  // Analytics: one page_view per real page (anchors inside the landing page
+  // don't count). Inert until a Measurement ID is set; see src/analytics.js.
+  useEffect(() => {
+    startAnalytics();
+    trackPage(lang);
+  }, [hash]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Pages start at the top. Going back to the landing page with an anchor
   // (#empezar from a blog post) needs a nudge, because the target did not

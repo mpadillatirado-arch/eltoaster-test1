@@ -512,7 +512,9 @@ function Detail({ p, onClose }) {
 /* ---------- sign in ---------- */
 
 function SignIn({ denied, email, onSignOut }) {
+  const [mode, setMode] = useState("password"); // password | link
   const [val, setVal] = useState("");
+  const [pass, setPass] = useState("");
   const [state, setState] = useState("idle"); // idle | sending | sent | error
   const [msg, setMsg] = useState("");
 
@@ -528,13 +530,26 @@ function SignIn({ denied, email, onSignOut }) {
     );
   }
 
-  const send = async (e) => {
+  const fail = (text) => {
+    setState("error");
+    setMsg(text);
+  };
+
+  const signInPassword = async (e) => {
     e.preventDefault();
-    if (!supabase) {
-      setState("error");
-      setMsg("El sitio no tiene conexión a la base de datos en este entorno.");
-      return;
+    if (!supabase) return fail("El sitio no tiene conexión a la base de datos en este entorno.");
+    setState("sending");
+    const { error } = await supabase.auth.signInWithPassword({ email: val.trim(), password: pass });
+    // On success the auth listener in Admin() takes over and swaps this screen out.
+    if (error) {
+      const bad = /invalid login|invalid credentials/i.test(error.message);
+      fail(bad ? "Correo o contraseña incorrectos." : error.message);
     }
+  };
+
+  const sendLink = async (e) => {
+    e.preventDefault();
+    if (!supabase) return fail("El sitio no tiene conexión a la base de datos en este entorno.");
     setState("sending");
     try {
       localStorage.setItem(LOGIN_FLAG, "1");
@@ -546,11 +561,16 @@ function SignIn({ denied, email, onSignOut }) {
       options: { emailRedirectTo: `${window.location.origin}/admin` },
     });
     if (error) {
-      setState("error");
-      setMsg(error.message);
-      return;
+      const limited = /rate limit/i.test(error.message);
+      return fail(limited ? "Se llegó al límite de correos de Supabase. Entra con tu contraseña o espera una hora." : error.message);
     }
     setState("sent");
+  };
+
+  const swap = (m) => {
+    setMode(m);
+    setState("idle");
+    setMsg("");
   };
 
   return (
@@ -563,8 +583,12 @@ function SignIn({ denied, email, onSignOut }) {
           spam.
         </p>
       ) : (
-        <form onSubmit={send}>
-          <p>Escribe tu correo de administrador y te mando un enlace para entrar. Sin contraseña.</p>
+        <form onSubmit={mode === "password" ? signInPassword : sendLink}>
+          <p>
+            {mode === "password"
+              ? "Entra con tu correo de administrador y tu contraseña."
+              : "Escribe tu correo de administrador y te mando un enlace para entrar."}
+          </p>
           <label htmlFor="adm-email">Correo</label>
           <input
             id="adm-email"
@@ -575,10 +599,26 @@ function SignIn({ denied, email, onSignOut }) {
             onChange={(e) => setVal(e.target.value)}
             placeholder="tu@correo.com"
           />
+          {mode === "password" ? (
+            <>
+              <label htmlFor="adm-pass">Contraseña</label>
+              <input
+                id="adm-pass"
+                type="password"
+                autoComplete="current-password"
+                required
+                value={pass}
+                onChange={(e) => setPass(e.target.value)}
+              />
+            </>
+          ) : null}
           <button className="adm-btn solid" disabled={state === "sending"}>
-            {state === "sending" ? "Enviando…" : "Enviarme el enlace"}
+            {state === "sending" ? "Entrando…" : mode === "password" ? "Entrar" : "Enviarme el enlace"}
           </button>
           {state === "error" ? <p className="adm-err">{msg}</p> : null}
+          <button type="button" className="adm-link adm-swap" onClick={() => swap(mode === "password" ? "link" : "password")}>
+            {mode === "password" ? "Prefiero que me mande un enlace" : "Mejor uso mi contraseña"}
+          </button>
         </form>
       )}
     </div>

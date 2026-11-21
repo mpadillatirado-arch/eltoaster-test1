@@ -13,7 +13,14 @@ import "./admin.css";
 // `import.meta.env.DEV` is a literal false in the live build, so every branch behind DEMO is dropped there.
 const DEMO_QS = new URLSearchParams(window.location.search).has("demo");
 const TZ = "America/Phoenix";
-const LOGIN_FLAG = "adminLogin";
+// Admins sign in with a username. Supabase accounts need an email, so each
+// username maps to an address on a subdomain that never receives mail.
+const USER_DOMAIN = "admin.eltoaster.com";
+const toLogin = (user) => {
+  const u = user.trim().toLowerCase();
+  return u.includes("@") ? u : `${u}@${USER_DOMAIN}`;
+};
+const userOf = (email) => (email || "").replace(`@${USER_DOMAIN}`, "");
 
 const SOURCES = {
   diagnostico: { label: "Diagnóstico", color: "var(--c-diag)" },
@@ -512,10 +519,9 @@ function Detail({ p, onClose }) {
 /* ---------- sign in ---------- */
 
 function SignIn({ denied, email, onSignOut }) {
-  const [mode, setMode] = useState("password"); // password | link
-  const [val, setVal] = useState("");
+  const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
-  const [state, setState] = useState("idle"); // idle | sending | sent | error
+  const [state, setState] = useState("idle"); // idle | sending | error
   const [msg, setMsg] = useState("");
 
   if (denied) {
@@ -523,104 +529,60 @@ function SignIn({ denied, email, onSignOut }) {
       <div className="adm-gate">
         <h1>Sin acceso</h1>
         <p>
-          <b>{email}</b> no está en la lista de administradores de este sitio.
+          El usuario <b>{userOf(email)}</b> no es administrador de este sitio.
         </p>
         <button type="button" className="adm-btn" onClick={onSignOut}>Salir</button>
       </div>
     );
   }
 
-  const fail = (text) => {
-    setState("error");
-    setMsg(text);
-  };
-
-  const signInPassword = async (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    if (!supabase) return fail("El sitio no tiene conexión a la base de datos en este entorno.");
+    if (!supabase) {
+      setState("error");
+      setMsg("El sitio no tiene conexión a la base de datos en este entorno.");
+      return;
+    }
     setState("sending");
-    const { error } = await supabase.auth.signInWithPassword({ email: val.trim(), password: pass });
+    const { error } = await supabase.auth.signInWithPassword({ email: toLogin(user), password: pass });
     // On success the auth listener in Admin() takes over and swaps this screen out.
     if (error) {
-      const bad = /invalid login|invalid credentials/i.test(error.message);
-      fail(bad ? "Correo o contraseña incorrectos." : error.message);
+      setState("error");
+      setMsg(/invalid/i.test(error.message) ? "Usuario o contraseña incorrectos." : error.message);
     }
-  };
-
-  const sendLink = async (e) => {
-    e.preventDefault();
-    if (!supabase) return fail("El sitio no tiene conexión a la base de datos en este entorno.");
-    setState("sending");
-    try {
-      localStorage.setItem(LOGIN_FLAG, "1");
-    } catch {
-      /* storage blocked: the link still signs in, it just lands on the home page */
-    }
-    const { error } = await supabase.auth.signInWithOtp({
-      email: val.trim(),
-      options: { emailRedirectTo: `${window.location.origin}/admin` },
-    });
-    if (error) {
-      const limited = /rate limit/i.test(error.message);
-      return fail(limited ? "Se llegó al límite de correos de Supabase. Entra con tu contraseña o espera una hora." : error.message);
-    }
-    setState("sent");
-  };
-
-  const swap = (m) => {
-    setMode(m);
-    setState("idle");
-    setMsg("");
   };
 
   return (
     <div className="adm-gate">
       <span className="adm-badge">Privado</span>
       <h1>Panel de El Toaster</h1>
-      {state === "sent" ? (
-        <p>
-          Te mandé un enlace a <b>{val.trim()}</b>. Ábrelo en este mismo navegador y entras directo. Si no llega en un minuto, revisa
-          spam.
-        </p>
-      ) : (
-        <form onSubmit={mode === "password" ? signInPassword : sendLink}>
-          <p>
-            {mode === "password"
-              ? "Entra con tu correo de administrador y tu contraseña."
-              : "Escribe tu correo de administrador y te mando un enlace para entrar."}
-          </p>
-          <label htmlFor="adm-email">Correo</label>
-          <input
-            id="adm-email"
-            type="email"
-            autoComplete="email"
-            required
-            value={val}
-            onChange={(e) => setVal(e.target.value)}
-            placeholder="tu@correo.com"
-          />
-          {mode === "password" ? (
-            <>
-              <label htmlFor="adm-pass">Contraseña</label>
-              <input
-                id="adm-pass"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={pass}
-                onChange={(e) => setPass(e.target.value)}
-              />
-            </>
-          ) : null}
-          <button className="adm-btn solid" disabled={state === "sending"}>
-            {state === "sending" ? "Entrando…" : mode === "password" ? "Entrar" : "Enviarme el enlace"}
-          </button>
-          {state === "error" ? <p className="adm-err">{msg}</p> : null}
-          <button type="button" className="adm-link adm-swap" onClick={() => swap(mode === "password" ? "link" : "password")}>
-            {mode === "password" ? "Prefiero que me mande un enlace" : "Mejor uso mi contraseña"}
-          </button>
-        </form>
-      )}
+      <form onSubmit={submit}>
+        <label htmlFor="adm-user">Usuario</label>
+        <input
+          id="adm-user"
+          type="text"
+          autoComplete="username"
+          autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck={false}
+          required
+          value={user}
+          onChange={(e) => setUser(e.target.value)}
+        />
+        <label htmlFor="adm-pass">Contraseña</label>
+        <input
+          id="adm-pass"
+          type="password"
+          autoComplete="current-password"
+          required
+          value={pass}
+          onChange={(e) => setPass(e.target.value)}
+        />
+        <button className="adm-btn solid" disabled={state === "sending"}>
+          {state === "sending" ? "Entrando…" : "Entrar"}
+        </button>
+        {state === "error" ? <p className="adm-err">{msg}</p> : null}
+      </form>
     </div>
   );
 }
@@ -629,7 +591,7 @@ function SignIn({ denied, email, onSignOut }) {
 
 const FILTERS0 = { q: "", preset: "all", lang: "", type: "", city: "", news: "", period: "", rank: "" };
 
-function Panel({ data, myEmail, reload, loading, loadError, onSignOut }) {
+function Panel({ data, myEmail, contactEmail, reload, loading, loadError, onSignOut }) {
   const [tab, setTab] = useState("resumen");
   const [hideTests, setHideTests] = useState(true);
   const [f, setF] = useState(FILTERS0);
@@ -637,7 +599,7 @@ function Panel({ data, myEmail, reload, loading, loadError, onSignOut }) {
   const [sel, setSel] = useState(null);
   const [limit, setLimit] = useState(50);
 
-  const all = useMemo(() => buildPeople(data, myEmail), [data, myEmail]);
+  const all = useMemo(() => buildPeople(data, contactEmail), [data, contactEmail]);
   const people = useMemo(() => (hideTests ? all.filter((p) => !p.test) : all), [all, hideTests]);
   const hiddenCount = all.length - people.length;
   const byEmail = useMemo(() => Object.fromEntries(all.map((p) => [p.email, p])), [all]);
@@ -739,7 +701,7 @@ function Panel({ data, myEmail, reload, loading, loadError, onSignOut }) {
         <div>
           <h1>Panel de El Toaster</h1>
           <p>
-            {myEmail} · actualizado {fmtTime(data.loadedAt)}
+            {userOf(myEmail)} · actualizado {fmtTime(data.loadedAt)}
           </p>
         </div>
         <div className="adm-top-btns">
@@ -1016,11 +978,6 @@ export default function Admin() {
 
   useEffect(() => {
     if (phase !== "ready") return;
-    try {
-      localStorage.removeItem(LOGIN_FLAG);
-    } catch {
-      /* ignore */
-    }
     reload();
   }, [phase, reload]);
 
@@ -1031,6 +988,8 @@ export default function Admin() {
   };
 
   const myEmail = session?.user?.email || (import.meta.env.DEV && DEMO_QS ? "demo@eltoaster.test" : "");
+  // The owner's real address, kept on the account, so their own test sign-ups count as tests.
+  const contactEmail = session?.user?.user_metadata?.contact_email || "";
 
   if (phase === "loading") return <div className="adm-gate"><p>Cargando…</p></div>;
   if (phase === "out") return <SignIn />;
@@ -1049,5 +1008,5 @@ export default function Admin() {
       </div>
     );
   }
-  return <Panel data={data} myEmail={myEmail} reload={reload} loading={loading} loadError={loadError} onSignOut={signOut} />;
+  return <Panel data={data} myEmail={myEmail} contactEmail={contactEmail} reload={reload} loading={loading} loadError={loadError} onSignOut={signOut} />;
 }

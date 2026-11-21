@@ -398,4 +398,3 @@ button.adm-row:hover { border-color: var(--orange); }
   .adm-tabs { gap: 0; flex-wrap: wrap; overflow: visible; }
 }
 
-.adm-swap { align-self: flex-start; margin: 6px 0 0; font-size: 0.86rem; }

@@ -14,7 +14,7 @@ export const content = {
     nav: { how: "POS System", blog: "Blog", calc: "Calculadora", diag: "El diagnóstico", cta: "Diagnóstico gratis", news: "Newsletter", menu: "Menú", about: "Acerca de mí", home: "Inicio", rankings: "Rankings" },
 
     hero: {
-      eyebrow: "Phoenix · Mesa · Glendale · Tempe · Gilbert · Chandler · Cave Creek · Queen Creek",
+      eyebrow: "Phoenix · Tucson · San Diego · Los Angeles · San Francisco · Las Vegas · Dallas",
       h1a: "Tus reseñas ya te están costando",
       h1b: "dinero real",
       lede: "Cada estrella en tus reseñas vale entre 5% y 9% de tus ventas. Te hago un diagnóstico gratuito de tu reputación en línea, adaptado al tipo de restaurante que tienes — con datos de Google, Yelp y OpenTable — y te digo exactamente cuánto estás dejando en la mesa.",
@@ -529,7 +529,7 @@ export const content = {
     nav: { how: "POS System", blog: "Blog", calc: "Calculator", diag: "The diagnostic", cta: "Free diagnostic", news: "Newsletter", menu: "Menu", about: "About me", home: "Home", rankings: "Rankings" },
 
     hero: {
-      eyebrow: "Phoenix · Mesa · Glendale · Tempe · Gilbert · Chandler · Cave Creek · Queen Creek",
+      eyebrow: "Phoenix · Tucson · San Diego · Los Angeles · San Francisco · Las Vegas · Dallas",
       h1a: "Your reviews are already costing you",
       h1b: "real money",
       lede: "Every star on your reviews is worth 5–9% of your sales. I'll run a free diagnostic on your online reputation, tailored to your restaurant type — pulling from Google, Yelp and OpenTable — and show you exactly what you're leaving on the table.",

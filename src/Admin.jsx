@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "./supabase.js";
 import { RANKINGS } from "./rankings.js";
 import { excludeThisBrowser } from "./analytics.js";
+import { Bars, Kpi, useNarrow } from "./adminUi.jsx";
+import AnalyticsTab from "./AdminAnalytics.jsx";
 import "./admin.css";
 
 /* eltoaster.com/admin — private panel for the site owner.
@@ -259,44 +261,6 @@ function NewsChip({ p }) {
   if (p.newsletter === "activo") return <span className="adm-chip ok">Activo</span>;
   if (p.newsletter === "baja") return <span className="adm-chip bad">Baja</span>;
   return <span className="adm-dash">—</span>;
-}
-
-function Bars({ title, items, onPick, empty = "Sin datos todavía." }) {
-  const max = Math.max(1, ...items.map((i) => i.n));
-  return (
-    <section className="adm-card">
-      <h3>{title}</h3>
-      {items.length === 0 ? (
-        <p className="adm-empty">{empty}</p>
-      ) : (
-        <ul className="adm-bars">
-          {items.map((i) => (
-            <li key={i.key}>
-              <button type="button" disabled={!onPick} onClick={() => onPick?.(i.key)}>
-                <span className="adm-bar-label">{i.label}</span>
-                <span className="adm-bar-track">
-                  <i style={{ width: `${Math.max(4, (i.n / max) * 100)}%` }} />
-                </span>
-                <b>{i.n}</b>
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </section>
-  );
-}
-
-function useNarrow() {
-  const q = "(max-width: 639px)";
-  const [narrow, setNarrow] = useState(() => window.matchMedia(q).matches);
-  useEffect(() => {
-    const m = window.matchMedia(q);
-    const on = () => setNarrow(m.matches);
-    m.addEventListener("change", on);
-    return () => m.removeEventListener("change", on);
-  }, []);
-  return narrow;
 }
 
 function Chart({ people }) {
@@ -689,6 +653,7 @@ function Panel({ data, myEmail, contactEmail, reload, loading, loadError, onSign
 
   const tabs = [
     ["resumen", "Resumen"],
+    ["analitica", "Analítica"],
     ["personas", `Personas · ${people.length}`],
     ["diagnosticos", `Diagnósticos · ${people.flatMap((p) => p.leads).length}`],
     ["privacidad", `Privacidad · ${data.privacy.length}`],
@@ -720,7 +685,7 @@ function Panel({ data, myEmail, contactEmail, reload, loading, loadError, onSign
           </button>
         ))}
       </nav>
-      <label className="adm-check">
+      <label className="adm-check" hidden={tab === "analitica" || tab === "privacidad"}>
         <input type="checkbox" checked={hideTests} onChange={(e) => setHideTests(e.target.checked)} />
         Ocultar pruebas (tu correo y @example.com){hiddenCount ? ` · ${hiddenCount} ocultas` : ""}
       </label>
@@ -745,6 +710,8 @@ function Panel({ data, myEmail, contactEmail, reload, loading, loadError, onSign
           </div>
         </div>
       ) : null}
+
+      {tab === "analitica" ? <AnalyticsTab /> : null}
 
       {tab === "personas" ? (
         <div className="adm-stack">
@@ -892,16 +859,6 @@ function Panel({ data, myEmail, contactEmail, reload, loading, loadError, onSign
 
       {sel && byEmail[sel] ? <Detail p={byEmail[sel]} onClose={() => setSel(null)} /> : null}
     </div>
-  );
-}
-
-function Kpi({ n, label, sub, onClick }) {
-  return (
-    <button type="button" className="adm-kpi" onClick={onClick}>
-      <b>{n}</b>
-      <span>{label}</span>
-      <small>{sub}</small>
-    </button>
   );
 }
 

@@ -67,3 +67,29 @@ export function demoData() {
 
   return { leads, reports, calcs, ranks, subs, privacy, loadedAt: new Date() };
 }
+
+/** Made-up Google Analytics numbers for the Analítica tab (same shape as the analytics-report function). */
+export function demoAnalytics(days) {
+  if (new URLSearchParams(window.location.search).has("setup")) return { configured: false, reason: "no_secret" };
+  const ymd = (i) => new Date(Date.now() - i * 86400000).toLocaleDateString("en-CA", { timeZone: "America/Phoenix" }).replace(/-/g, "");
+  const daily = [];
+  for (let i = days - 1; i >= 0; i--) {
+    const wave = 1 + Math.sin(i / 2.3) * 0.4;
+    const users = Math.max(0, Math.round((18 + (days - i) * 0.25) * wave));
+    daily.push({ date: ymd(i), users, sessions: Math.round(users * 1.2), views: Math.round(users * 2.6) });
+  }
+  const sum = (k) => daily.reduce((a, r) => a + r[k], 0);
+  const now = { users: sum("users"), newUsers: Math.round(sum("users") * 0.78), sessions: sum("sessions"), views: sum("views"), engagementRate: 0.62, avgSession: 84, keyEvents: 31 };
+  const before = { users: Math.round(now.users * 0.86), newUsers: Math.round(now.newUsers * 0.9), sessions: Math.round(now.sessions * 0.88), views: Math.round(now.views * 0.8), engagementRate: 0.65, avgSession: 91, keyEvents: 20 };
+  return {
+    configured: true, days, generatedAt: new Date().toISOString(), realtime: 3, now, before, daily,
+    pages: [["/", 640, 410], ["/rankings", 220, 150], ["/calculator", 180, 120], ["/blog", 95, 70], ["/about_me", 60, 44]].map(([path, views, users]) => ({ path, views, users })),
+    channels: [["Organic Social", 310], ["Direct", 190], ["Organic Search", 120], ["Referral", 40]].map(([name, sessions]) => ({ name, sessions, users: Math.round(sessions * 0.8), keyEvents: 5 })),
+    sources: [["instagram / social", 220], ["(direct) / (none)", 190], ["google / organic", 120], ["linktr.ee / referral", 50]].map(([name, sessions]) => ({ name, sessions, users: Math.round(sessions * 0.8) })),
+    cities: [["Phoenix", 210], ["Mesa", 60], ["Glendale", 34], ["Tucson", 22], ["(not set)", 18]].map(([name, users]) => ({ name, users })),
+    countries: [["United States", 360], ["Mexico", 40]].map(([name, users]) => ({ name, users })),
+    devices: [["mobile", 330], ["desktop", 95], ["tablet", 12]].map(([name, users]) => ({ name, users })),
+    groups: [["Landing", 640], ["Tools", 400], ["Blog", 95], ["About", 60]].map(([name, views]) => ({ name, views })),
+    events: [["cta_click", 210], ["file_download", 64], ["generate_lead", 18], ["calculator_run", 41], ["sign_up", 9], ["book_call", 7]].map(([name, count]) => ({ name, count })),
+  };
+}

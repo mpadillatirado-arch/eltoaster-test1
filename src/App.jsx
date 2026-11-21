@@ -2224,7 +2224,8 @@ function RankingsPage({ t, lang }) {
   const cats = RANKINGS[city];
   const cat = cats ? cats.find((c) => c.id === catId) || cats[0] : null;
   const items = cat ? cat.items : null;
-  const pdf = cat ? `/rankings/top-${items.length}-${cat.id}-${city}-2026.pdf` : null;
+  // A ranking can go live before its PDF exists (pdf: false); then the button hides.
+  const pdf = cat && cat.pdf !== false ? `/rankings/top-${items.length}-${cat.id}-${city}-2026.pdf` : null;
 
   const row = (it, n) => {
     const meta = [it.dish, it.city && (/sucursales/i.test(it.city) ? it.city : `${it.city}, AZ`)]
@@ -2351,19 +2352,21 @@ function RankingsPage({ t, lang }) {
               {r.critLink}
             </button>
 
-            <div className="rank-pdf-box" id="rank-gate">
-              <button type="button" className="btn ghost rank-pdf" onClick={getPdf}>
-                {r.pdf}
-              </button>
-              {done && (
-                <p className="rank-done">
-                  {r.done}{" "}
-                  <a href={pdf} download>
-                    {r.again}
-                  </a>
-                </p>
-              )}
-            </div>
+            {pdf && (
+              <div className="rank-pdf-box" id="rank-gate">
+                <button type="button" className="btn ghost rank-pdf" onClick={getPdf}>
+                  {r.pdf}
+                </button>
+                {done && (
+                  <p className="rank-done">
+                    {r.done}{" "}
+                    <a href={pdf} download>
+                      {r.again}
+                    </a>
+                  </p>
+                )}
+              </div>
+            )}
 
             {gateOpen && (
               <div className="crit-overlay" onClick={() => setGateOpen(false)}>

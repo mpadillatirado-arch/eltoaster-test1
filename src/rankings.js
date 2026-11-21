@@ -18,6 +18,143 @@ export const CITIES = [
 ];
 
 export const RANKINGS = {
+  tucson: [
+    {
+      "id": "tacos",
+      "label": {
+        "es": "Tacos",
+        "en": "Tacos"
+      },
+      "items": [
+        {
+          "name": "Karamelo King",
+          "dish": "Carne asada",
+          "city": "Tucson"
+        },
+        {
+          "name": "Tacos Apson",
+          "dish": "Taco chino",
+          "city": "Tucson"
+        },
+        {
+          "name": "Amelia's Mexican Kitchen",
+          "dish": "Quesabirria",
+          "city": "Tucson"
+        },
+        {
+          "name": "Taquería Mi Pueblo",
+          "dish": "Taco de pescado",
+          "city": "Tucson"
+        },
+        {
+          "name": "Taco Rico",
+          "city": "Marana"
+        },
+        {
+          "name": "Taquería Alamos",
+          "city": "Tucson"
+        },
+        {
+          "name": "La Chaitería",
+          "dish": "Tacos veganos",
+          "city": "Tucson"
+        },
+        {
+          "name": "Taquería El Rápido",
+          "city": "Tucson"
+        },
+        {
+          "name": "El Tacoson",
+          "city": "Tucson"
+        },
+        {
+          "name": "Tacos de la H",
+          "dish": "Estilo Hermosillo",
+          "city": "Tucson"
+        },
+        {
+          "name": "Taquería El Cheke",
+          "city": "Tucson"
+        },
+        {
+          "name": "Aquí con El Nene",
+          "dish": "Taco Yaqui",
+          "city": "Tucson"
+        },
+        {
+          "name": "The Quesadillas",
+          "city": "Tucson"
+        },
+        {
+          "name": "Taquería 2 Hermanos",
+          "city": "Tucson"
+        },
+        {
+          "name": "Taquería Juanito's",
+          "city": "Tucson"
+        },
+        {
+          "name": "Rollies Mexican Patio",
+          "dish": "Tacos de birria",
+          "city": "Tucson"
+        },
+        {
+          "name": "Carnitas El Michoacano",
+          "dish": "Carnitas",
+          "city": "Tucson"
+        },
+        {
+          "name": "Taco Fish",
+          "dish": "Tacos de pescado",
+          "city": "Tucson"
+        },
+        {
+          "name": "La Botana Tacos",
+          "city": "Tucson"
+        },
+        {
+          "name": "Carnitas La Yoca",
+          "dish": "Carnitas",
+          "city": "Tucson"
+        },
+        {
+          "name": "El Taco Rústico",
+          "dish": "Quesabirria",
+          "city": "Tucson"
+        },
+        {
+          "name": "BK Carne Asada",
+          "dish": "Carne asada",
+          "city": "Tucson"
+        },
+        {
+          "name": "Taquería Pico de Gallo",
+          "dish": "Taco de pescado",
+          "city": "South Tucson"
+        },
+        {
+          "name": "Tacos Estilo Cajeme",
+          "dish": "Tacos de cabeza",
+          "city": "Tucson"
+        },
+        {
+          "name": "Taco Giro",
+          "dish": "Cocina sonorense",
+          "city": "Tucson"
+        }
+      ],
+      "method": {
+        "google": 65,
+        "yelp": 35,
+        "award": 3,
+        "influencer": 2,
+        "community": 2,
+        "max": 107,
+        "reviewFactor": false
+      },
+      "pdf": false
+    }
+  ],
   phoenix: [
     {
       "id": "tacos",
@@ -571,6 +708,23 @@ export const RANKINGS = {
           }
         },
         {
+          "name": "Los Arbolitos de Cajeme",
+          "dish": "Aguachile estilo Sonora",
+          "city": "Glendale",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.1,
+            "noYelp": false,
+            "award": "Best of Phoenix 2024",
+            "influencer": false,
+            "community": false,
+            "total": 92.5,
+            "prev": 2,
+            "gReviews": 525,
+            "yReviews": 143
+          }
+        },
+        {
           "name": "Mariscos El Guayabas",
           "dish": "Mariscos frescos",
           "city": "Phoenix",
@@ -588,20 +742,37 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Los Arbolitos de Cajeme",
-          "dish": "Aguachile estilo Sonora",
-          "city": "Glendale",
+          "name": "Mariscos Playa Hermosa",
+          "dish": "Camarones locos",
+          "city": "Phoenix",
           "score": {
-            "google": 4.6,
-            "yelp": 4.1,
+            "google": 4.4,
+            "yelp": 4.4,
             "noYelp": false,
-            "award": false,
+            "award": "Best of Phoenix 2019",
             "influencer": false,
             "community": false,
-            "total": 89.5,
-            "prev": 2,
-            "gReviews": 525,
-            "yReviews": 143
+            "total": 91.0,
+            "prev": 6,
+            "gReviews": 3464,
+            "yReviews": 1300
+          }
+        },
+        {
+          "name": "Tacos y Mariscos El Sinaloa",
+          "dish": "Aguachile",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.9,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": "Best of Phoenix 2019",
+            "influencer": false,
+            "community": false,
+            "total": 89.6,
+            "prev": 5,
+            "gReviews": 14,
+            "yReviews": 0
           }
         },
         {
@@ -653,23 +824,6 @@ export const RANKINGS = {
             "prev": 13,
             "gReviews": 381,
             "yReviews": 56
-          }
-        },
-        {
-          "name": "Mariscos Playa Hermosa",
-          "dish": "Camarones locos",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.4,
-            "yelp": 4.4,
-            "noYelp": false,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 88.0,
-            "prev": 6,
-            "gReviews": 3464,
-            "yReviews": 1300
           }
         },
         {
@@ -755,23 +909,6 @@ export const RANKINGS = {
             "prev": 17,
             "gReviews": 145,
             "yReviews": 21
-          }
-        },
-        {
-          "name": "Tacos y Mariscos El Sinaloa",
-          "dish": "Aguachile",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.9,
-            "yelp": 3.8,
-            "noYelp": true,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 86.6,
-            "prev": 5,
-            "gReviews": 14,
-            "yReviews": 0
           }
         },
         {
@@ -877,6 +1014,23 @@ export const RANKINGS = {
           }
         },
         {
+          "name": "Mariscos El Cochorit",
+          "dish": "Campechana especial",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.1,
+            "yelp": 3.0,
+            "noYelp": false,
+            "award": "Best of Phoenix 2016",
+            "influencer": true,
+            "community": true,
+            "total": 83.5,
+            "prev": 3,
+            "gReviews": 528,
+            "yReviews": 8
+          }
+        },
+        {
           "name": "Vaca Lola",
           "dish": "Cocina sinaloense",
           "city": "Phoenix",
@@ -908,23 +1062,6 @@ export const RANKINGS = {
             "prev": null,
             "gReviews": 66,
             "yReviews": 2
-          }
-        },
-        {
-          "name": "Mariscos El Cochorit",
-          "dish": "Campechana especial",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.1,
-            "yelp": 3.0,
-            "noYelp": false,
-            "award": false,
-            "influencer": true,
-            "community": true,
-            "total": 80.5,
-            "prev": 3,
-            "gReviews": 528,
-            "yReviews": 8
           }
         },
         {

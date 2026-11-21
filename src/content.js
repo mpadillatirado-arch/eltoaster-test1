@@ -495,7 +495,7 @@ export const content = {
           yelp: { short: "Yelp", h: "Tus estrellas en Yelp", p: "Mucha gente compara aquí antes de salir a comer. Una buena calificación en Yelp te sube varios lugares." },
         },
         bonus: {
-          award: { short: "Premio", h: "Premios formales", p: "Reconocimientos como el Best of Phoenix de Phoenix New Times. Salir en una guía o en un artículo no cuenta como premio." },
+          award: { short: "Premio", h: "Premios formales", p: "Reconocimientos de medios locales, como el Best of Phoenix de Phoenix New Times o el Best of Tucson de Tucson Weekly. Salir en una guía o en un artículo no cuenta como premio." },
           influencer: { short: "Influencers", h: "Te recomiendan influencers", p: "Puntos extra cuando creadores de contenido locales recomiendan tu restaurante." },
           community: { short: "Comunidad", h: "Te recomienda mi comunidad", p: "Puntos extra cuando la gente que me sigue te recomienda en los comentarios y en las encuestas." },
         },
@@ -1077,7 +1077,7 @@ export const content = {
           yelp: { short: "Yelp", h: "Your Yelp stars", p: "Lots of people compare here before going out to eat. A strong Yelp rating moves you up several spots." },
         },
         bonus: {
-          award: { short: "Award", h: "Formal awards", p: "Honors like Phoenix New Times' Best of Phoenix. Showing up in a guide or an article doesn't count as an award." },
+          award: { short: "Award", h: "Formal awards", p: "Honors from local media, like Phoenix New Times' Best of Phoenix or Tucson Weekly's Best of Tucson. Showing up in a guide or an article doesn't count as an award." },
           influencer: { short: "Influencers", h: "Influencers recommend you", p: "Extra points when local content creators recommend your restaurant." },
           community: { short: "Community", h: "My community recommends you", p: "Extra points when the people who follow me recommend you in comments and polls." },
         },

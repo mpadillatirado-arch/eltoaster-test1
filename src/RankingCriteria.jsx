@@ -11,6 +11,10 @@ import { track } from "./analytics.js";
  * when the ranking has them, a small calculator, and the rules money can't
  * buy. Internal details (fallbacks, ties, who assigns bonuses) stay out. */
 
+
+/** Star ratings: one decimal, or two when a place averages several locations (4.35). */
+const stars = (v) => (Math.round(v * 100) % 10 ? v.toFixed(2) : v.toFixed(1));
+
 export const DEFAULT_METHOD = { google: 65, yelp: 35, award: 3, influencer: 2, community: 2, max: 107, reviewFactor: false };
 
 const reviewFactor = (m, reviews) =>
@@ -158,8 +162,8 @@ function Scores({ c, m, items, label }) {
                   <Move prev={s.prev} pos={r.pos} c={c} />
                 </span>
                 <span className="crit-stars">
-                  <span title="Google">G ★ {s.google.toFixed(1)}</span>
-                  <span title="Yelp">{s.noYelp ? c.noYelp : `Y ★ ${s.yelp.toFixed(1)}`}</span>
+                  <span title="Google">G ★ {stars(s.google)}</span>
+                  <span title="Yelp">{s.noYelp ? c.noYelp : `Y ★ ${stars(s.yelp)}`}</span>
                 </span>
                 <span className="crit-badges" aria-hidden="true">
                   {s.award && <Icon name="award" size={17} />}
@@ -175,7 +179,7 @@ function Scores({ c, m, items, label }) {
                 <div className="crit-break">
                   <div className="crit-break-line">
                     <span>
-                      Google ★ {s.google.toFixed(1)}
+                      Google ★ {stars(s.google)}
                       {s.gReviews != null && ` · ${fmtN(s.gReviews)} ${c.reviewsWord}`}
                       {f < 1 && ` · ×${f}`}
                     </span>
@@ -183,7 +187,7 @@ function Scores({ c, m, items, label }) {
                   </div>
                   <div className="crit-break-line">
                     <span>
-                      {s.noYelp ? c.yelpNeutral : `Yelp ★ ${s.yelp.toFixed(1)}`}
+                      {s.noYelp ? c.yelpNeutral : `Yelp ★ ${stars(s.yelp)}`}
                       {!s.noYelp && s.yReviews != null && ` · ${fmtN(s.yReviews)} ${c.reviewsWord}`}
                     </span>
                     <b>{((s.yelp / 5) * m.yelp).toFixed(1)}</b>

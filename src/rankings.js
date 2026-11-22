@@ -559,129 +559,438 @@ export const RANKINGS = {
         {
           "name": "El Caprichoso",
           "dish": "Hot dog estilo Sonora",
-          "city": null
-        },
-        {
-          "name": "Nogales Hot Dogs",
-          "dish": "Hot dog estilo Sonora",
-          "city": null
-        },
-        {
-          "name": "Emilio's Tacos & Hotdogs",
-          "dish": "Hot dog estilo Sonora",
-          "city": null
-        },
-        {
-          "name": "Der Wurst",
-          "dish": "New York style",
-          "city": null
-        },
-        {
-          "name": "El Sabroso",
-          "dish": "Hot dog estilo Sonora",
-          "city": null
-        },
-        {
-          "name": "Chicago Hamburger Co.",
-          "dish": "Chicago style",
-          "city": null
-        },
-        {
-          "name": "Lupita's Hot Dogs",
-          "dish": "Hot dog estilo Sonora",
-          "city": null
-        },
-        {
-          "name": "Pa Los Hotdogs",
-          "dish": "Hot dog estilo Sonora",
-          "city": null
-        },
-        {
-          "name": "Johnny's Burgers & Dogs",
-          "dish": "Chicago style",
-          "city": null
-        },
-        {
-          "name": "Los del Nene",
-          "dish": "Hot dog estilo Sonora",
-          "city": null
-        },
-        {
-          "name": "Simon's Hot Dogs",
-          "dish": "Hot dog estilo colombiano",
-          "city": null
-        },
-        {
-          "name": "5 Hermanos Hot Dogs",
-          "dish": "Hot dog estilo Sonora",
-          "city": null
-        },
-        {
-          "name": "Hot Dogs La Yaquesita",
-          "dish": "Hot dog estilo Sonora",
-          "city": null
-        },
-        {
-          "name": "Micky's Hot Dogs",
-          "dish": "Hot dog estilo Sonora",
-          "city": null
-        },
-        {
-          "name": "Lucky Boy",
-          "dish": "Hot dog clásico",
-          "city": null
-        },
-        {
-          "name": "Detroit Coney Grill",
-          "dish": "Coney style",
-          "city": null
-        },
-        {
-          "name": "RoRo Dogs",
-          "dish": "Chicago style",
-          "city": null
-        },
-        {
-          "name": "El Exquisito",
-          "dish": "Hot dog estilo Sonora",
-          "city": null
-        },
-        {
-          "name": "Secret Dogs",
-          "dish": "Chicago style",
-          "city": null
-        },
-        {
-          "name": "Los Mayitos Hot Dogs",
-          "dish": "Hot dog estilo Sonora",
-          "city": null
-        },
-        {
-          "name": "Dogos de la H",
-          "dish": "Hot dog estilo Sonora",
-          "city": null
-        },
-        {
-          "name": "Dogos Guadalupe",
-          "dish": "Hot dog estilo Sonora",
-          "city": null
-        },
-        {
-          "name": "Hot Dogs El Mago",
-          "dish": "Hot dog estilo Sonora",
-          "city": null
+          "city": "Phoenix (4 sucursales)",
+          "score": {
+            "google": 4.35,
+            "yelp": 4.4,
+            "noYelp": false,
+            "award": "Best Sonoran Hot Dog 2016, 2019 y 2023",
+            "influencer": true,
+            "community": true,
+            "total": 94.2,
+            "prev": 1,
+            "gReviews": 1767,
+            "yReviews": 166
+          }
         },
         {
           "name": "Loaded Dogs",
           "dish": "New York style",
-          "city": null
+          "city": "Phoenix",
+          "score": {
+            "google": 5.0,
+            "yelp": 5.0,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 94.0,
+            "prev": 24,
+            "gReviews": 8,
+            "yReviews": 4
+          }
         },
         {
-          "name": "Hot Dogs Los Mochis",
-          "dish": "Hot dog estilo Sinaloa",
-          "city": null
+          "name": "Los Mayitos",
+          "dish": "Hot dog estilo Sonora",
+          "city": "Mesa",
+          "score": {
+            "google": 4.7,
+            "yelp": 4.6,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 93.5,
+            "prev": 20,
+            "gReviews": 220,
+            "yReviews": 64
+          }
+        },
+        {
+          "name": "Dogos y Tacos El Gordo",
+          "dish": "Dogos estilo Zapopan",
+          "city": "Mesa",
+          "score": {
+            "google": 4.8,
+            "yelp": 4.1,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 92.5,
+            "prev": null,
+            "gReviews": 642,
+            "yReviews": 48
+          }
+        },
+        {
+          "name": "Chicago Hamburger Co.",
+          "dish": "Chicago style",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.7,
+            "yelp": 4.3,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 92.0,
+            "prev": 6,
+            "gReviews": 2035,
+            "yReviews": 656
+          }
+        },
+        {
+          "name": "Lupita's Hot Dogs",
+          "dish": "Hot dog estilo Sonora",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.6,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 92.0,
+            "prev": 7,
+            "gReviews": 1095,
+            "yReviews": 213
+          }
+        },
+        {
+          "name": "Johnny's Burgers & Dogs",
+          "dish": "Chicago style",
+          "city": "Tempe",
+          "score": {
+            "google": 4.7,
+            "yelp": 4.3,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 92.0,
+            "prev": 9,
+            "gReviews": 945,
+            "yReviews": 352
+          }
+        },
+        {
+          "name": "Lucky Boy",
+          "dish": "Hot dog clásico",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.3,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 90.5,
+            "prev": 15,
+            "gReviews": 1688,
+            "yReviews": 530
+          }
+        },
+        {
+          "name": "Nogales Hot Dogs",
+          "dish": "Hot dog estilo Sonora",
+          "city": "Phoenix (4 sucursales)",
+          "score": {
+            "google": 4.4,
+            "yelp": 4.1,
+            "noYelp": false,
+            "award": false,
+            "influencer": true,
+            "community": true,
+            "total": 90.5,
+            "prev": 2,
+            "gReviews": 1172,
+            "yReviews": 264
+          }
+        },
+        {
+          "name": "Der Wurst",
+          "dish": "New York style",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.5,
+            "yelp": 5.0,
+            "noYelp": false,
+            "award": "Best Hot Dog (3 años seguidos)",
+            "influencer": false,
+            "community": false,
+            "total": 90.1,
+            "prev": 4,
+            "gReviews": 34,
+            "yReviews": 1
+          }
+        },
+        {
+          "name": "Ted's Hot Dogs",
+          "dish": "Hot dog al carbón estilo Buffalo",
+          "city": "Tempe",
+          "score": {
+            "google": 4.4,
+            "yelp": 3.9,
+            "noYelp": false,
+            "award": "Best Hot Dogs 2024",
+            "influencer": false,
+            "community": false,
+            "total": 88.5,
+            "prev": null,
+            "gReviews": 4772,
+            "yReviews": 1000
+          }
+        },
+        {
+          "name": "Hot Dogs La Yaquesita",
+          "dish": "Hot dog estilo Sonora",
+          "city": "Avondale",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.2,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 88.5,
+            "prev": 13,
+            "gReviews": 317,
+            "yReviews": 55
+          }
+        },
+        {
+          "name": "Dogos Guadalupe",
+          "dish": "Hot dog estilo Sonora",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.3,
+            "yelp": 4.8,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 88.5,
+            "prev": 22,
+            "gReviews": 206,
+            "yReviews": 5
+          }
+        },
+        {
+          "name": "Dazzo's Dog House",
+          "dish": "Chicago style",
+          "city": "Glendale",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.1,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 88.0,
+            "prev": null,
+            "gReviews": 1402,
+            "yReviews": 272
+          }
+        },
+        {
+          "name": "5 Hermanos Hot Dogs",
+          "dish": "Hot dog estilo Sonora",
+          "city": "Glendale",
+          "score": {
+            "google": 5.0,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 88.0,
+            "prev": 12,
+            "gReviews": 41,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Hot Dogs El Mago",
+          "dish": "Hot dog estilo Sonora",
+          "city": "Phoenix",
+          "score": {
+            "google": 5.0,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 88.0,
+            "prev": 23,
+            "gReviews": 15,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Hot Dogs La Mochila",
+          "dish": "Hot dog estilo Sonora",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.7,
+            "yelp": 4.6,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 87.9,
+            "prev": null,
+            "gReviews": 6,
+            "yReviews": 5
+          }
+        },
+        {
+          "name": "Detroit Coney Grill",
+          "dish": "Coney style",
+          "city": "Tempe y Scottsdale",
+          "score": {
+            "google": 4.45,
+            "yelp": 4.0,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 86.8,
+            "prev": 16,
+            "gReviews": 1731,
+            "yReviews": 536
+          }
+        },
+        {
+          "name": "Simon's Hot Dogs",
+          "dish": "Hot dog estilo colombiano",
+          "city": "Scottsdale",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.8,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 86.1,
+            "prev": 11,
+            "gReviews": 15,
+            "yReviews": 759
+          }
+        },
+        {
+          "name": "El Exquisito",
+          "dish": "Hot dog estilo Sonora",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.7,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 86.0,
+            "prev": 18,
+            "gReviews": 101,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "El Sabroso",
+          "dish": "Hot dog estilo Sonora",
+          "city": "Phoenix (2 sucursales)",
+          "score": {
+            "google": 4.45,
+            "yelp": 3.6,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 84.8,
+            "prev": 5,
+            "gReviews": 953,
+            "yReviews": 73
+          }
+        },
+        {
+          "name": "Micky's Hot Dogs",
+          "dish": "Hot dog estilo Sonora",
+          "city": "Mesa",
+          "score": {
+            "google": 4.3,
+            "yelp": 3.9,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 84.0,
+            "prev": 14,
+            "gReviews": 1187,
+            "yReviews": 196
+          }
+        },
+        {
+          "name": "El Chapo Hot Dogs",
+          "dish": "Hot dog estilo Sonora",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.4,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 81.7,
+            "prev": null,
+            "gReviews": 134,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Pa Los Hotdogs",
+          "dish": "Hot dog estilo Sonora",
+          "city": "Phoenix",
+          "score": {
+            "google": 3.8,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": true,
+            "community": false,
+            "total": 75.2,
+            "prev": 8,
+            "gReviews": 65,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Dogos de la H",
+          "dish": "Hot dog estilo Sonora",
+          "city": "Phoenix",
+          "score": {
+            "google": 3.9,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": true,
+            "community": false,
+            "total": 74.8,
+            "prev": 21,
+            "gReviews": 16,
+            "yReviews": 0
+          }
         }
-      ]
+      ],
+      "method": {
+        "google": 75,
+        "yelp": 25,
+        "award": 3,
+        "influencer": 2,
+        "community": 2,
+        "max": 107,
+        "reviewFactor": true
+      }
     },
     {
       "id": "mariscos",

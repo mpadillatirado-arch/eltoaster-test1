@@ -1443,131 +1443,415 @@ export const RANKINGS = {
       },
       "items": [
         {
-          "name": "Comedor Guadalajara",
-          "dish": null,
-          "city": "Phoenix"
-        },
-        {
           "name": "Presidio Cocina Mexicana",
-          "dish": null,
-          "city": "Phoenix"
-        },
-        {
-          "name": "Gallo Blanco",
-          "dish": null,
-          "city": "Phoenix"
-        },
-        {
-          "name": "Otro Café",
-          "dish": null,
-          "city": "Phoenix"
-        },
-        {
-          "name": "Chilaquiles by Irma",
-          "dish": null,
-          "city": "Phoenix"
-        },
-        {
-          "name": "Cocina Madrigal",
-          "dish": null,
-          "city": "Phoenix"
+          "city": "Phoenix",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.6,
+            "noYelp": false,
+            "award": "Best Mexican Brunch 2023",
+            "influencer": false,
+            "community": true,
+            "total": 97.0,
+            "prev": 2,
+            "gReviews": 1663,
+            "yReviews": 1300
+          }
         },
         {
           "name": "Centrico",
-          "dish": null,
-          "city": "Phoenix"
-        },
-        {
-          "name": "Doña Tita Traila",
-          "dish": null,
-          "city": "Phoenix"
-        },
-        {
-          "name": "Cocina Adamex",
-          "dish": null,
-          "city": "Phoenix"
-        },
-        {
-          "name": "La Barquita",
-          "dish": null,
-          "city": "Phoenix"
-        },
-        {
-          "name": "Chilaquiles Modern Kitchen",
-          "dish": null,
-          "city": "Mesa"
-        },
-        {
-          "name": "Chilakil To Go",
-          "dish": null,
-          "city": "Glendale"
-        },
-        {
-          "name": "El Sol Mexican Cafe",
-          "dish": null,
-          "city": "Chandler"
-        },
-        {
-          "name": "El Mesquite",
-          "dish": null,
-          "city": "Phoenix"
+          "city": "Phoenix",
+          "score": {
+            "google": 4.8,
+            "yelp": 4.6,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 95.0,
+            "prev": 7,
+            "gReviews": 1268,
+            "yReviews": 709
+          }
         },
         {
           "name": "Pepe's Taco Villa",
-          "dish": null,
-          "city": "Phoenix"
+          "city": "Phoenix",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.4,
+            "noYelp": false,
+            "award": "Best Chilaquiles 2014",
+            "influencer": false,
+            "community": false,
+            "total": 94.0,
+            "prev": 15,
+            "gReviews": 1017,
+            "yReviews": 251
+          }
         },
         {
-          "name": "Alebrijes Cafe & Grill",
-          "dish": null,
-          "city": "Litchfield Park"
+          "name": "Cocina Madrigal",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.7,
+            "yelp": 4.6,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 93.5,
+            "prev": 6,
+            "gReviews": 4589,
+            "yReviews": 4600
+          }
         },
         {
-          "name": "Bitz-ee Mama's",
-          "dish": null,
-          "city": "Glendale"
+          "name": "Gallo Blanco",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.2,
+            "noYelp": false,
+            "award": "Best Chilaquiles 2018",
+            "influencer": false,
+            "community": false,
+            "total": 93.0,
+            "prev": 3,
+            "gReviews": 2005,
+            "yReviews": 605
+          }
+        },
+        {
+          "name": "El Sol Mexican Cafe",
+          "city": "Chandler",
+          "score": {
+            "google": 4.7,
+            "yelp": 4.5,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 93.0,
+            "prev": 13,
+            "gReviews": 695,
+            "yReviews": 250
+          }
+        },
+        {
+          "name": "Comedor Guadalajara",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.1,
+            "noYelp": false,
+            "award": "Best Chilaquiles 2017",
+            "influencer": false,
+            "community": false,
+            "total": 91.0,
+            "prev": 1,
+            "gReviews": 5372,
+            "yReviews": 853
+          }
+        },
+        {
+          "name": "Chilakil To Go",
+          "city": "Glendale",
+          "score": {
+            "google": 4.9,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": true,
+            "total": 90.8,
+            "prev": 12,
+            "gReviews": 138,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Otro Café",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.1,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 89.5,
+            "prev": 4,
+            "gReviews": 3045,
+            "yReviews": 1400
+          }
         },
         {
           "name": "Ghost Ranch",
-          "dish": null,
-          "city": "Tempe"
-        },
-        {
-          "name": "Liberty Market",
-          "dish": null,
-          "city": "Gilbert"
-        },
-        {
-          "name": "Elly's Brunch & Café",
-          "dish": null,
-          "city": "Phoenix"
+          "city": "Tempe",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.4,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 89.5,
+            "prev": 18,
+            "gReviews": 1586,
+            "yReviews": 1500
+          }
         },
         {
           "name": "Soul Café",
-          "dish": null,
-          "city": "Scottsdale"
+          "city": "Scottsdale",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.3,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 89.0,
+            "prev": 21,
+            "gReviews": 1344,
+            "yReviews": 1300
+          }
         },
         {
-          "name": "The Social on 83rd",
-          "dish": null,
-          "city": "Peoria"
+          "name": "Liberty Market",
+          "city": "Gilbert",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.2,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 88.5,
+            "prev": 19,
+            "gReviews": 3404,
+            "yReviews": 2100
+          }
         },
         {
-          "name": "The Mission",
-          "dish": null,
-          "city": "Scottsdale"
-        },
-        {
-          "name": "Tortas Ahogadas Guadalajara",
-          "dish": null,
-          "city": "Chandler"
+          "name": "Doña Tita Traila",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.7,
+            "yelp": 3.6,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 88.5,
+            "prev": 8,
+            "gReviews": 741,
+            "yReviews": 10
+          }
         },
         {
           "name": "Las Marías",
-          "dish": null,
-          "city": "Peoria"
+          "city": "Peoria",
+          "score": {
+            "google": 4.5,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": true,
+            "total": 88.5,
+            "prev": 25,
+            "gReviews": 363,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Chilaquiles by Irma",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.6,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 88.0,
+            "prev": 5,
+            "gReviews": 770,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Tortas Ahogadas Guadalajara",
+          "city": "Chandler",
+          "score": {
+            "google": 4.5,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 86.5,
+            "prev": 24,
+            "gReviews": 1433,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "The Social on 83rd",
+          "city": "Peoria",
+          "score": {
+            "google": 4.3,
+            "yelp": 4.1,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 85.0,
+            "prev": 22,
+            "gReviews": 1071,
+            "yReviews": 715
+          }
+        },
+        {
+          "name": "Alebrijes Cafe & Grill",
+          "city": "Litchfield Park",
+          "score": {
+            "google": 4.4,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 85.0,
+            "prev": 16,
+            "gReviews": 994,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "The Mission",
+          "city": "Scottsdale (2 sucursales)",
+          "score": {
+            "google": 4.35,
+            "yelp": 3.8,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 84.2,
+            "prev": 23,
+            "gReviews": 4662,
+            "yReviews": 4230
+          }
+        },
+        {
+          "name": "Bitz-ee Mama's",
+          "city": "Glendale",
+          "score": {
+            "google": 4.3,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 83.5,
+            "prev": 17,
+            "gReviews": 1069,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "El Mesquite",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.3,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 83.5,
+            "prev": 14,
+            "gReviews": 844,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Elly's Brunch & Café",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.3,
+            "yelp": 3.7,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 83.0,
+            "prev": 20,
+            "gReviews": 2057,
+            "yReviews": 869
+          }
+        },
+        {
+          "name": "Ahuevo Café",
+          "city": "Tolleson",
+          "score": {
+            "google": 4.1,
+            "yelp": 3.9,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": true,
+            "total": 83.0,
+            "prev": null,
+            "gReviews": 331,
+            "yReviews": 66
+          }
+        },
+        {
+          "name": "La Barquita",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.2,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 82.0,
+            "prev": 10,
+            "gReviews": 1586,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Chilaquiles Modern Kitchen",
+          "city": "Mesa",
+          "score": {
+            "google": 4.1,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 80.5,
+            "prev": 11,
+            "gReviews": 2063,
+            "yReviews": 0
+          }
         }
-      ]
+      ],
+      "method": {
+        "google": 75,
+        "yelp": 25,
+        "award": 3,
+        "influencer": 2,
+        "community": 2,
+        "max": 107,
+        "reviewFactor": true
+      }
     },
     {
       "id": "burritos",

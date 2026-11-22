@@ -1577,131 +1577,440 @@ export const RANKINGS = {
       },
       "items": [
         {
-          "name": "Rito's Mexican Food",
-          "dish": "Chile verde",
-          "city": "Phoenix"
-        },
-        {
-          "name": "The Original Carolina's",
-          "dish": "Machaca",
-          "city": "Phoenix"
-        },
-        {
-          "name": "PHX Burrito House",
-          "dish": "Carne asada",
-          "city": "Phoenix"
+          "name": "El Norteño",
+          "dish": "Breakfast burrito",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.2,
+            "noYelp": false,
+            "award": "Best Breakfast Burrito 2014, 2020 y 2024",
+            "influencer": false,
+            "community": true,
+            "total": 95.0,
+            "prev": 6,
+            "gReviews": 3231,
+            "yReviews": 433
+          }
         },
         {
           "name": "Ta'Carbon",
           "dish": "Carne asada",
-          "city": "Glendale"
+          "city": "Glendale",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.5,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": true,
+            "total": 93.5,
+            "prev": 4,
+            "gReviews": 4227,
+            "yReviews": 643
+          }
         },
         {
           "name": "Asadero Norte de Sonora",
           "dish": "Carne asada",
-          "city": "Phoenix"
-        },
-        {
-          "name": "El Norteño",
-          "dish": "Breakfast burrito",
-          "city": "Phoenix"
-        },
-        {
-          "name": "Elmer's Tacos",
-          "dish": "Machaca",
-          "city": "Chandler"
-        },
-        {
-          "name": "Rita's Burritos",
-          "dish": "Breakfast burrito",
-          "city": "Chandler"
-        },
-        {
-          "name": "Señor Taco Express",
-          "dish": "Breakfast burrito",
-          "city": "Phoenix"
-        },
-        {
-          "name": "Kiss Pollos",
-          "dish": "Pollo asado",
-          "city": "Phoenix"
-        },
-        {
-          "name": "Los Favoritos",
-          "dish": "Breakfast burrito",
-          "city": "Mesa"
+          "city": "Phoenix",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.5,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 91.5,
+            "prev": 5,
+            "gReviews": 1467,
+            "yReviews": 245
+          }
         },
         {
           "name": "Rolando's Mexican Food",
           "dish": "Breakfast burrito",
-          "city": "Phoenix"
-        },
-        {
-          "name": "Fiesta Burrito",
-          "dish": "Carne asada",
-          "city": "Scottsdale"
-        },
-        {
-          "name": "Burrito Express",
-          "dish": "Breakfast burrito",
-          "city": "Gilbert"
-        },
-        {
-          "name": "Rosita's Place",
-          "dish": "Chile verde",
-          "city": "Phoenix"
+          "city": "Phoenix",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.2,
+            "noYelp": false,
+            "award": "Best Breakfast Burrito 2016",
+            "influencer": false,
+            "community": false,
+            "total": 91.5,
+            "prev": 12,
+            "gReviews": 1317,
+            "yReviews": 221
+          }
         },
         {
           "name": "Topo",
           "dish": "Surf & turf",
-          "city": "Gilbert"
+          "city": "Gilbert",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.4,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 91.0,
+            "prev": 16,
+            "gReviews": 667,
+            "yReviews": 384
+          }
         },
         {
-          "name": "Tacos La K'lera",
-          "dish": "Big Bear Burrito",
-          "city": "Tolleson"
-        },
-        {
-          "name": "Mochilero Kitchen",
-          "dish": "Breakfast burrito",
-          "city": "Peoria"
-        },
-        {
-          "name": "Someburros",
-          "dish": "Machaca",
-          "city": "Tempe"
-        },
-        {
-          "name": "Los Dos Molinos",
-          "dish": "Carne adovada",
-          "city": "Phoenix"
-        },
-        {
-          "name": "Herrera's Mexican Food",
-          "dish": "Breakfast burrito",
-          "city": "Peoria"
-        },
-        {
-          "name": "La Casa de Juana",
-          "dish": "Juana's Burrito",
-          "city": "Tempe"
-        },
-        {
-          "name": "Checo's Taco Shop",
+          "name": "Kiss Pollos",
           "dish": "Pollo asado",
-          "city": "Scottsdale"
+          "city": "Phoenix",
+          "score": {
+            "google": 4.7,
+            "yelp": 4.8,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 91.0,
+            "prev": 10,
+            "gReviews": 134,
+            "yReviews": 309
+          }
         },
         {
-          "name": "Taco Taco AZ",
+          "name": "Rita's Burritos",
+          "dish": "Breakfast burrito",
+          "city": "Chandler",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.3,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 90.5,
+            "prev": 8,
+            "gReviews": 859,
+            "yReviews": 586
+          }
+        },
+        {
+          "name": "Elmer's Tacos",
+          "dish": "Machaca",
+          "city": "Chandler",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.2,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 90.0,
+            "prev": 7,
+            "gReviews": 3406,
+            "yReviews": 709
+          }
+        },
+        {
+          "name": "PHX Burrito House",
           "dish": "Carne asada",
-          "city": "Surprise"
+          "city": "Phoenix",
+          "score": {
+            "google": 4.4,
+            "yelp": 4.2,
+            "noYelp": false,
+            "award": "Best Burrito 2020",
+            "influencer": false,
+            "community": false,
+            "total": 90.0,
+            "prev": 3,
+            "gReviews": 1701,
+            "yReviews": 1100
+          }
         },
         {
           "name": "Testal Mexican Kitchen",
           "dish": "Estilo Chihuahua",
-          "city": "Phoenix"
+          "city": "Phoenix",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.2,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 90.0,
+            "prev": 25,
+            "gReviews": 608,
+            "yReviews": 166
+          }
+        },
+        {
+          "name": "Señor Taco Express",
+          "dish": "Breakfast burrito",
+          "city": "Phoenix (3 sucursales)",
+          "score": {
+            "google": 4.63,
+            "yelp": 4.1,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 89.9,
+            "prev": 9,
+            "gReviews": 770,
+            "yReviews": 299
+          }
+        },
+        {
+          "name": "Rito's Mexican Food",
+          "dish": "Chile verde",
+          "city": "Phoenix (3 sucursales)",
+          "score": {
+            "google": 4.37,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": "Best Burrito 2014, 2018 y 2024",
+            "influencer": false,
+            "community": true,
+            "total": 89.6,
+            "prev": 1,
+            "gReviews": 4144,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Tacos La K'lera",
+          "dish": "Big Bear Burrito",
+          "city": "Tolleson",
+          "score": {
+            "google": 4.5,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": true,
+            "total": 88.5,
+            "prev": 17,
+            "gReviews": 246,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Checo's Taco Shop",
+          "dish": "Pollo asado",
+          "city": "Scottsdale",
+          "score": {
+            "google": 4.5,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 86.5,
+            "prev": 23,
+            "gReviews": 226,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Mochilero Kitchen",
+          "dish": "Breakfast burrito",
+          "city": "Peoria (2 sucursales)",
+          "score": {
+            "google": 4.4,
+            "yelp": 4.05,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 86.3,
+            "prev": 18,
+            "gReviews": 897,
+            "yReviews": 769
+          }
+        },
+        {
+          "name": "The Original Carolina's",
+          "dish": "Machaca",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.4,
+            "yelp": 3.9,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 85.5,
+            "prev": 2,
+            "gReviews": 4949,
+            "yReviews": 998
+          }
+        },
+        {
+          "name": "Los Dos Molinos",
+          "dish": "Carne adovada",
+          "city": "Phoenix (2 sucursales)",
+          "score": {
+            "google": 4.4,
+            "yelp": 3.8,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 85.0,
+            "prev": 20,
+            "gReviews": 3386,
+            "yReviews": 2089
+          }
+        },
+        {
+          "name": "Rosita's Place",
+          "dish": "Chile verde",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.4,
+            "yelp": 3.8,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 85.0,
+            "prev": 15,
+            "gReviews": 2962,
+            "yReviews": 611
+          }
+        },
+        {
+          "name": "Fiesta Burrito",
+          "dish": "Carne asada",
+          "city": "Scottsdale",
+          "score": {
+            "google": 4.4,
+            "yelp": 3.8,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 85.0,
+            "prev": 13,
+            "gReviews": 1620,
+            "yReviews": 448
+          }
+        },
+        {
+          "name": "La Casa de Juana",
+          "dish": "Juana's Burrito",
+          "city": "Tempe",
+          "score": {
+            "google": 4.4,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 85.0,
+            "prev": 22,
+            "gReviews": 852,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Taco Taco AZ",
+          "dish": "Carne asada",
+          "city": "Surprise",
+          "score": {
+            "google": 4.6,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 84.6,
+            "prev": 24,
+            "gReviews": 95,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Someburros",
+          "dish": "Machaca",
+          "city": "Tempe (2 sucursales)",
+          "score": {
+            "google": 4.35,
+            "yelp": 3.3,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 81.7,
+            "prev": 19,
+            "gReviews": 3673,
+            "yReviews": 1115
+          }
+        },
+        {
+          "name": "Los Favoritos",
+          "dish": "Breakfast burrito",
+          "city": "Mesa (2 sucursales)",
+          "score": {
+            "google": 4.3,
+            "yelp": 3.3,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 81.0,
+            "prev": 11,
+            "gReviews": 2131,
+            "yReviews": 537
+          }
+        },
+        {
+          "name": "Herrera's Mexican Food",
+          "dish": "Breakfast burrito",
+          "city": "Peoria",
+          "score": {
+            "google": 4.0,
+            "yelp": 3.7,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 78.5,
+            "prev": 21,
+            "gReviews": 759,
+            "yReviews": 115
+          }
+        },
+        {
+          "name": "Burrito Express",
+          "dish": "Breakfast burrito",
+          "city": "Gilbert (3 sucursales)",
+          "score": {
+            "google": 3.97,
+            "yelp": 3.35,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 76.3,
+            "prev": 14,
+            "gReviews": 2459,
+            "yReviews": 720
+          }
         }
-      ]
+      ],
+      "method": {
+        "google": 75,
+        "yelp": 25,
+        "award": 3,
+        "influencer": 2,
+        "community": 2,
+        "max": 107,
+        "reviewFactor": true
+      }
     },
     {
       "id": "hamburguesas",

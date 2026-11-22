@@ -1068,6 +1068,23 @@ export const RANKINGS = {
           }
         },
         {
+          "name": "Mariscos El Profe",
+          "dish": "Ceviche mixto y aguachile",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.2,
+            "yelp": 5.0,
+            "noYelp": false,
+            "award": true,
+            "influencer": true,
+            "community": true,
+            "total": 90.0,
+            "prev": 1,
+            "gReviews": 40,
+            "yReviews": 1
+          }
+        },
+        {
           "name": "Tacos y Mariscos El Sinaloa",
           "dish": "Aguachile",
           "city": "Phoenix",
@@ -1184,23 +1201,6 @@ export const RANKINGS = {
             "prev": 18,
             "gReviews": 598,
             "yReviews": 17
-          }
-        },
-        {
-          "name": "Mariscos El Profe",
-          "dish": "Ceviche mixto y aguachile",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.2,
-            "yelp": 5.0,
-            "noYelp": false,
-            "award": false,
-            "influencer": true,
-            "community": true,
-            "total": 87.0,
-            "prev": 1,
-            "gReviews": 40,
-            "yReviews": 1
           }
         },
         {

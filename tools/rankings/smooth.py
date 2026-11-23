@@ -1,14 +1,15 @@
-"""Smooth movement rule: no place drops more than MAX_DROP spots from the
-previous edition, whatever its score says. Applies to every scored ranking.
+"""Smooth movement rule: no place moves up or down more than MAX_MOVE spots
+from the previous edition, whatever its score says. Applies to every scored ranking.
 
 Base order = score (total desc; ties keep the current order). Then, position
-by position: if a place would otherwise fall past its floor (prev + MAX_DROP),
-it takes the spot (earliest floor first); otherwise the best remaining score
-goes. Places held up by the rule get score.capped = true. Idempotent.
+by position, the best-scored place whose window (prev ± MAX_MOVE) includes the
+spot takes it, as long as everyone else can still fit theirs. New places can
+go anywhere. Nothing about the cap is stored or shown publicly; the dry run lists
+who was held ([tope]). Idempotent.
 Usage: python -I smooth.py <worktree> [--dry]"""
 import json, os, re, sys
 
-MAX_DROP = 5
+MAX_MOVE = 5
 os.chdir(sys.argv[1])
 dry = "--dry" in sys.argv
 
@@ -36,34 +37,58 @@ for city, cats in cities.items():
         for it in base:
             it["score"].pop("capped", None)
         n = len(base)
+        rank = {id(it): i for i, it in enumerate(base)}
+
+        def window(it):
+            prev = it["score"].get("prev")
+            if not prev:  # new on the list: anywhere
+                return 1, n
+            return max(1, prev - MAX_MOVE), min(n, prev + MAX_MOVE)
+
+        def feasible(rest, pos):
+            # Earliest-deadline-first: can every remaining place still land
+            # inside its window, filling pos..n?
+            rest = list(rest)
+            for p in range(pos, n + 1):
+                ready = [it for it in rest if window(it)[0] <= p]
+                if not ready:
+                    return False
+                it = min(ready, key=lambda x: window(x)[1])
+                if window(it)[1] < p:
+                    return False
+                rest.remove(it)
+            return True
+
         remaining = list(base)
         final = []
         for pos in range(1, n + 1):
-            due = [it for it in remaining
-                   if it["score"].get("prev") and it["score"]["prev"] + MAX_DROP <= pos]
-            if due:
-                pick = min(due, key=lambda it: (it["score"]["prev"], remaining.index(it)))
+            # Best score that fits here and still lets everyone else fit.
+            for it in sorted(remaining, key=lambda x: rank[id(x)]):
+                lo, hi = window(it)
+                if lo <= pos <= hi and feasible([x for x in remaining if x is not it], pos + 1):
+                    break
             else:
-                pick = remaining[0]
-            remaining.remove(pick)
-            final.append(pick)
-        # Held up by the rule = sits higher than its score alone would put it.
-        base_pos = {id(it): i for i, it in enumerate(base, 1)}
-        for i, it in enumerate(final, 1):
-            if i < base_pos[id(it)]:
-                it["score"]["capped"] = True
+                raise SystemExit(f"no valid order for {c['id']}")
+            remaining.remove(it)
+            final.append(it)
+        capped = set()
+        # Capped = its score alone would have moved it more than MAX_MOVE spots.
         for i, it in enumerate(final, 1):
             prev = it["score"].get("prev")
-            assert not prev or i <= prev + MAX_DROP, (c["id"], it["name"])
+            if not prev:
+                continue
+            assert abs(i - prev) <= MAX_MOVE, (c["id"], it["name"])
+            if abs(rank[id(it)] + 1 - prev) > MAX_MOVE:
+                capped.add(id(it))
         moved = [(i, it["name"], it["score"]["prev"], it["score"]["total"])
-                 for i, it in enumerate(final, 1) if it["score"].get("capped")]
+                 for i, it in enumerate(final, 1) if id(it) in capped]
         before = {it["name"]: i for i, it in enumerate(items, 1)}
         print(f"{city}/{c['id']}:")
         for i, it in enumerate(final, 1):
             b = before[it["name"]]
-            if b != i or it["score"].get("capped"):
+            if b != i or id(it) in capped:
                 print(f"   {b:2} -> {i:2}  {it['score']['total']:5}  prev {it['score'].get('prev')}  {it['name']}"
-                      + ("  [tope]" if it["score"].get("capped") else ""))
+                      + ("  [tope]" if id(it) in capped else ""))
         if [it["name"] for it in final] != [it["name"] for it in items] or moved:
             changed = True
         c["items"] = final

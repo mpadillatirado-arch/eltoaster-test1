@@ -160,11 +160,6 @@ function Scores({ c, m, items, label }) {
                 <span className="crit-place">
                   <b>{r.name}</b>
                   <Move prev={s.prev} pos={r.pos} c={c} />
-                  {s.capped && (
-                    <span className="crit-cap" title={c.capNote}>
-                      {c.capTag}
-                    </span>
-                  )}
                 </span>
                 <span className="crit-stars">
                   <span title="Google">G ★ {stars(s.google)}</span>
@@ -228,7 +223,6 @@ function Scores({ c, m, items, label }) {
                   </div>
                   {f < 1 && <p className="crit-break-note">{f === 0.92 ? c.factorLow : c.factorMid}</p>}
                   {multi && <p className="crit-break-note">{c.multiNote}</p>}
-                  {s.capped && <p className="crit-break-note">{c.capNote}</p>}
                 </div>
               )}
             </li>

@@ -1,7 +1,7 @@
 /* City rankings for eltoaster.com/rankings.
  *
- * Movement rule: nobody drops more than 5 spots per edition (score.capped
- * marks who is held up). After changing scores, rerun
+ * Movement rule (internal, never shown): nobody moves up or down more than
+ * 5 spots per edition. After changing scores, rerun
  * tools/rankings/smooth.py, then tools/rankings/build_detailed_pdf.py.
  *
  * Phoenix lists come from the phoenix-food-rankings skill (published
@@ -213,21 +213,6 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Tacos Calafia",
-          "dish": "Adobada estilo TJ",
-          "city": "Varias sucursales",
-          "score": {
-            "google": 4.7,
-            "yelp": 4.3,
-            "noYelp": false,
-            "award": "Best Al Pastor 2018",
-            "influencer": false,
-            "community": true,
-            "total": 95.8,
-            "prev": 24
-          }
-        },
-        {
           "name": "Tacos Chiwas",
           "dish": "Variado",
           "city": "Phoenix y Mesa",
@@ -240,21 +225,6 @@ export const RANKINGS = {
             "community": false,
             "total": 93.0,
             "prev": 2
-          }
-        },
-        {
-          "name": "Taco Chelo",
-          "dish": "Quesadillas",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.6,
-            "yelp": 4.0,
-            "noYelp": false,
-            "award": "Best Quesadillas 2022",
-            "influencer": false,
-            "community": true,
-            "total": 92.8,
-            "prev": 17
           }
         },
         {
@@ -288,22 +258,6 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Asadero Pitic",
-          "dish": "Asada sonorense",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.3,
-            "yelp": 3.6,
-            "noYelp": false,
-            "award": false,
-            "influencer": true,
-            "community": true,
-            "total": 85.1,
-            "prev": 4,
-            "capped": true
-          }
-        },
-        {
           "name": "Tacos Lin",
           "dish": "Al pastor",
           "city": "Glendale",
@@ -330,23 +284,67 @@ export const RANKINGS = {
             "influencer": true,
             "community": false,
             "total": 90.2,
-            "prev": 6,
-            "capped": true
+            "prev": 6
           }
         },
         {
-          "name": "Santa Madre Taco Shop",
-          "dish": "Fish taco",
-          "city": "Tempe",
+          "name": "Asadero Pitic",
+          "dish": "Asada sonorense",
+          "city": "Phoenix",
           "score": {
-            "google": 4.6,
+            "google": 4.3,
+            "yelp": 3.6,
+            "noYelp": false,
+            "award": false,
+            "influencer": true,
+            "community": true,
+            "total": 85.1,
+            "prev": 4
+          }
+        },
+        {
+          "name": "Birrieria Tijuana",
+          "dish": "Birria estilo Tijuana",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.5,
             "yelp": 4.4,
             "noYelp": false,
             "award": false,
             "influencer": false,
             "community": false,
-            "total": 90.6,
-            "prev": 22
+            "total": 89.3,
+            "prev": 13
+          }
+        },
+        {
+          "name": "Tacos del Pepe",
+          "dish": "Asada sonorense",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.4,
+            "yelp": 4.1,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": true,
+            "total": 87.9,
+            "prev": 15
+          }
+        },
+        {
+          "name": "Taco Chelo",
+          "dish": "Quesadillas",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.0,
+            "noYelp": false,
+            "award": "Best Quesadillas 2022",
+            "influencer": false,
+            "community": true,
+            "total": 92.8,
+            "prev": 17
           }
         },
         {
@@ -361,8 +359,7 @@ export const RANKINGS = {
             "influencer": true,
             "community": true,
             "total": 87.2,
-            "prev": 8,
-            "capped": true
+            "prev": 8
           }
         },
         {
@@ -377,8 +374,7 @@ export const RANKINGS = {
             "influencer": false,
             "community": true,
             "total": 83.0,
-            "prev": 9,
-            "capped": true
+            "prev": 9
           }
         },
         {
@@ -393,8 +389,7 @@ export const RANKINGS = {
             "influencer": false,
             "community": true,
             "total": 83.7,
-            "prev": 10,
-            "capped": true
+            "prev": 10
           }
         },
         {
@@ -413,18 +408,18 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Birrieria Tijuana",
-          "dish": "Birria estilo Tijuana",
-          "city": "Phoenix",
+          "name": "Santa Madre Taco Shop",
+          "dish": "Fish taco",
+          "city": "Tempe",
           "score": {
-            "google": 4.5,
+            "google": 4.6,
             "yelp": 4.4,
             "noYelp": false,
             "award": false,
             "influencer": false,
             "community": false,
-            "total": 89.3,
-            "prev": 13
+            "total": 90.6,
+            "prev": 22
           }
         },
         {
@@ -458,18 +453,18 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Tacos del Pepe",
-          "dish": "Asada sonorense",
-          "city": "Phoenix",
+          "name": "Tacos Calafia",
+          "dish": "Adobada estilo TJ",
+          "city": "Varias sucursales",
           "score": {
-            "google": 4.4,
-            "yelp": 4.1,
+            "google": 4.7,
+            "yelp": 4.3,
             "noYelp": false,
-            "award": false,
+            "award": "Best Al Pastor 2018",
             "influencer": false,
             "community": true,
-            "total": 87.9,
-            "prev": 15
+            "total": 95.8,
+            "prev": 24
           }
         },
         {
@@ -484,8 +479,7 @@ export const RANKINGS = {
             "influencer": false,
             "community": false,
             "total": 81.4,
-            "prev": 16,
-            "capped": true
+            "prev": 16
           }
         },
         {
@@ -515,8 +509,7 @@ export const RANKINGS = {
             "influencer": false,
             "community": false,
             "total": 81.3,
-            "prev": 18,
-            "capped": true
+            "prev": 18
           }
         },
         {
@@ -585,40 +578,6 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Loaded Dogs",
-          "dish": "New York style",
-          "city": "Phoenix",
-          "score": {
-            "google": 5.0,
-            "yelp": 5.0,
-            "noYelp": false,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 94.0,
-            "prev": 24,
-            "gReviews": 8,
-            "yReviews": 4
-          }
-        },
-        {
-          "name": "Los Mayitos",
-          "dish": "Hot dog estilo Sonora",
-          "city": "Mesa",
-          "score": {
-            "google": 4.7,
-            "yelp": 4.6,
-            "noYelp": false,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 93.5,
-            "prev": 20,
-            "gReviews": 220,
-            "yReviews": 64
-          }
-        },
-        {
           "name": "Dogos y Tacos El Gordo",
           "dish": "Dogos estilo Zapopan",
           "city": "Mesa",
@@ -670,24 +629,6 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Nogales Hot Dogs",
-          "dish": "Hot dog estilo Sonora",
-          "city": "Phoenix (4 sucursales)",
-          "score": {
-            "google": 4.4,
-            "yelp": 4.1,
-            "noYelp": false,
-            "award": false,
-            "influencer": true,
-            "community": true,
-            "total": 90.5,
-            "prev": 2,
-            "gReviews": 1172,
-            "yReviews": 264,
-            "capped": true
-          }
-        },
-        {
           "name": "Johnny's Burgers & Dogs",
           "dish": "Chicago style",
           "city": "Tempe",
@@ -705,6 +646,23 @@ export const RANKINGS = {
           }
         },
         {
+          "name": "Nogales Hot Dogs",
+          "dish": "Hot dog estilo Sonora",
+          "city": "Phoenix (4 sucursales)",
+          "score": {
+            "google": 4.4,
+            "yelp": 4.1,
+            "noYelp": false,
+            "award": false,
+            "influencer": true,
+            "community": true,
+            "total": 90.5,
+            "prev": 2,
+            "gReviews": 1172,
+            "yReviews": 264
+          }
+        },
+        {
           "name": "Der Wurst",
           "dish": "New York style",
           "city": "Phoenix",
@@ -718,43 +676,7 @@ export const RANKINGS = {
             "total": 90.1,
             "prev": 4,
             "gReviews": 34,
-            "yReviews": 1,
-            "capped": true
-          }
-        },
-        {
-          "name": "El Sabroso",
-          "dish": "Hot dog estilo Sonora",
-          "city": "Phoenix (2 sucursales)",
-          "score": {
-            "google": 4.45,
-            "yelp": 3.6,
-            "noYelp": false,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 84.8,
-            "prev": 5,
-            "gReviews": 953,
-            "yReviews": 73,
-            "capped": true
-          }
-        },
-        {
-          "name": "Lucky Boy",
-          "dish": "Hot dog clásico",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.6,
-            "yelp": 4.3,
-            "noYelp": false,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 90.5,
-            "prev": 15,
-            "gReviews": 1688,
-            "yReviews": 530
+            "yReviews": 1
           }
         },
         {
@@ -775,24 +697,6 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Pa Los Hotdogs",
-          "dish": "Hot dog estilo Sonora",
-          "city": "Phoenix",
-          "score": {
-            "google": 3.8,
-            "yelp": 3.8,
-            "noYelp": true,
-            "award": false,
-            "influencer": true,
-            "community": false,
-            "total": 75.2,
-            "prev": 8,
-            "gReviews": 65,
-            "yReviews": 0,
-            "capped": true
-          }
-        },
-        {
           "name": "Hot Dogs La Yaquesita",
           "dish": "Hot dog estilo Sonora",
           "city": "Avondale",
@@ -810,38 +714,37 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Dogos Guadalupe",
+          "name": "El Sabroso",
           "dish": "Hot dog estilo Sonora",
-          "city": "Phoenix",
+          "city": "Phoenix (2 sucursales)",
           "score": {
-            "google": 4.3,
-            "yelp": 4.8,
+            "google": 4.45,
+            "yelp": 3.6,
             "noYelp": false,
             "award": false,
             "influencer": false,
             "community": false,
-            "total": 88.5,
-            "prev": 22,
-            "gReviews": 206,
-            "yReviews": 5
+            "total": 84.8,
+            "prev": 5,
+            "gReviews": 953,
+            "yReviews": 73
           }
         },
         {
-          "name": "Simon's Hot Dogs",
-          "dish": "Hot dog estilo colombiano",
-          "city": "Scottsdale",
+          "name": "Lucky Boy",
+          "dish": "Hot dog clásico",
+          "city": "Phoenix",
           "score": {
-            "google": 4.5,
-            "yelp": 4.8,
+            "google": 4.6,
+            "yelp": 4.3,
             "noYelp": false,
             "award": false,
             "influencer": false,
             "community": false,
-            "total": 86.1,
-            "prev": 11,
-            "gReviews": 15,
-            "yReviews": 759,
-            "capped": true
+            "total": 90.5,
+            "prev": 15,
+            "gReviews": 1688,
+            "yReviews": 530
           }
         },
         {
@@ -858,6 +761,23 @@ export const RANKINGS = {
             "total": 88.0,
             "prev": 12,
             "gReviews": 41,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Pa Los Hotdogs",
+          "dish": "Hot dog estilo Sonora",
+          "city": "Phoenix",
+          "score": {
+            "google": 3.8,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": true,
+            "community": false,
+            "total": 75.2,
+            "prev": 8,
+            "gReviews": 65,
             "yReviews": 0
           }
         },
@@ -879,21 +799,54 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Micky's Hot Dogs",
+          "name": "Los Mayitos",
           "dish": "Hot dog estilo Sonora",
           "city": "Mesa",
           "score": {
-            "google": 4.3,
-            "yelp": 3.9,
+            "google": 4.7,
+            "yelp": 4.6,
             "noYelp": false,
             "award": false,
             "influencer": false,
             "community": false,
-            "total": 84.0,
-            "prev": 14,
-            "gReviews": 1187,
-            "yReviews": 196,
-            "capped": true
+            "total": 93.5,
+            "prev": 20,
+            "gReviews": 220,
+            "yReviews": 64
+          }
+        },
+        {
+          "name": "Simon's Hot Dogs",
+          "dish": "Hot dog estilo colombiano",
+          "city": "Scottsdale",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.8,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 86.1,
+            "prev": 11,
+            "gReviews": 15,
+            "yReviews": 759
+          }
+        },
+        {
+          "name": "Dogos Guadalupe",
+          "dish": "Hot dog estilo Sonora",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.3,
+            "yelp": 4.8,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 88.5,
+            "prev": 22,
+            "gReviews": 206,
+            "yReviews": 5
           }
         },
         {
@@ -911,6 +864,40 @@ export const RANKINGS = {
             "prev": 23,
             "gReviews": 15,
             "yReviews": 0
+          }
+        },
+        {
+          "name": "Micky's Hot Dogs",
+          "dish": "Hot dog estilo Sonora",
+          "city": "Mesa",
+          "score": {
+            "google": 4.3,
+            "yelp": 3.9,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 84.0,
+            "prev": 14,
+            "gReviews": 1187,
+            "yReviews": 196
+          }
+        },
+        {
+          "name": "Loaded Dogs",
+          "dish": "New York style",
+          "city": "Phoenix",
+          "score": {
+            "google": 5.0,
+            "yelp": 5.0,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 94.0,
+            "prev": 24,
+            "gReviews": 8,
+            "yReviews": 4
           }
         },
         {
@@ -1017,23 +1004,6 @@ export const RANKINGS = {
       },
       "items": [
         {
-          "name": "Mariscos El Wicho",
-          "dish": "Aguachiles y cocteles",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.7,
-            "yelp": 4.6,
-            "noYelp": false,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 93.5,
-            "prev": 23,
-            "gReviews": 324,
-            "yReviews": 102
-          }
-        },
-        {
           "name": "Los Arbolitos de Cajeme",
           "dish": "Aguachile estilo Sonora",
           "city": "Glendale",
@@ -1136,24 +1106,6 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Mariscos El Cochorit",
-          "dish": "Campechana especial",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.1,
-            "yelp": 3.0,
-            "noYelp": false,
-            "award": "Best of Phoenix 2016",
-            "influencer": true,
-            "community": true,
-            "total": 83.5,
-            "prev": 3,
-            "gReviews": 528,
-            "yReviews": 8,
-            "capped": true
-          }
-        },
-        {
           "name": "Marisco Boys",
           "dish": "Tostada de yellowtail",
           "city": "Phoenix",
@@ -1168,6 +1120,23 @@ export const RANKINGS = {
             "prev": 8,
             "gReviews": 408,
             "yReviews": 107
+          }
+        },
+        {
+          "name": "Mariscos El Cochorit",
+          "dish": "Campechana especial",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.1,
+            "yelp": 3.0,
+            "noYelp": false,
+            "award": "Best of Phoenix 2016",
+            "influencer": true,
+            "community": true,
+            "total": 83.5,
+            "prev": 3,
+            "gReviews": 528,
+            "yReviews": 8
           }
         },
         {
@@ -1188,23 +1157,6 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Mariscos Ensenada",
-          "dish": "Ceviche y micheladas",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.5,
-            "yelp": 4.1,
-            "noYelp": false,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 88.0,
-            "prev": 19,
-            "gReviews": 746,
-            "yReviews": 37
-          }
-        },
-        {
           "name": "Mariscos Las Culichis",
           "dish": "Mixtiadas estilo Culiacán",
           "city": "Phoenix",
@@ -1219,23 +1171,6 @@ export const RANKINGS = {
             "prev": 7,
             "gReviews": 22,
             "yReviews": 0
-          }
-        },
-        {
-          "name": "El Wero Marisquero",
-          "dish": "Tostadas de mariscos",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.3,
-            "yelp": 4.5,
-            "noYelp": false,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 87.0,
-            "prev": 18,
-            "gReviews": 598,
-            "yReviews": 17
           }
         },
         {
@@ -1256,42 +1191,6 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "San Diego Bay",
-          "dish": "Molcajete de mariscos",
-          "city": "Guadalupe",
-          "score": {
-            "google": 4.3,
-            "yelp": 4.0,
-            "noYelp": false,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 84.5,
-            "prev": 10,
-            "gReviews": 402,
-            "yReviews": 124,
-            "capped": true
-          }
-        },
-        {
-          "name": "Mariscos El Dorado Sinaloa",
-          "dish": "Torre El Dorado",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.3,
-            "yelp": 3.8,
-            "noYelp": true,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 83.5,
-            "prev": 11,
-            "gReviews": 965,
-            "yReviews": 0,
-            "capped": true
-          }
-        },
-        {
           "name": "El Rey de los Ostiones",
           "dish": "Ostiones preparados",
           "city": "Phoenix",
@@ -1309,6 +1208,74 @@ export const RANKINGS = {
           }
         },
         {
+          "name": "El Wero Marisquero",
+          "dish": "Tostadas de mariscos",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.3,
+            "yelp": 4.5,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 87.0,
+            "prev": 18,
+            "gReviews": 598,
+            "yReviews": 17
+          }
+        },
+        {
+          "name": "Mariscos Ensenada",
+          "dish": "Ceviche y micheladas",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.1,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 88.0,
+            "prev": 19,
+            "gReviews": 746,
+            "yReviews": 37
+          }
+        },
+        {
+          "name": "San Diego Bay",
+          "dish": "Molcajete de mariscos",
+          "city": "Guadalupe",
+          "score": {
+            "google": 4.3,
+            "yelp": 4.0,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 84.5,
+            "prev": 10,
+            "gReviews": 402,
+            "yReviews": 124
+          }
+        },
+        {
+          "name": "Mariscos El Dorado Sinaloa",
+          "dish": "Torre El Dorado",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.3,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 83.5,
+            "prev": 11,
+            "gReviews": 965,
+            "yReviews": 0
+          }
+        },
+        {
           "name": "Bertha's Los Mochis",
           "dish": "Tacos de marlín",
           "city": "Phoenix",
@@ -1323,6 +1290,23 @@ export const RANKINGS = {
             "prev": 15,
             "gReviews": 451,
             "yReviews": 30
+          }
+        },
+        {
+          "name": "Mariscos El Wicho",
+          "dish": "Aguachiles y cocteles",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.7,
+            "yelp": 4.6,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 93.5,
+            "prev": 23,
+            "gReviews": 324,
+            "yReviews": 102
           }
         },
         {
@@ -1373,8 +1357,7 @@ export const RANKINGS = {
             "total": 80.5,
             "prev": 16,
             "gReviews": 293,
-            "yReviews": 0,
-            "capped": true
+            "yReviews": 0
           }
         },
         {
@@ -1496,22 +1479,6 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Pepe's Taco Villa",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.6,
-            "yelp": 4.4,
-            "noYelp": false,
-            "award": "Best Chilaquiles 2014",
-            "influencer": false,
-            "community": false,
-            "total": 94.0,
-            "prev": 15,
-            "gReviews": 1017,
-            "yReviews": 251
-          }
-        },
-        {
           "name": "Cocina Madrigal",
           "city": "Phoenix",
           "score": {
@@ -1556,40 +1523,7 @@ export const RANKINGS = {
             "total": 91.0,
             "prev": 1,
             "gReviews": 5372,
-            "yReviews": 853,
-            "capped": true
-          }
-        },
-        {
-          "name": "El Sol Mexican Cafe",
-          "city": "Chandler",
-          "score": {
-            "google": 4.7,
-            "yelp": 4.5,
-            "noYelp": false,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 93.0,
-            "prev": 13,
-            "gReviews": 695,
-            "yReviews": 250
-          }
-        },
-        {
-          "name": "Chilakil To Go",
-          "city": "Glendale",
-          "score": {
-            "google": 4.9,
-            "yelp": 3.8,
-            "noYelp": true,
-            "award": false,
-            "influencer": false,
-            "community": true,
-            "total": 90.8,
-            "prev": 12,
-            "gReviews": 138,
-            "yReviews": 0
+            "yReviews": 853
           }
         },
         {
@@ -1609,52 +1543,35 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Chilaquiles by Irma",
-          "city": "Phoenix",
+          "name": "Chilakil To Go",
+          "city": "Glendale",
           "score": {
-            "google": 4.6,
+            "google": 4.9,
             "yelp": 3.8,
             "noYelp": true,
             "award": false,
             "influencer": false,
-            "community": false,
-            "total": 88.0,
-            "prev": 5,
-            "gReviews": 770,
-            "yReviews": 0,
-            "capped": true
+            "community": true,
+            "total": 90.8,
+            "prev": 12,
+            "gReviews": 138,
+            "yReviews": 0
           }
         },
         {
-          "name": "Ghost Ranch",
-          "city": "Tempe",
+          "name": "El Sol Mexican Cafe",
+          "city": "Chandler",
           "score": {
-            "google": 4.5,
-            "yelp": 4.4,
+            "google": 4.7,
+            "yelp": 4.5,
             "noYelp": false,
             "award": false,
             "influencer": false,
             "community": false,
-            "total": 89.5,
-            "prev": 18,
-            "gReviews": 1586,
-            "yReviews": 1500
-          }
-        },
-        {
-          "name": "Soul Café",
-          "city": "Scottsdale",
-          "score": {
-            "google": 4.5,
-            "yelp": 4.3,
-            "noYelp": false,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 89.0,
-            "prev": 21,
-            "gReviews": 1344,
-            "yReviews": 1300
+            "total": 93.0,
+            "prev": 13,
+            "gReviews": 695,
+            "yReviews": 250
           }
         },
         {
@@ -1671,6 +1588,70 @@ export const RANKINGS = {
             "prev": 8,
             "gReviews": 741,
             "yReviews": 10
+          }
+        },
+        {
+          "name": "Chilaquiles by Irma",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.6,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 88.0,
+            "prev": 5,
+            "gReviews": 770,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Pepe's Taco Villa",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.4,
+            "noYelp": false,
+            "award": "Best Chilaquiles 2014",
+            "influencer": false,
+            "community": false,
+            "total": 94.0,
+            "prev": 15,
+            "gReviews": 1017,
+            "yReviews": 251
+          }
+        },
+        {
+          "name": "Alebrijes Cafe & Grill",
+          "city": "Litchfield Park",
+          "score": {
+            "google": 4.4,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 85.0,
+            "prev": 16,
+            "gReviews": 994,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Ghost Ranch",
+          "city": "Tempe",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.4,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 89.5,
+            "prev": 18,
+            "gReviews": 1586,
+            "yReviews": 1500
           }
         },
         {
@@ -1702,8 +1683,7 @@ export const RANKINGS = {
             "total": 82.0,
             "prev": 10,
             "gReviews": 1586,
-            "yReviews": 0,
-            "capped": true
+            "yReviews": 0
           }
         },
         {
@@ -1719,8 +1699,55 @@ export const RANKINGS = {
             "total": 80.5,
             "prev": 11,
             "gReviews": 2063,
-            "yReviews": 0,
-            "capped": true
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Soul Café",
+          "city": "Scottsdale",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.3,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 89.0,
+            "prev": 21,
+            "gReviews": 1344,
+            "yReviews": 1300
+          }
+        },
+        {
+          "name": "The Social on 83rd",
+          "city": "Peoria",
+          "score": {
+            "google": 4.3,
+            "yelp": 4.1,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 85.0,
+            "prev": 22,
+            "gReviews": 1071,
+            "yReviews": 715
+          }
+        },
+        {
+          "name": "El Mesquite",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.3,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 83.5,
+            "prev": 14,
+            "gReviews": 844,
+            "yReviews": 0
           }
         },
         {
@@ -1752,55 +1779,6 @@ export const RANKINGS = {
             "total": 86.5,
             "prev": 24,
             "gReviews": 1433,
-            "yReviews": 0
-          }
-        },
-        {
-          "name": "El Mesquite",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.3,
-            "yelp": 3.8,
-            "noYelp": true,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 83.5,
-            "prev": 14,
-            "gReviews": 844,
-            "yReviews": 0,
-            "capped": true
-          }
-        },
-        {
-          "name": "The Social on 83rd",
-          "city": "Peoria",
-          "score": {
-            "google": 4.3,
-            "yelp": 4.1,
-            "noYelp": false,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 85.0,
-            "prev": 22,
-            "gReviews": 1071,
-            "yReviews": 715
-          }
-        },
-        {
-          "name": "Alebrijes Cafe & Grill",
-          "city": "Litchfield Park",
-          "score": {
-            "google": 4.4,
-            "yelp": 3.8,
-            "noYelp": true,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 85.0,
-            "prev": 16,
-            "gReviews": 994,
             "yReviews": 0
           }
         },
@@ -1938,90 +1916,20 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Rolando's Mexican Food",
+          "name": "Rita's Burritos",
           "dish": "Breakfast burrito",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.5,
-            "yelp": 4.2,
-            "noYelp": false,
-            "award": "Best Breakfast Burrito 2016",
-            "influencer": false,
-            "community": false,
-            "total": 91.5,
-            "prev": 12,
-            "gReviews": 1317,
-            "yReviews": 221
-          }
-        },
-        {
-          "name": "Topo",
-          "dish": "Surf & turf",
-          "city": "Gilbert",
+          "city": "Chandler",
           "score": {
             "google": 4.6,
-            "yelp": 4.4,
+            "yelp": 4.3,
             "noYelp": false,
             "award": false,
             "influencer": false,
             "community": false,
-            "total": 91.0,
-            "prev": 16,
-            "gReviews": 667,
-            "yReviews": 384
-          }
-        },
-        {
-          "name": "Rito's Mexican Food",
-          "dish": "Chile verde",
-          "city": "Phoenix (3 sucursales)",
-          "score": {
-            "google": 4.37,
-            "yelp": 3.8,
-            "noYelp": true,
-            "award": "Best Burrito 2014, 2018 y 2024",
-            "influencer": false,
-            "community": true,
-            "total": 89.6,
-            "prev": 1,
-            "gReviews": 4144,
-            "yReviews": 0,
-            "capped": true
-          }
-        },
-        {
-          "name": "The Original Carolina's",
-          "dish": "Machaca",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.4,
-            "yelp": 3.9,
-            "noYelp": false,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 85.5,
-            "prev": 2,
-            "gReviews": 4949,
-            "yReviews": 998,
-            "capped": true
-          }
-        },
-        {
-          "name": "PHX Burrito House",
-          "dish": "Carne asada",
-          "city": "Phoenix",
-          "score": {
-            "google": 4.4,
-            "yelp": 4.2,
-            "noYelp": false,
-            "award": "Best Burrito 2020",
-            "influencer": false,
-            "community": false,
-            "total": 90.0,
-            "prev": 3,
-            "gReviews": 1701,
-            "yReviews": 1100
+            "total": 90.5,
+            "prev": 8,
+            "gReviews": 859,
+            "yReviews": 586
           }
         },
         {
@@ -2042,20 +1950,71 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Rita's Burritos",
-          "dish": "Breakfast burrito",
-          "city": "Chandler",
+          "name": "Rito's Mexican Food",
+          "dish": "Chile verde",
+          "city": "Phoenix (3 sucursales)",
           "score": {
-            "google": 4.6,
-            "yelp": 4.3,
+            "google": 4.37,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": "Best Burrito 2014, 2018 y 2024",
+            "influencer": false,
+            "community": true,
+            "total": 89.6,
+            "prev": 1,
+            "gReviews": 4144,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "The Original Carolina's",
+          "dish": "Machaca",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.4,
+            "yelp": 3.9,
             "noYelp": false,
             "award": false,
             "influencer": false,
             "community": false,
-            "total": 90.5,
-            "prev": 8,
-            "gReviews": 859,
-            "yReviews": 586
+            "total": 85.5,
+            "prev": 2,
+            "gReviews": 4949,
+            "yReviews": 998
+          }
+        },
+        {
+          "name": "PHX Burrito House",
+          "dish": "Carne asada",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.4,
+            "yelp": 4.2,
+            "noYelp": false,
+            "award": "Best Burrito 2020",
+            "influencer": false,
+            "community": false,
+            "total": 90.0,
+            "prev": 3,
+            "gReviews": 1701,
+            "yReviews": 1100
+          }
+        },
+        {
+          "name": "Rolando's Mexican Food",
+          "dish": "Breakfast burrito",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.5,
+            "yelp": 4.2,
+            "noYelp": false,
+            "award": "Best Breakfast Burrito 2016",
+            "influencer": false,
+            "community": false,
+            "total": 91.5,
+            "prev": 12,
+            "gReviews": 1317,
+            "yReviews": 221
           }
         },
         {
@@ -2076,20 +2035,20 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Testal Mexican Kitchen",
-          "dish": "Estilo Chihuahua",
-          "city": "Phoenix",
+          "name": "Topo",
+          "dish": "Surf & turf",
+          "city": "Gilbert",
           "score": {
             "google": 4.6,
-            "yelp": 4.2,
+            "yelp": 4.4,
             "noYelp": false,
             "award": false,
             "influencer": false,
             "community": false,
-            "total": 90.0,
-            "prev": 25,
-            "gReviews": 608,
-            "yReviews": 166
+            "total": 91.0,
+            "prev": 16,
+            "gReviews": 667,
+            "yReviews": 384
           }
         },
         {
@@ -2127,41 +2086,6 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Checo's Taco Shop",
-          "dish": "Pollo asado",
-          "city": "Scottsdale",
-          "score": {
-            "google": 4.5,
-            "yelp": 3.8,
-            "noYelp": true,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 86.5,
-            "prev": 23,
-            "gReviews": 226,
-            "yReviews": 0
-          }
-        },
-        {
-          "name": "Los Favoritos",
-          "dish": "Breakfast burrito",
-          "city": "Mesa (2 sucursales)",
-          "score": {
-            "google": 4.3,
-            "yelp": 3.3,
-            "noYelp": false,
-            "award": false,
-            "influencer": false,
-            "community": false,
-            "total": 81.0,
-            "prev": 11,
-            "gReviews": 2131,
-            "yReviews": 537,
-            "capped": true
-          }
-        },
-        {
           "name": "Mochilero Kitchen",
           "dish": "Breakfast burrito",
           "city": "Peoria (2 sucursales)",
@@ -2196,21 +2120,20 @@ export const RANKINGS = {
           }
         },
         {
-          "name": "Burrito Express",
+          "name": "Los Favoritos",
           "dish": "Breakfast burrito",
-          "city": "Gilbert (3 sucursales)",
+          "city": "Mesa (2 sucursales)",
           "score": {
-            "google": 3.97,
-            "yelp": 3.35,
+            "google": 4.3,
+            "yelp": 3.3,
             "noYelp": false,
             "award": false,
             "influencer": false,
             "community": false,
-            "total": 76.3,
-            "prev": 14,
-            "gReviews": 2459,
-            "yReviews": 720,
-            "capped": true
+            "total": 81.0,
+            "prev": 11,
+            "gReviews": 2131,
+            "yReviews": 537
           }
         },
         {
@@ -2228,6 +2151,57 @@ export const RANKINGS = {
             "prev": 15,
             "gReviews": 2962,
             "yReviews": 611
+          }
+        },
+        {
+          "name": "Checo's Taco Shop",
+          "dish": "Pollo asado",
+          "city": "Scottsdale",
+          "score": {
+            "google": 4.5,
+            "yelp": 3.8,
+            "noYelp": true,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 86.5,
+            "prev": 23,
+            "gReviews": 226,
+            "yReviews": 0
+          }
+        },
+        {
+          "name": "Burrito Express",
+          "dish": "Breakfast burrito",
+          "city": "Gilbert (3 sucursales)",
+          "score": {
+            "google": 3.97,
+            "yelp": 3.35,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 76.3,
+            "prev": 14,
+            "gReviews": 2459,
+            "yReviews": 720
+          }
+        },
+        {
+          "name": "Testal Mexican Kitchen",
+          "dish": "Estilo Chihuahua",
+          "city": "Phoenix",
+          "score": {
+            "google": 4.6,
+            "yelp": 4.2,
+            "noYelp": false,
+            "award": false,
+            "influencer": false,
+            "community": false,
+            "total": 90.0,
+            "prev": 25,
+            "gReviews": 608,
+            "yReviews": 166
           }
         },
         {

@@ -2539,4 +2539,3 @@ a.blog-card:hover {
 .rank-gate-both { margin: -8px 0 16px; font-size: 0.85rem; font-weight: 700; color: var(--orange-deep); }
 
 .crit-detail-extra { margin-top: 8px; font-size: 0.86rem; color: var(--text-2); padding-left: 10px; border-left: 3px solid var(--orange); }
-.crit-cap { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 999px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); vertical-align: middle; }

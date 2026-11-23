@@ -87,7 +87,6 @@ footer .u span { display: block; color: #FD5819; font-size: 10.5pt; }
 .aw b { display: block; font-size: 9.4pt; }
 .aw span { color: #FD5819; font-weight: 700; }
 .rules { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; margin-top: 10px; }
-.cap { color: var(--accent); font-weight: 800; }
 .rules li { font-size: 9pt; font-weight: 600; display: flex; gap: 8px; align-items: center; }
 .rules li::before { content: "\\2713"; display: inline-grid; place-items: center; width: 16px; height: 16px; border-radius: 50%;
   background: #16A34A; color: #fff; font-size: 7pt; font-weight: 800; flex: none; }
@@ -143,7 +142,7 @@ for c in cats:
         rows.append(
             f'<tr class="{"top" if i <= 3 else ""}"><td class="pos">{i:02d}</td>'
             f'<td class="nm"><b>{esc(it["name"])}</b><span>{esc(meta(it))}</span></td>'
-            f'<td class="chg">{move(s.get("prev"), i)}{"<sup class=cap>*</sup>" if s.get("capped") else ""}</td>'
+            f'<td class="chg">{move(s.get("prev"), i)}</td>'
             f'<td class="st">★ {stars(s["google"])}' + (f'<small>({s["gReviews"]:,})</small>' if s.get("gReviews") is not None else "") + '</td>'
             f'<td class="st">{yelp}</td>'
             f'<td class="bn">{chips}</td>'
@@ -164,7 +163,7 @@ for c in cats:
 <div class="who"><b>Mario Padilla</b>Actualizado: noviembre 2026</div></header>
 <div class="legend"><span><b class="up">▲</b> Subió vs. edición anterior</span><span><b class="down">▼</b> Bajó</span>
 <span><b class="same">—</b> Igual</span><span><span class="new">NUEVO</span> Entró</span>
-<span>🏆 Premio</span><span>📣 Influencers</span><span>💬 Comunidad</span>{"<span><b class=cap>*</b> Tope de 5</span>" if any(it["score"].get("capped") for it in items) else ""}</div>
+<span>🏆 Premio</span><span>📣 Influencers</span><span>💬 Comunidad</span></div>
 <table><thead><tr><th>#</th><th>Lugar</th><th>Cambio</th><th>Google</th><th>Yelp</th><th>Bonos</th><th class="r">Puntaje</th></tr></thead>
 <tbody>{''.join(rows)}</tbody></table>
 <p class="note">Puntaje sobre {MAX}: estrellas de Google y Yelp más bonos.{" Entre paréntesis, las reseñas en Google: con menos de 50 las estrellas cuentan al 92% y de 50 a 150 al 95%." if m["reviewFactor"] else " Con varias sucursales se promedian las que están abiertas."}</p>
@@ -186,8 +185,7 @@ Es una metodología viva: la sigo afinando con cada edición y con lo que ustede
 {f'<div class="sec"><div class="eyebrow">Premios considerados</div><h2>Los que tienen premio</h2><div class="aw">{aw_html}</div></div>' if awards else ''}
 <div class="sec"><div class="eyebrow">Reglas</div><h2>Lo que no se puede comprar</h2><ul class="rules">
 <li>Nadie paga por aparecer ni por subir</li><li>Sin cadenas ni franquicias</li>
-<li>Solo lugares abiertos, revisados en Google Maps</li><li>Una sola marca por lugar en la lista</li>
-<li>Nadie baja más de 5 lugares por edición</li></ul></div>
+<li>Solo lugares abiertos, revisados en Google Maps</li><li>Una sola marca por lugar en la lista</li></ul></div>
 <div class="cta"><div><h3>¿Tienes restaurante y quieres subir?</h3><p>Te digo qué dicen tus reseñas y qué mejorar para ganar estrellas. Gratis.</p></div>
 <div class="go">eltoaster.com · Diagnóstico gratis</div></div>
 {footer}</div>
